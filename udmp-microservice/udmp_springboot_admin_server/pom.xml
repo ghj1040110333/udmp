@@ -1,0 +1,30 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>cn.com.git</groupId>
+		<artifactId>udmp_springboot_parent</artifactId>
+		<version>0.3.0-SNAPSHOT</version>
+	</parent>
+	<groupId>cn.com.git</groupId>
+	<artifactId>udmp_springboot_admin_server</artifactId>
+	<version>${udmp.springboot.version}</version>
+	<properties>
+		<spring-boot-version>1.4.3.RELEASE</spring-boot-version>
+		<spring.version>4.3.5.RELEASE</spring.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>de.codecentric</groupId>
+			<artifactId>spring-boot-admin-server</artifactId>
+			<version>1.4.5</version>
+		</dependency>
+		<dependency>
+			<groupId>de.codecentric</groupId>
+			<artifactId>spring-boot-admin-server-ui</artifactId>
+			<version>1.4.5</version>
+		</dependency>
+	</dependencies>
+
+</project>

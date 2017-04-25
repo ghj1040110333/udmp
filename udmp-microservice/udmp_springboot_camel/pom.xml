@@ -1,0 +1,49 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>cn.com.git</groupId>
+		<artifactId>udmp_springboot_parent</artifactId>
+		<version>0.3.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>udmp_springboot_camel</artifactId>
+	<properties>
+		<!-- jdk1.8+ <camel-version>2.17.0</camel-version> -->
+		<camel-version>2.13.4</camel-version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>cn.com.git</groupId>
+			<artifactId>udmp_springboot</artifactId>
+			<version>${udmp.springboot.version}</version>
+		</dependency>
+		<!-- camel dependency -->
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-core</artifactId>
+			<version>${camel-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-spring</artifactId>
+			<version>${camel-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-dozer</artifactId>
+			<version>${camel-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-test</artifactId>
+			<version>${camel-version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-test-spring</artifactId>
+			<version>${camel-version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>

@@ -1,0 +1,145 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>cn.com.git</groupId>
+	<artifactId>udmp_springboot_parent</artifactId>
+	<version>${udmp.springboot.version}</version>
+	<packaging>pom</packaging>
+	<parent>
+		<groupId>cn.com.git</groupId>
+		<artifactId>udmp_dependency_parent</artifactId>
+		<version>0.3.0-SNAPSHOT</version>
+		<!-- <relativePath>../../UDMP-Core/udmp_dependency_parent</relativePath> -->
+	</parent>
+	<properties>
+		<udmp.springboot.version>0.3.0-SNAPSHOT</udmp.springboot.version>
+		<spring-boot-version>1.4.0.RELEASE</spring-boot-version>
+		<spring.version>4.3.2.RELEASE</spring.version>
+<!-- 		<jdk.version>1.6</jdk.version> -->
+<!-- 		<tomcat.version>7.0.59</tomcat.version> -->
+		<servlet-api.version>3.0.1</servlet-api.version>
+<!-- 		<jackson.version>2.6.7</jackson.version> -->
+	</properties>
+
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.data</groupId>
+				<artifactId>spring-data-releasetrain</artifactId>
+				<version>Fowler-SR2</version>
+				<scope>import</scope>
+				<type>pom</type>
+			</dependency>
+			<dependency>
+				<!-- Import dependency management from Spring Boot -->
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${spring-boot-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<version>1.1.7</version>
+			</dependency>
+			<dependency>
+				<groupId>org.mybatis.spring.boot</groupId>
+				<artifactId>mybatis-spring-boot-starter</artifactId>
+				<version>1.1.1</version>
+			</dependency>
+<!-- 			<dependency> -->
+<!-- 				<groupId>org.apache.tomcat.embed</groupId> -->
+<!-- 				<artifactId>tomcat-embed-core</artifactId> -->
+<!-- 				<version>${tomcat.version}</version> -->
+<!-- 			</dependency> -->
+<!-- 			<dependency> -->
+<!-- 				<groupId>org.apache.tomcat.embed</groupId> -->
+<!-- 				<artifactId>tomcat-embed-el</artifactId> -->
+<!-- 				<version>${tomcat.version}</version> -->
+<!-- 			</dependency> -->
+<!-- 			<dependency> -->
+<!-- 				<groupId>org.apache.tomcat.embed</groupId> -->
+<!-- 				<artifactId>tomcat-embed-jasper</artifactId> -->
+<!-- 				<version>${tomcat.version}</version> -->
+<!-- 			</dependency> -->
+<!-- 			<dependency> -->
+<!-- 				<groupId>org.apache.tomcat.embed</groupId> -->
+<!-- 				<artifactId>tomcat-embed-websocket</artifactId> -->
+<!-- 				<version>${tomcat.version}</version> -->
+<!-- 			</dependency> -->
+<!-- 			<dependency> -->
+<!-- 				<groupId>org.apache.tomcat</groupId> -->
+<!-- 				<artifactId>tomcat-jdbc</artifactId> -->
+<!-- 				<version>${tomcat.version}</version> -->
+<!-- 			</dependency> -->
+<!-- 			<dependency> -->
+<!-- 				<groupId>org.apache.tomcat</groupId> -->
+<!-- 				<artifactId>tomcat-jsp-api</artifactId> -->
+<!-- 				<version>${tomcat.version}</version> -->
+<!-- 			</dependency> -->
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<!--
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-integration</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>cn.com.git</groupId>
+			<artifactId>udmp_core</artifactId>
+			<version>${udmp.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<version>${spring-boot-version}</version>
+					<configuration>
+						<mainClass>cn.com.git.udmp.boot.UdmpApplication</mainClass>
+						<layout>JAR</layout>
+						<!-- <addResources>true</addResources> -->
+					</configuration>
+					<executions>
+						<execution>
+							<goals>
+								<goal>repackage</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+	<modules>
+		<!-- <module>../udmp_springboot_mybatis</module> -->
+		<!-- <module>../udmp_springboot</module> -->
+		<!-- <module>../udmp_springboot_druid</module> -->
+		<!-- <module>../udmp_springboot</module> -->
+		<!-- <module>../udmp_springboot_camel</module> -->
+		<!-- <module>../udmp_springboot_druid</module> -->
+		<!-- <module>../udmp_springboot_mybatis</module> -->
+	</modules>
+</project>
