@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+	<name>dao</name>
+	<filePath>src/main/java/${packageName}/${moduleName}/dao/${subModuleName}</filePath>
+	<fileName>${ClassName}Dao.java</fileName>
+	<content><![CDATA[
+/**
+ * GIT Confidential
+ * Licensed Materials - Property of GIT
+ * Copyright (c) 1998-2016 Global InfoTech Corp. All Rights Reserved.
+ * Global InfoTech, Inc. owns the copyright and other intellectual
+ * property rights in this software.
+ *
+ * The source code for this program is not published.
+ * Duplication or use of the Software is not permitted
+ * except as expressly provided in a written agreement
+ * between your company and Global InfoTech, Inc.
+ */
+package ${packageName}.${moduleName}.dao<#if subModuleName != "">.${subModuleName}</#if>;
+
+import cn.com.git.udmp.common.persistence.CrudDao;
+import cn.com.git.udmp.common.persistence.annotation.MyBatisDao;
+import ${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModuleName}</#if>.${ClassName};
+
+/**
+ * ${functionName}DAO接口
+ * @author ${functionAuthor}
+ * @version ${functionVersion}
+ */
+@MyBatisDao
+public interface ${ClassName}Dao extends CrudDao<${ClassName}> {
+	
+}]]>
+	</content>
+</template>
