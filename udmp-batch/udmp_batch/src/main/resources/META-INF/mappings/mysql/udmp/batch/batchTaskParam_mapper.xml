@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.git.udmp.impl.batch.task.dao.IBatchTaskParamDAO">
+
+	<sql id="batchTaskParamWhereCondition">
+		<if test=" task_param_id  != null "><![CDATA[ AND A.TASK_PARAM_ID = #{task_param_id} ]]></if>
+		<if test=" task_id  != null "><![CDATA[ AND A.TASK_ID = #{task_id} ]]></if>
+		<if test=" param_order  != null "><![CDATA[ AND A.PARAM_ORDER = #{param_order} ]]></if>
+		<if test=" is_array != null and is_array != ''  "><![CDATA[ AND A.IS_ARRAY = #{is_array} ]]></if>
+		<if test=" is_deleted != null and is_deleted != ''  "><![CDATA[ AND A.IS_DELETED = #{is_deleted} ]]></if>
+		<if test=" task_param_name != null and task_param_name != ''  "><![CDATA[ AND A.TASK_PARAM_NAME = #{task_param_name} ]]></if>
+		<if test=" task_param_code != null and task_param_code != ''  "><![CDATA[ AND A.TASK_PARAM_CODE = #{task_param_code} ]]></if>
+		<if test=" task_param_data_type != null and task_param_data_type != ''  "><![CDATA[ AND A.TASK_PARAM_DATA_TYPE = #{task_param_data_type} ]]></if>
+		<if test=" ver != null and ver != ''  "><![CDATA[ AND A.VER = #{ver} ]]></if>
+		<if test=" param_id  != null "><![CDATA[ AND A.PARAM_ID = #{param_id} ]]></if>
+		<if test=" is_manu != null and is_manu != ''  "><![CDATA[ AND A.IS_MANU = #{is_manu} ]]></if>
+		<if test=" is_required != null and is_required != ''  "><![CDATA[ AND A.IS_REQUIRED = #{is_required} ]]></if>
+	</sql>
+
+
+	<!-- 按索引生成的查询条件 -->
+	<sql id="queryByTaskParamIdCondition">
+		<if test=" task_param_id  != null "><![CDATA[ AND A.TASK_PARAM_ID = #{task_param_id} ]]></if>
+	</sql>
+
+	<!-- 添加操作 -->
+	<insert id="add" useGeneratedKeys="true"
+		parameterType="java.util.Map">
+		<selectKey resultType="java.math.BigDecimal" order="AFTER"
+			keyProperty="task_param_id">
+			select LAST_INSERT_ID()
+		</selectKey>
+		<![CDATA[
+			INSERT INTO T_UDMP_BATCH_TASK_PARAM(
+				INSERT_TIME, UPDATE_TIME, TASK_ID, PARAM_ORDER, IS_ARRAY, IS_DELETED, 
+				INSERT_TIMESTAMP, TASK_PARAM_NAME,TASK_PARAM_CODE, UPDATE_BY, TASK_PARAM_DATA_TYPE, VER, UPDATE_TIMESTAMP, PARAM_ID, 
+				IS_MANU, INSERT_BY, IS_REQUIRED ) 
+			VALUES (
+				SYSDATE(), SYSDATE() , #{task_id, jdbcType=NUMERIC} , #{param_order, jdbcType=NUMERIC} , #{is_array, jdbcType=VARCHAR} , #{is_deleted, jdbcType=VARCHAR} 
+				, CURRENT_TIMESTAMP(), #{task_param_name, jdbcType=VARCHAR} ,#{task_param_code, jdbcType=VARCHAR} , #{update_by, jdbcType=NUMERIC} , #{task_param_data_type, jdbcType=VARCHAR} , #{ver, jdbcType=VARCHAR} , CURRENT_TIMESTAMP(), #{param_id, jdbcType=NUMERIC} 
+				, #{is_manu, jdbcType=VARCHAR} , #{insert_by, jdbcType=NUMERIC} , #{is_required, jdbcType=VARCHAR} ) 
+		 ]]>
+	</insert>
+	
+	<!-- 批量添加操作 -->
+	<insert id="batchSave" parameterType="java.util.List"> 
+			INSERT INTO T_UDMP_BATCH_TASK_PARAM(
+				INSERT_TIME, UPDATE_TIME, TASK_ID, PARAM_ORDER, IS_ARRAY, IS_DELETED, 
+				INSERT_TIMESTAMP, TASK_PARAM_NAME,TASK_PARAM_CODE, UPDATE_BY, TASK_PARAM_DATA_TYPE, VER, UPDATE_TIMESTAMP, PARAM_ID, 
+				IS_MANU, INSERT_BY, IS_REQUIRED ) 
+			VALUES
+		<foreach  collection="list" item="item" separator=",">
+				(SYSDATE(), SYSDATE(), #{item.task_id, jdbcType=NUMERIC} , #{item.param_order, jdbcType=NUMERIC} , #{item.is_array, jdbcType=VARCHAR} , #{item.is_deleted, jdbcType=VARCHAR} 
+				, CURRENT_TIMESTAMP(), #{item.task_param_name, jdbcType=VARCHAR} ,#{item.task_param_code, jdbcType=VARCHAR} , #{item.update_by, jdbcType=NUMERIC} , #{item.task_param_data_type, jdbcType=VARCHAR} , #{item.ver, jdbcType=VARCHAR} , CURRENT_TIMESTAMP(), #{item.param_id, jdbcType=NUMERIC} 
+				, #{item.is_manu, jdbcType=VARCHAR} , #{item.insert_by, jdbcType=NUMERIC} , #{item.is_required, jdbcType=VARCHAR})
+		</foreach>
+	</insert>
+	
+	<!-- 批量删除操作 -->
+	<update id="batchDelete" parameterType="java.util.List">
+		<![CDATA[ UPDATE T_UDMP_BATCH_TASK_PARAM SET
+			IS_DELETED = 1,
+			UPDATE_TIME = SYSDATE() ,			    
+		    UPDATE_TIMESTAMP = CURRENT_TIMESTAMP()
+			WHERE TASK_ID IN (]]>
+			<foreach  collection="list" item="item" index="index" open="" close="" separator=",">
+				<![CDATA[ #{item.task_id, jdbcType=NUMERIC} ]]>
+			</foreach>
+		<![CDATA[ ) ]]>
+	</update>
+
+	
+	<!-- 删除操作 -->
+	<update id="delete" parameterType="java.util.Map">
+		<![CDATA[ UPDATE T_UDMP_BATCH_TASK_PARAM ]]>
+		<set>
+			<trim suffixOverrides=",">
+				IS_DELETED = 1,
+				UPDATE_TIME = SYSDATE() ,			    
+			    UPDATE_TIMESTAMP = CURRENT_TIMESTAMP() ,
+			</trim>
+		</set>
+		<![CDATA[ WHERE TASK_ID = #{task_id} ]]>
+	</update>
+
+	<!-- 修改操作 -->
+	<update id="update" parameterType="java.util.Map">
+		<![CDATA[ UPDATE T_UDMP_BATCH_TASK_PARAM ]]>
+		<set>
+			<trim suffixOverrides=",">
+				UPDATE_TIME = SYSDATE() ,
+				TASK_ID = #{task_id, jdbcType=NUMERIC} ,
+				PARAM_ORDER = #{param_order, jdbcType=NUMERIC} ,
+				IS_ARRAY = #{is_array, jdbcType=VARCHAR} ,
+				IS_DELETED = #{is_deleted, jdbcType=VARCHAR} ,
+				TASK_PARAM_NAME = #{task_param_name, jdbcType=VARCHAR} ,
+				TASK_PARAM_CODE = #{task_param_code, jdbcType=VARCHAR} ,
+				UPDATE_BY = #{update_by, jdbcType=NUMERIC} ,
+				TASK_PARAM_DATA_TYPE = #{task_param_data_type, jdbcType=VARCHAR} ,
+				VER = #{ver, jdbcType=VARCHAR} ,
+				UPDATE_TIMESTAMP = CURRENT_TIMESTAMP() ,
+				PARAM_ID = #{param_id, jdbcType=NUMERIC} ,
+				IS_MANU = #{is_manu, jdbcType=VARCHAR} ,
+				IS_REQUIRED = #{is_required, jdbcType=VARCHAR} ,
+			</trim>
+		</set>
+		<![CDATA[ WHERE TASK_PARAM_ID = #{task_param_id} ]]>
+	</update>
+
+	<!-- 按索引查询操作 -->
+	<select id="findByTaskParamId" resultType="java.util.Map"
+		parameterType="java.util.Map">
+		<![CDATA[ SELECT A.TASK_PARAM_ID, A.TASK_ID, A.PARAM_ORDER, A.IS_ARRAY, A.IS_DELETED, 
+			A.TASK_PARAM_NAME,A.TASK_PARAM_CODE, A.TASK_PARAM_DATA_TYPE, A.VER, A.PARAM_ID, 
+			A.IS_MANU, A.IS_REQUIRED FROM T_UDMP_BATCH_TASK_PARAM A WHERE 1 = 1  ]]>
+		<include refid="queryByTaskParamIdCondition" />
+		<![CDATA[ ORDER BY A.TASK_PARAM_ID ]]>
+	</select>
+
+
+	<!-- 按map查询操作 -->
+	<select id="findAllMap" resultType="java.util.Map"
+		parameterType="java.util.Map">
+		<![CDATA[ SELECT A.TASK_PARAM_ID, A.TASK_ID, A.PARAM_ORDER, A.IS_ARRAY, A.IS_DELETED, 
+			A.TASK_PARAM_NAME,A.TASK_PARAM_CODE, A.TASK_PARAM_DATA_TYPE, A.VER, A.PARAM_ID, 
+			A.IS_MANU, A.IS_REQUIRED FROM T_UDMP_BATCH_TASK_PARAM A WHERE 1=1  ]]>
+		<include refid="batchTaskParamWhereCondition" />
+		<![CDATA[ ORDER BY A.TASK_PARAM_ID ]]>
+		<![CDATA[ limit  1000  ]]>
+	</select>
+
+	<!-- 查询所有操作 -->
+	<select id="findAll" resultType="java.util.Map"
+		parameterType="java.util.Map">
+		<![CDATA[ SELECT A.TASK_PARAM_ID, A.TASK_ID, A.PARAM_ORDER, A.IS_ARRAY, A.IS_DELETED, 
+			A.TASK_PARAM_NAME,A.TASK_PARAM_CODE, A.TASK_PARAM_DATA_TYPE, A.VER, A.PARAM_ID, 
+			A.IS_MANU, A.IS_REQUIRED FROM T_UDMP_BATCH_TASK_PARAM A WHERE 1=1  ]]>
+		<include refid="batchTaskParamWhereCondition" />
+		<![CDATA[ ORDER BY A.TASK_PARAM_ID ]]>
+		<![CDATA[ limit  1000  ]]>
+	</select>
+
+	<!-- 查询个数操作 -->
+	<select id="findTotal" resultType="java.lang.Integer"
+		parameterType="java.util.Map">
+		<![CDATA[ SELECT COUNT(1) FROM T_UDMP_BATCH_TASK_PARAM A WHERE 1 = 1  ]]>
+		<include refid="batchTaskParamWhereCondition" />
+	</select>
+
+	<!-- 分页查询操作 -->
+	<select id="queryForPage" resultType="java.util.Map"
+		parameterType="java.util.Map">
+		<![CDATA[ SELECT A.TASK_PARAM_ID, A.TASK_ID, A.PARAM_ORDER, A.IS_ARRAY, A.IS_DELETED, 
+			A.TASK_PARAM_NAME,A.TASK_PARAM_CODE, A.TASK_PARAM_DATA_TYPE, A.VER, A.PARAM_ID, 
+			A.IS_MANU, A.IS_REQUIRED FROM T_UDMP_BATCH_TASK_PARAM A WHERE 1=1  ]]>
+		<include refid="batchTaskParamWhereCondition" />
+		<![CDATA[ ORDER BY A.TASK_PARAM_ID ]]> 
+	</select>
+	<!-- 查询任务参数 -->
+	<select id="find" resultType="java.util.Map"
+		parameterType="java.util.Map">
+		<![CDATA[ SELECT * FROM T_UDMP_BATCH_JOB_PARAM A LEFT JOIN T_UDMP_BATCH_TASK_PARAM B ON A.TASK_PARAM_ID = B.TASK_PARAM_ID  LEFT JOIN T_UDMP_BATCH_PARAM C ON B.PARAM_ID=C.PARAM_ID WHERE JOB_ID = #{job_id,jdbcType=NUMERIC} ]]>
+	</select>
+	
+</mapper>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="struts-sys" extends="default" namespace="/sys">
+		
+		<action name="*_*" method="{1}" class="{2}">
+			<result name="HornPersonalSettingAction_showSettingPage">/udmp/pages/sys/hornnotice/hornnotice_setting_page.jsp</result>
+			<result name="HornPersonalSettingAction_showNavigationPage">/udmp/pages/sys/hornnotice/hornnotice_navigation_page.jsp</result>
+			<!-- 用户管理 -->
+			<result name="queryUserList">/udmp/pages/sys/user/userManage.jsp</result>
+			<result name="addUser">/udmp/pages/sys/user/userAdd.jsp</result>
+			<result name="updateUser">/udmp/pages/sys/user/userUpdate.jsp</result>
+			<result name="updateUserRole">/udmp/pages/sys/user/userRoleUpdate.jsp</result>
+			<result name="updateUserAndRoleGroup">/udmp/pages/sys/user/userRoleGroupUpdate.jsp</result>
+			<!-- 用户管理 -->
+			<!-- 角色管理 -->
+			<result name="showRoleIndexPage">/udmp/pages/sys/role/roleManage.jsp</result>
+			<result name="showInsertRolePage">/udmp/pages/sys/role/roleAdd.jsp</result>
+			<result name="showUpdateRolePage">/udmp/pages/sys/role/roleUpdate.jsp</result>
+			<result name="UpdateRoleModule">/udmp/pages/sys/role/roleModuleUpdate.jsp</result>
+			<result name="UpdateRolePermission">/udmp/pages/sys/role/rolePermissionUpdate.jsp</result>
+			<result name="UpdateRoleOrgan">/udmp/pages/sys/role/roleOrganUpdate.jsp</result>
+			<!-- 角色管理 -->
+			<!-- 子角色管理 -->
+			<result name="showSubRoleTypeIndexPage">/udmp/pages/sys/subRoleType/subRoleTypeIndex.jsp</result>
+			<!-- 子角色管理 -->
+			<!-- 参数管理 -->
+			<result name="showParaDefIndexPage">/udmp/pages/sys/paraDef/paraDefIndex.jsp</result>
+			<result name="showInsertParaPage">/udmp/pages/sys/paraDef/paraDefAdd.jsp</result>
+			<result name="showUpdateParaPage">/udmp/pages/sys/paraDef/paraDefUpdate.jsp</result>
+			<!-- 参数管理 -->
+
+			<!-- 角色组 -->
+			<result name="showRoleGroupIndexPage">/udmp/pages/sys/roleGroup/roleGroupManage.jsp</result>
+			<result name="showInsertRoleGroupPage">/udmp/pages/sys/roleGroup/roleGroupAdd.jsp</result>
+			<result name="showUpdateRoleGroupPage">/udmp/pages/sys/roleGroup/roleGroupUpdate.jsp</result>
+			<result name="updateRoleAndRoleGroup">/udmp/pages/sys/roleGroup/updateRoleAndRoleGroup.jsp</result>
+
+			<!-- 菜单管理 -->
+			<result name="menuManage">/udmp/pages/sys/menu/menuManage.jsp</result>
+			<!-- 菜单管理 -->
+
+			<!-- 机构管理 -->
+			<result name="organManage">/udmp/pages/sys/organ/organManage.jsp</result>
+			<result name="showAddPage">/udmp/pages/sys/organ/organAdd.jsp</result>
+			<result name="showUpdatePage">/udmp/pages/sys/organ/organUpdate.jsp</result>
+			<!-- 机构管理 -->
+
+			<!-- 数据权限管理 -->
+			<result name="dataPerManage">/udmp/pages/sys/data/dataPermissionManage.jsp</result>
+			<result name="updatePermissionPage">/udmp/pages/sys/data/permissionUpdate.jsp</result>
+			<!-- 数据权限管理 -->
+			<!-- 权限类型管理 -->
+			<!-- <result name="permFieldManage">/udmp/pages/sys/data/test.jsp</result> -->
+			<result name="permFieldManage">/udmp/pages/sys/data/permissionFieldManage.jsp</result>
+			<result name="updateFieldManage">/udmp/pages/sys/data/permissionFieldUpdate.jsp</result>
+			<!-- 权限类型管理 -->
+			<result name="showPermissionTypeIndexPage">/udmp/pages/sys/permissionType/permissionTypeIndex.jsp</result>
+			<result name="showInsertPermissionTypePage">/udmp/pages/sys/permissionType/permissionTypeAdd.jsp</result>
+			<result name="showUpdatePermissionTypePage">/udmp/pages/sys/permissionType/permissionTypeUpdate.jsp</result>
+			<!-- 权限类型管理 -->
+			<!-- 权限字段类型管理 -->
+			<result name="showFieldDataTypeIndexPage">/udmp/pages/sys/fieldDataType/fieldDataTypeIndex.jsp</result>
+			<result name="showInsertFieldDataTypePage">/udmp/pages/sys/fieldDataType/fieldDataTypeAdd.jsp</result>
+			<result name="showUpdateFieldDataTypePage">/udmp/pages/sys/fieldDataType/fieldDataTypeUpdate.jsp</result>
+			<!-- 权限字段类型管理 -->
+			<!-- WorkDays -->
+			<result name="workDaysPage">/udmp/pages/sys/workdays/workdays.jsp</result>
+			<!-- WorkDays -->
+			<result name="toOrgTree">/udmp/pages/sys/organ/organTree.jsp</result>
+			<!-- 服务发布管理界面 -->
+			<result name="toServicePublishPage">/udmp/pages/sys/servicePublish/servicePublishPage.jsp</result>
+			<result name="toServicePublishAddPage">/udmp/pages/sys/servicePublish/servicePublishAddPage.jsp</result>
+			<result name="toServicePublishEditPage">/udmp/pages/sys/servicePublish/servicePublishEditPage.jsp</result>
+			<!-- 服务发布管理界面 -->
+			<!-- 环境管理 -->
+			<result name="toServicePage">/udmp/pages/sys/serviceEnv/serviceEnvIndex.jsp</result>
+			<result name="showInsertServicePage">/udmp/pages/sys/serviceEnv/serviceEnvAdd.jsp</result>
+			<result name="showUpdateServicePage">/udmp/pages/sys/serviceEnv/serviceEnvUpdate.jsp</result>
+			<!-- 环境管理 -->
+			<!-- 服务消费 -->
+			<result name="toServiceConsumePage">/udmp/pages/sys/serviceConsume/serviceConsumeIndex.jsp</result>
+			<result name="askForService">/udmp/pages/sys/serviceConsume/serviceConsumeAdd.jsp</result>
+			<!-- 服务消费 -->
+			<!-- 服务消费管理 -->
+			<result name="toServiceConsumeManagePage">/udmp/pages/sys/serviceConsumeManage/serviceConsumeManageIndex.jsp</result>
+			<result name="toServiceConsumeManageEdit">/udmp/pages/sys/serviceConsumeManage/serviceConsumeManageEdit.jsp</result>
+			<!-- 服务消费管理 -->
+			<!-- 多系统登录 -->
+			<result name="toMuiltSystemLogin">/udmp/pages/sys/muiltSystemLogin/muiltSystemLogin.jsp</result>
+			<!-- 多系统登录 -->
+		</action>
+	</package>
+	
+</struts>

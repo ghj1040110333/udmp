@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.1//EN" "http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_1.dtd">
+<taglib>
+	<tlibversion>1.0</tlibversion>
+	<jspversion>1.1</jspversion>
+	<shortname>FormTag</shortname>
+	<uri>http://www.git.com.cn/taglib/udmp/form</uri>
+	<tag>
+		<!-- 表单预留扩展自定义标签 (为避免以后页面扩展又要重复批量修改，可以在公共页面中扩展添加统一入口标签段（自定义tag留作后续插入公共html代码）) -->
+		<name>formReserved</name>
+		<tagclass>com.nci.udmp.util.tag.from.FormReservedTag</tagclass>
+		<bodycontent>empty</bodycontent>
+		<!-- 预留属性 非必填 attr1,attr2,attr3 -->
+
+		<attribute>
+			<name>attr1</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>attr2</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>attr3</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+
+	</tag>
+	
+	<tag>
+	<name>token</name>
+	<tagclass>com.nci.udmp.framework.tag.tokentag.TokenTag</tagclass>
+	<bodycontent>empty</bodycontent>
+<!-- 	<attribute> -->
+<!-- 			<name>type</name> -->
+<!-- 			<required>false</required> -->
+<!-- 			<rtexprvalue>true</rtexprvalue> -->
+<!-- 	</attribute> -->
+	</tag>
+	
+	
+</taglib>

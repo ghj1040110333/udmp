@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.git.udmp.impl.batch.param.dao.IParamManageDao">
+
+	<sql id="paramWhereCondition">
+		<if test=" param_id != null"><![CDATA[ AND A.Param_ID = #{param_id} ]]></if>
+		<if test=" param_type != null and param_type != ''  "><![CDATA[ AND A.PARAM_TYPE = #{param_type} ]]></if>
+		<if test=" param_data_type != null and param_data_type != ''  "><![CDATA[ AND A.PARAM_DATA_TYPE = #{param_data_type} ]]></if>
+		<if test=" is_single_value  != null and is_single_value != ''  "><![CDATA[ AND A.IS_SINGLE_VALUE = #{is_single_value} ]]></if>
+		<if test=" param_code != null and param_code != ''  "><![CDATA[ AND A.PARAM_CODE = #{param_code} ]]></if>
+		<if test=" param_name  != null and param_name != ''  "><![CDATA[ AND A.PARAM_NAME LIKE '%'||#{param_name}||'%' ]]></if>
+		<if test=" param_desc  != null and param_desc != ''  "><![CDATA[ AND A.PARAM_DESC = #{param_desc} ]]></if>
+		<if test=" param_value  != null and param_value != ''  "><![CDATA[ AND A.PARAM_VALUE = #{param_value} ]]></if>
+		<if test=" is_deleted  != null and is_deleted != ''  "><![CDATA[ AND A.IS_DELETED = #{is_deleted} ]]></if>
+	</sql>
+	
+<!-- 查询单条数据 -->
+	<select id="find" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[ SELECT A.Param_ID, A.PARAM_TYPE, A.PARAM_DATA_TYPE, A.IS_SINGLE_VALUE, A.PARAM_CODE, 
+			A.PARAM_NAME, A.PARAM_DESC, A.PARAM_VALUE, A.IS_DELETED FROM T_UDMP_BATCH_PARAM A WHERE 1 = 1  ]]>
+		<include refid="paramWhereCondition" />
+		<![CDATA[ ORDER BY A.Param_ID ]]>
+	</select>
+
+<!-- 查询全部数据 -->
+	<select id="findAll" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[ SELECT A.Param_ID, A.PARAM_TYPE, A.PARAM_DATA_TYPE, A.IS_SINGLE_VALUE, A.PARAM_CODE, 
+			A.PARAM_NAME, A.PARAM_DESC, A.PARAM_VALUE, A.IS_DELETED FROM T_UDMP_BATCH_PARAM A WHERE 1=1  ]]>
+		<include refid="paramWhereCondition" />
+		<![CDATA[ ORDER BY A.Param_ID ]]>
+		<![CDATA[ limit  1000  ]]>
+	</select>
+	
+	<select id="findTotal" resultType="java.lang.Integer" parameterType="java.util.Map" >
+		<![CDATA[ SELECT COUNT(1) FROM T_UDMP_BATCH_PARAM A WHERE 1 = 1 AND A.IS_DELETED = 0]]>
+		<include refid="paramWhereCondition"/>
+	</select>
+	
+	<select id="queryForPage" resultType="java.util.Map" parameterType="java.util.Map" >
+		<![CDATA[ SELECT  A.Param_ID, A.PARAM_TYPE, A.PARAM_DATA_TYPE, A.IS_SINGLE_VALUE, A.PARAM_CODE, 
+			A.PARAM_NAME, A.PARAM_DESC, A.PARAM_VALUE, A.IS_DELETED FROM T_UDMP_BATCH_PARAM A 
+		WHERE A.IS_DELETED = 0]]>
+		<include refid="paramWhereCondition" />
+		<![CDATA[ ORDER BY A.Param_ID ]]>
+	</select>
+	
+	
+<!-- 添加操作 -->
+    <insert id="add" useGeneratedKeys="true" parameterType="java.util.Map">
+		<selectKey resultType="java.math.BigDecimal" order="AFTER" keyProperty="param_id">
+			select LAST_INSERT_ID()
+		</selectKey>
+		<![CDATA[
+			INSERT INTO T_UDMP_BATCH_PARAM(
+				Param_ID, PARAM_TYPE, PARAM_DATA_TYPE, IS_SINGLE_VALUE, PARAM_CODE, PARAM_NAME, PARAM_DESC, PARAM_VALUE, 
+				IS_DELETED, VER, INSERT_BY, INSERT_TIME, INSERT_TIMESTAMP, UPDATE_BY, UPDATE_TIME, UPDATE_TIMESTAMP) 
+			VALUES (
+				 #{param_id, jdbcType=NUMERIC} ,#{param_type, jdbcType=VARCHAR} ,#{param_data_type, jdbcType=VARCHAR} ,
+				 #{is_single_value, jdbcType=VARCHAR} ,#{param_code, jdbcType=VARCHAR} ,#{param_name, jdbcType=VARCHAR} ,
+				 #{param_desc, jdbcType=VARCHAR} ,#{param_value, jdbcType=VARCHAR} ,DEFAULT ,DEFAULT ,
+				 #{insert_by, jdbcType=NUMERIC} ,SYSDATE() ,CURRENT_TIMESTAMP() ,#{insert_by, jdbcType=NUMERIC} ,SYSDATE(), CURRENT_TIMESTAMP() )
+		]]>
+	</insert>
+	
+<!-- 删除操作 -->
+	<update id="delete" parameterType="java.util.Map">
+		<![CDATA[ UPDATE T_UDMP_BATCH_PARAM ]]>
+		<set>
+			<trim suffixOverrides=",">
+				IS_DELETED = 1,
+				UPDATE_BY = #{update_by, jdbcType=NUMERIC} ,
+				UPDATE_TIME = SYSDATE() ,			    
+			    UPDATE_TIMESTAMP = CURRENT_TIMESTAMP() ,
+			</trim>
+		</set>
+		<![CDATA[ WHERE Param_ID = #{param_id} ]]>
+	</update>
+
+<!-- 修改操作 -->	
+	<update id="update" parameterType="java.util.Map">
+		<![CDATA[ UPDATE T_UDMP_BATCH_PARAM ]]>
+		<set>
+			<trim suffixOverrides=",">
+				Param_TYPE = #{param_type, jdbcType=VARCHAR} ,
+				PARAM_DATA_TYPE = #{param_data_type, jdbcType=VARCHAR} ,
+				IS_SINGLE_VALUE = #{is_single_value, jdbcType=VARCHAR} ,
+				PARAM_CODE = #{param_code, jdbcType=VARCHAR} ,
+				PARAM_NAME = #{param_name, jdbcType=VARCHAR} ,
+				PARAM_DESC = #{param_desc, jdbcType=VARCHAR} ,
+				PARAM_VALUE = #{param_value, jdbcType=VARCHAR} ,
+				IS_DELETED = #{is_deleted, jdbcType=VARCHAR},
+				UPDATE_BY = #{update_by, jdbcType=NUMERIC} ,
+				UPDATE_TIME = SYSDATE() ,
+			    UPDATE_TIMESTAMP = CURRENT_TIMESTAMP() ,
+			</trim>
+		</set>
+		<![CDATA[ WHERE Param_ID = #{param_id} ]]>
+	</update>	
+</mapper>

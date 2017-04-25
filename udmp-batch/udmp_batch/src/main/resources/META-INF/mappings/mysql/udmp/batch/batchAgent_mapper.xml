@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.git.udmp.impl.batch.agent.dao.IBatchAgentDao">
+
+	<sql id="batchAgentWhereCondition">
+		<if test=" agent_name != null and agent_name != ''  "><![CDATA[ AND A.AGENT_NAME LIKE '%'||#{agent_name}||'%']]></if>
+		<if test=" is_enable != null and is_enable != ''  "><![CDATA[ AND A.IS_ENABLE = #{is_enable} ]]></if>
+		<if test=" agent_thread_limit_cnt  != null "><![CDATA[ AND A.AGENT_THREAD_LIMIT_CNT = #{agent_thread_limit_cnt} ]]></if>
+		<if test=" agent_ip != null and agent_ip != ''  "><![CDATA[ AND A.AGENT_IP = #{agent_ip} ]]></if>
+		<if test=" is_deleted != null and is_deleted != ''  "><![CDATA[ AND A.IS_DELETED = #{is_deleted} ]]></if>
+		<if test=" agent_port  != null "><![CDATA[ AND A.AGENT_PORT = #{agent_port} ]]></if>
+		<if test=" agent_system != null and agent_system != ''  "><![CDATA[ AND A.AGENT_SYSTEM = #{agent_system} ]]></if>
+		<if test=" ver != null and ver != ''  "><![CDATA[ AND A.VER = #{ver} ]]></if>
+		<if test=" agent_id  != null "><![CDATA[ AND A.AGENT_ID = #{agent_id} ]]></if>
+	</sql>
+
+<!-- 按索引生成的查询条件 -->	
+	<sql id="queryByAgentIdCondition">
+		<if test=" agent_id  != null "><![CDATA[ AND A.AGENT_ID = #{agent_id} ]]></if>
+	</sql>	
+
+<!-- 添加操作 -->
+	<insert id="add"  useGeneratedKeys="true"  parameterType="java.util.Map">
+		<selectKey resultType="java.math.BigDecimal" order="AFTER" keyProperty="agent_id">
+			 select LAST_INSERT_ID()
+		</selectKey>
+		<![CDATA[
+			INSERT INTO T_UDMP_BATCH_AGENT(
+				AGENT_ID, AGENT_NAME, AGENT_SYSTEM, AGENT_PORT, AGENT_THREAD_LIMIT_CNT, AGENT_IP ,IS_ENABLE, IS_DELETED,VER, 
+				INSERT_BY , INSERT_TIME, INSERT_TIMESTAMP, UPDATE_BY, UPDATE_TIME, UPDATE_TIMESTAMP 
+				)
+			VALUES (
+				#{agent_id, jdbcType=NUMERIC}, #{agent_name, jdbcType=VARCHAR}, #{agent_system, jdbcType=VARCHAR} ,#{agent_port, jdbcType=NUMERIC} , 
+				#{agent_thread_limit_cnt, jdbcType=NUMERIC} ,#{agent_ip, jdbcType=VARCHAR} , #{is_enable, jdbcType=VARCHAR} ,DEFAULT ,DEFAULT,
+				#{insert_by, jdbcType=NUMERIC}, SYSDATE() , CURRENT_TIMESTAMP(), #{update_by, jdbcType=NUMERIC} , SYSDATE() , CURRENT_TIMESTAMP()
+				) 
+		 ]]>
+	</insert>
+
+<!-- 删除操作 -->	
+	<update id="delete" parameterType="java.util.Map">
+		<![CDATA[ UPDATE T_UDMP_BATCH_AGENT ]]>
+		<set>
+			<trim suffixOverrides=",">
+				IS_DELETED = 1,
+				UPDATE_BY = #{update_by, jdbcType=NUMERIC} ,
+				UPDATE_TIME = SYSDATE() ,			    
+			    UPDATE_TIMESTAMP = CURRENT_TIMESTAMP() ,
+			</trim>
+		</set>
+		<![CDATA[ WHERE AGENT_ID = #{agent_id} ]]>
+	</update>
+
+<!-- 修改操作 -->
+	<update id="update" parameterType="java.util.Map">
+		<![CDATA[ UPDATE T_UDMP_BATCH_AGENT ]]>
+		<set>
+			<trim suffixOverrides=",">
+				AGENT_NAME = #{agent_name, jdbcType=VARCHAR} ,
+				AGENT_IP = #{agent_ip, jdbcType=VARCHAR} ,				
+				AGENT_SYSTEM = #{agent_system, jdbcType=VARCHAR} ,
+			    AGENT_THREAD_LIMIT_CNT = #{agent_thread_limit_cnt, jdbcType=NUMERIC} ,
+			    AGENT_PORT = #{agent_port, jdbcType=NUMERIC} ,
+			    IS_ENABLE = #{is_enable, jdbcType=VARCHAR} ,
+				IS_DELETED = #{is_deleted, jdbcType=VARCHAR} ,
+			    UPDATE_BY = #{update_by, jdbcType=NUMERIC} ,
+				UPDATE_TIME = SYSDATE() ,			    
+			    UPDATE_TIMESTAMP = CURRENT_TIMESTAMP()
+			</trim>
+		</set>
+		<![CDATA[ WHERE AGENT_ID= #{agent_id} ]]>
+	</update>
+
+<!-- 按索引查询操作 -->
+	<select id="find" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[ SELECT A.AGENT_NAME, A.IS_ENABLE, A.AGENT_THREAD_LIMIT_CNT, A.AGENT_IP, A.IS_DELETED, 
+			A.AGENT_PORT, A.AGENT_SYSTEM, A.VER, A.AGENT_ID FROM T_UDMP_BATCH_AGENT A WHERE 1 = 1  ]]>
+		<include refid="queryByAgentIdCondition" />
+	</select>
+	
+
+<!-- 按map查询操作 -->
+	<select id="findAllMap" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[ SELECT A.AGENT_NAME, A.IS_ENABLE, A.AGENT_THREAD_LIMIT_CNT, A.AGENT_IP, A.IS_DELETED, 
+			A.AGENT_PORT, A.AGENT_SYSTEM, A.VER, A.AGENT_ID FROM T_UDMP_BATCH_AGENT A  ]]>
+		<!-- <include refid="请添加查询条件" /> -->
+		<![CDATA[ limit  1000  ]]>
+	</select>
+
+<!-- 查询所有操作 -->
+	<select id="findAll" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[ SELECT A.AGENT_NAME, A.IS_ENABLE, A.AGENT_THREAD_LIMIT_CNT, A.AGENT_IP, A.IS_DELETED, 
+			A.AGENT_PORT, A.AGENT_SYSTEM, A.VER, A.AGENT_ID FROM T_UDMP_BATCH_AGENT A WHERE 1=1 ]]>
+		<include refid="batchAgentWhereCondition" />
+		<![CDATA[ limit  1000  ]]>
+	</select>
+
+<!-- 查询个数操作 -->
+	<select id="findTotal" resultType="java.lang.Integer" parameterType="java.util.Map">
+		<![CDATA[ SELECT COUNT(1) FROM T_UDMP_BATCH_AGENT A WHERE 1 = 1 AND A.IS_DELETED = 0]]>
+		<include refid="batchAgentWhereCondition" />
+	</select>
+
+<!-- 分页查询操作 -->
+	<select id="queryForPage" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[ SELECT  A.AGENT_NAME, A.IS_ENABLE, A.AGENT_THREAD_LIMIT_CNT, A.AGENT_IP, A.IS_DELETED, 
+			A.AGENT_PORT, A.AGENT_SYSTEM, A.VER, A.AGENT_ID FROM T_UDMP_BATCH_AGENT A WHERE  A.IS_DELETED = 0]]>
+		<include refid="batchAgentWhereCondition" />
+		<![CDATA[ ORDER BY A.AGENT_ID ]]>
+	</select>
+	
+</mapper>

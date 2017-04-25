@@ -1,0 +1,205 @@
+<taglib xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:acme="http://acme.com/"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+	http:/java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_1.xsd
+	http:/acme.com /http:/acme.com/acme.xsd "
+	version="2.1">
+	<description>
+		Simple Math Tag Library.
+		Contains ACME sound extensions
+		with helpful voice annotations
+		that describe how to use the tags in
+		this library.
+	</description>
+	<jspversion>2.0</jspversion>
+    <tlib-version>1.0</tlib-version>
+    <short-name>dict</short-name>
+    <!-- 定义该标签库的URI -->
+    <uri>http://www.git.com.cn/taglib/udmp/dict</uri>
+    <tag>
+        <!-- 定义标签名 -->
+        <name>checkbox</name>
+        <!-- 定义标签处理类 -->
+        <tag-class>cn.com.git.udmp.batch.common.tag.DictionaryCheckBoxTag</tag-class>
+        
+        <!-- 定义标签体为空 -->
+        <body-content>empty</body-content>
+        <attribute>
+	      <name>codeType</name>
+	      <required>true</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    
+	    <attribute>
+	      <name>name</name>
+	      <required>true</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	      <name>functionSet</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	      <name>checkedItems</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	      <name>disabled</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    
+	    <attribute>
+	      <name>cssStyle</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	      <name>cssClass</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	      <name>textShowFront</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	      <name>limitation</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+    </tag>
+    <!-- 定义第一个标签 -->
+    <tag>
+        <!-- 定义标签名 -->
+        <name>select</name>
+        <!-- 定义标签处理类 -->
+        <tag-class>cn.com.git.udmp.batch.common.tag.DictionarySelectTag</tag-class>
+        <!-- 定义标签体为空 -->
+        <body-content>empty</body-content>
+        <attribute>
+	      <name>codeType</name>
+	      <required>true</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	      <name>id</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	      <name>name</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	      <name>selectedValue</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	      <name>selectedItems</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	      <name>limitation</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	      <name>exclusionstr</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    
+	    <attribute>
+	      <name>disabled</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	      <name>multiSelect</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	      <name>size</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	      <name>functionSet</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    
+	    <attribute>
+	      <name>cssStyle</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	      <name>cssClass</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+    </tag>
+    
+    
+    <tag>
+        <!-- 定义标签名 -->
+        <name>radio</name>
+        <!-- 定义标签处理类 -->
+        <tag-class>cn.com.git.udmp.batch.common.tag.DictionaryRadioTag</tag-class>
+        <!-- 定义标签体为空 -->
+        <body-content>empty</body-content>
+        <attribute>
+	      <name>codeType</name>
+	      <required>true</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    
+	    <attribute>
+	      <name>name</name>
+	      <required>true</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    
+	    <attribute>
+	      <name>disabled</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    
+	    <attribute>
+	      <name>functionSet</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    
+	    <attribute>
+	      <name>cssStyle</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	      <name>cssClass</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	      <name>textShowFront</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	      <name>limitation</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+    </tag>
+</taglib>

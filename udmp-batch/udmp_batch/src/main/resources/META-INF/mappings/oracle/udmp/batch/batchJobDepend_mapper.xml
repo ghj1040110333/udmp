@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.git.udmp.impl.batch.jobDepend.dao.IBatchJobDependDao">
+
+	<sql id="batchJobDependWhereCondition">
+		<if test=" depend_status != null and depend_status != ''  "><![CDATA[ AND A.DEPEND_STATUS = #{depend_status} ]]></if>
+		<if test=" action_job_id  != null "><![CDATA[ AND A.ACTION_JOB_ID = #{action_job_id} ]]></if>
+		<if test=" is_deleted != null and is_deleted != ''  "><![CDATA[ AND A.IS_DELETED = #{is_deleted} ]]></if>
+		<if test=" depend_job_id  != null "><![CDATA[ AND A.DEPEND_JOB_ID = #{depend_job_id} ]]></if>
+		<if test=" ver != null and ver != ''  "><![CDATA[ AND A.VER = #{ver} ]]></if>
+		<if test=" depend_type != null and depend_type != ''  "><![CDATA[ AND A.DEPEND_TYPE = #{depend_type} ]]></if>
+		<if test=" depend_id  != null "><![CDATA[ AND A.DEPEND_ID = #{depend_id} ]]></if>
+	</sql>
+
+
+<!-- 按索引生成的查询条件 -->
+	<sql id="queryByDependIdCondition">
+		<if test=" depend_id  != null "><![CDATA[ AND A.ACTION_JOB_ID = #{action_job_id} ]]></if>
+	</sql>	
+
+<!-- 添加操作 -->
+	<insert id="add"  useGeneratedKeys="true" parameterType="java.util.Map">
+		<selectKey resultType="java.math.BigDecimal" order="BEFORE" keyProperty="depend_id">
+			SELECT S_T_UDMP_BATCH_JOB_DEPEND.NEXTVAL FROM DUAL
+		</selectKey>
+		<![CDATA[
+			INSERT INTO T_UDMP_BATCH_JOB_DEPEND(
+				DEPEND_STATUS, INSERT_TIME, ACTION_JOB_ID, UPDATE_TIME, IS_DELETED, INSERT_TIMESTAMP, UPDATE_BY, 
+				DEPEND_JOB_ID, VER, DEPEND_TYPE, UPDATE_TIMESTAMP, INSERT_BY, DEPEND_ID ) 
+			VALUES (
+				#{depend_status, jdbcType=VARCHAR}, SYSDATE , #{action_job_id, jdbcType=NUMERIC} , SYSDATE , DEFAULT , CURRENT_TIMESTAMP, #{update_by, jdbcType=NUMERIC} 
+				, #{depend_job_id, jdbcType=NUMERIC} , DEFAULT , #{depend_type, jdbcType=VARCHAR} , CURRENT_TIMESTAMP, #{insert_by, jdbcType=NUMERIC} , #{depend_id, jdbcType=NUMERIC} ) 
+		 ]]>
+	</insert>
+	
+	<!-- 批量添加操作 -->
+	<insert id="batchSave" parameterType="java.util.List"> 
+			INSERT INTO T_UDMP_BATCH_JOB_DEPEND(
+				DEPEND_ID, DEPEND_STATUS, INSERT_TIME, ACTION_JOB_ID, UPDATE_TIME, INSERT_TIMESTAMP, UPDATE_BY, 
+				DEPEND_JOB_ID, DEPEND_TYPE, UPDATE_TIMESTAMP, INSERT_BY ) 
+			SELECT S_T_UDMP_BATCH_JOB_DEPEND.NEXTVAL, A.* 
+			FROM(	
+		<foreach  collection="list" item="item" separator="UNION ALL">
+			SELECT
+				#{item.depend_status, jdbcType=VARCHAR}, SYSDATE AS INSERT_IIME, #{item.action_job_id, jdbcType=NUMERIC}, SYSDATE AS UPDATE_TIME
+				, CURRENT_TIMESTAMP AS INSERT_TIMESTAMP, #{item.update_by, jdbcType=NUMERIC}
+				, #{item.depend_job_id, jdbcType=NUMERIC}, #{item.depend_type, jdbcType=VARCHAR}
+				, CURRENT_TIMESTAMP AS UPDATE_TIMESTAMP, #{item.insert_by, jdbcType=NUMERIC}
+			FROM DUAL
+		</foreach>
+			) A
+	</insert>
+	
+	<!-- 批量更新操作 -->
+	<update id="batchUpdate"  parameterType="java.util.List">
+       UPDATE T_UDMP_BATCH_JOB_DEPEND
+       <trim prefix="SET" suffixOverrides=",">
+           <trim prefix="DEPEND_STATUS = CASE " suffix="END,">
+           		<foreach collection="list" item="item" index="index">
+                 	<if test="item.depend_status != null"> WHEN DEPEND_ID=#{item.depend_id} THEN #{item.depend_status} </if>
+                </foreach>
+           </trim>
+           <trim prefix="ACTION_JOB_ID = CASE " suffix="END,">
+           		<foreach collection="list" item="item" index="index">
+                 	<if test="item.action_job_id != null"> WHEN DEPEND_ID=#{item.depend_id} THEN #{item.action_job_id} </if>
+                </foreach>
+           </trim>
+           <trim prefix="UPDATE_TIME = CASE " suffix="END,">
+           		<foreach collection="list" item="item" index="index">
+                 	WHEN DEPEND_ID=#{item.depend_id} THEN SYSDATE
+                </foreach>
+           </trim>
+           <trim prefix="UPDATE_BY = CASE " suffix="END,">
+           		<foreach collection="list" item="item" index="index">
+                 	<if test="item.update_by != null"> WHEN DEPEND_ID=#{item.depend_id} THEN #{item.update_by} </if>
+                </foreach>
+           </trim>
+           <trim prefix="DEPEND_JOB_ID = CASE " suffix="END,">
+           		<foreach collection="list" item="item" index="index">
+                 	<if test="item.depend_job_id != null"> WHEN DEPEND_ID=#{item.depend_id} THEN #{item.depend_job_id} </if>
+                </foreach>
+           </trim>
+           <trim prefix="DEPEND_TYPE = CASE " suffix="END,">
+           		<foreach collection="list" item="item" index="index">
+                 	<if test="item.depend_type != null"> WHEN DEPEND_ID=#{item.depend_id} THEN #{item.depend_type} </if>
+                </foreach>
+           </trim>
+           <trim prefix="UPDATE_TIMESTAMP = CASE " suffix="END,">
+           		<foreach collection="list" item="item" index="index">
+                 	WHEN DEPEND_ID=#{item.depend_id} THEN CURRENT_TIMESTAMP
+                </foreach>
+           </trim>
+        </trim>
+        WHERE
+        <foreach collection="list" separator="or" item="item" index="index" > DEPEND_ID=#{item.depend_id} </foreach>
+    </update>
+
+<!-- 删除操作 -->	
+	<update id="delete" parameterType="java.util.Map">
+		<![CDATA[ UPDATE T_UDMP_BATCH_JOB_DEPEND ]]>
+		<set>
+		<trim suffixOverrides=",">
+			IS_DELETED = 1,
+			UPDATE_BY = #{update_by, jdbcType=NUMERIC} ,
+			UPDATE_TIME = SYSDATE ,			    
+			UPDATE_TIMESTAMP = CURRENT_TIMESTAMP ,
+		</trim>
+		</set>
+		<![CDATA[ WHERE ACTION_JOB_ID = #{action_job_id} AND IS_DELETED = #{is_deleted}]]>
+	</update>
+
+<!-- 修改操作 -->
+	<update id="update" parameterType="java.util.Map">
+		<![CDATA[ UPDATE T_UDMP_BATCH_JOB_DEPEND ]]>
+		<set>
+		<trim suffixOverrides=",">
+			DEPEND_STATUS = #{depend_status, jdbcType=VARCHAR} ,
+		    ACTION_JOB_ID = #{action_job_id, jdbcType=NUMERIC} ,
+			UPDATE_TIME = SYSDATE , 
+			IS_DELETED = #{is_deleted, jdbcType=VARCHAR} ,
+		    UPDATE_BY = #{update_by, jdbcType=NUMERIC} ,
+		    DEPEND_JOB_ID = #{depend_job_id, jdbcType=NUMERIC} ,
+			VER = #{ver, jdbcType=VARCHAR} ,
+			DEPEND_TYPE = #{depend_type, jdbcType=VARCHAR} ,
+		    UPDATE_TIMESTAMP = CURRENT_TIMESTAMP ,
+		</trim>
+		</set>
+		<![CDATA[ WHERE ACTION_JOB_ID = #{action_job_id} ]]>
+	</update>
+
+<!-- 按索引查询操作 -->	
+	<select id="findByDependId" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[ SELECT A.DEPEND_STATUS, A.ACTION_JOB_ID, A.IS_DELETED, 
+			A.DEPEND_JOB_ID, A.VER, A.DEPEND_TYPE, A.DEPEND_ID FROM T_UDMP_BATCH_JOB_DEPEND A WHERE 1 = 1  ]]>
+		<include refid="queryByDependIdCondition" />
+		<![CDATA[ ORDER BY A.DEPEND_ID ]]>
+	</select>
+	
+
+<!-- 按map查询操作 -->
+	<select id="findAllMap" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[ SELECT A.DEPEND_STATUS, A.ACTION_JOB_ID, A.IS_DELETED, 
+			A.DEPEND_JOB_ID, A.VER, A.DEPEND_TYPE, A.DEPEND_ID FROM T_UDMP_BATCH_JOB_DEPEND A WHERE ROWNUM <=  1000  ]]>
+		<!-- <include refid="请添加查询条件" /> -->
+		<![CDATA[ ORDER BY A.DEPEND_ID ]]>
+	</select>
+
+<!-- 查询所有操作 -->
+	<select id="findAll" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[ SELECT A.DEPEND_STATUS, A.ACTION_JOB_ID, A.IS_DELETED, 
+			A.DEPEND_JOB_ID, A.VER, A.DEPEND_TYPE, A.DEPEND_ID FROM T_UDMP_BATCH_JOB_DEPEND A WHERE ROWNUM <=  1000  ]]>
+		<include refid="batchJobDependWhereCondition" />
+		<![CDATA[ ORDER BY A.DEPEND_ID ]]> 
+	</select>
+
+<!-- 查询所有前置条件 -->
+	<select id="findAllPreCond" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[ SELECT A.DEPEND_JOB_ID, A.DEPEND_STATUS, A.IS_DELETED, A.DEPEND_TYPE, A.ACTION_JOB_ID FROM T_UDMP_BATCH_JOB_DEPEND A
+			WHERE A.DEPEND_TYPE = 'B' AND A.ACTION_JOB_ID = #{action_job_id} AND A.IS_DELETED = '0']]>
+		<![CDATA[ ORDER BY A.DEPEND_ID ]]> 
+	</select>
+
+<!-- 查询所有后置条件 -->
+	<select id="findAllPostCond" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[ SELECT A.DEPEND_JOB_ID, A.DEPEND_STATUS, A.IS_DELETED, A.DEPEND_TYPE, A.ACTION_JOB_ID FROM T_UDMP_BATCH_JOB_DEPEND A
+			WHERE A.DEPEND_TYPE = 'A' AND A.ACTION_JOB_ID = #{action_job_id} AND A.IS_DELETED = '0']]>
+		<![CDATA[ ORDER BY A.DEPEND_ID ]]> 
+	</select>
+
+<!-- 查询个数操作 -->
+	<select id="findTotal" resultType="java.lang.Integer" parameterType="java.util.Map">
+		<![CDATA[ SELECT COUNT(1) FROM T_UDMP_BATCH_JOB_DEPEND A WHERE 1 = 1  ]]>
+		<include refid="batchJobDependWhereCondition" />
+	</select>
+
+<!-- 分页查询操作 -->
+	<select id="queryForPage" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[ SELECT A.DEPEND_STATUS, A.ACTION_JOB_ID, A.IS_DELETED, 
+			A.DEPEND_JOB_ID, A.VER, A.DEPEND_TYPE, A.DEPEND_ID FROM T_UDMP_BATCH_JOB_DEPEND A WHERE 1=1  ]]>
+		<include refid="batchJobDependWhereCondition" />
+		<![CDATA[ ORDER BY A.DEPEND_ID ]]> 
+	</select>
+	
+</mapper>

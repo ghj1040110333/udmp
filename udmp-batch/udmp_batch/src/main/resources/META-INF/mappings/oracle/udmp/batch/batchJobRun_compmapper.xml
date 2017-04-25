@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.git.udmp.impl.batch.jobRun.dao.IBatchJobRunDao">
+
+	<sql id="batchJobRunWhereCondition">
+		<if test=" success_cnt  != null "><![CDATA[ AND A.SUCCESS_CNT = #{success_cnt} ]]></if>
+		<if test=" total_cnt  != null "><![CDATA[ AND A.TOTAL_CNT = #{total_cnt} ]]></if>
+		<if test=" create_time  != null  and  create_time  != ''  "><![CDATA[ AND A.CREATE_TIME = #{create_time} ]]></if>
+		<if test=" split_rela_grp_id != null and split_rela_grp_id != ''  "><![CDATA[ AND A.SPLIT_RELA_GRP_ID = #{split_rela_grp_id} ]]></if>
+		<if test=" due_date  != null  and  due_date  != ''  "><![CDATA[ AND A.DUE_DATE = #{due_date} ]]></if>
+		<if test=" paging_context != null and paging_context != ''  "><![CDATA[ AND A.PAGING_CONTEXT = #{paging_context} ]]></if>
+		<if test=" is_split != null and is_split != ''  "><![CDATA[ AND A.IS_SPLIT = #{is_split} ]]></if>
+		<if test=" start_time  != null  and  start_time  != ''  "><![CDATA[ AND A.START_TIME = #{start_time} ]]></if>
+		<if test=" status != null and status != ''  "><![CDATA[ AND A.STATUS = #{status} ]]></if>
+		<if test=" job_id  != null "><![CDATA[ AND A.JOB_ID = #{job_id} ]]></if>
+		<if test=" job_run_id  != null "><![CDATA[ AND A.JOB_RUN_ID = #{job_run_id} ]]></if>
+		<if test=" job_chain_run_id  != null  and job_chain_run_id != ''"><![CDATA[ AND A.JOB_CHAIN_RUN_ID = #{job_chain_run_id} ]]></if>
+		<if test=" failed_cnt  != null "><![CDATA[ AND A.FAILED_CNT = #{failed_cnt} ]]></if>
+		<if test=" ver != null and ver != ''  "><![CDATA[ AND A.VER = #{ver} ]]></if>
+		<if test=" agent_id  != null "><![CDATA[ AND A.AGENT_ID = #{agent_id} ]]></if>
+		<if test=" job_chain_batch  != null "><![CDATA[ AND A.JOB_CHAIN_BATCH = #{job_chain_batch} ]]></if>
+		<if test=" process_dateStart  != null  and  process_dateStart  != ''  "><![CDATA[ AND A.PROCESS_DATE >= #{process_dateStart} ]]></if>
+		<if test=" process_dateEnd  != null  and  process_dateEnd  != ''  "><![CDATA[ AND A.PROCESS_DATE <= #{process_dateEnd} ]]></if>
+		<if test=" job_name != null and job_name != ''  "><![CDATA[ AND C.JOB_NAME LIKE '%'||#{job_name}||'%']]></if>
+	</sql>
+
+
+	<!-- 按索引生成的查询条件 -->
+	<sql id="queryByJobRunIdCondition">
+		<if test=" job_run_id  != null "><![CDATA[ AND A.JOB_RUN_ID = #{job_run_id} ]]></if>
+	</sql>
+	<sql id="queryByJobChainRunIdCondition">
+		<if test=" job_chain_run_id  != null "><![CDATA[ AND A.JOB_CHAIN_RUN_ID = #{job_chain_run_id} ]]></if>
+	</sql>
+
+	<sql id="queryByJobIdCondition">
+		<if test=" job_id  != null "><![CDATA[ AND A.JOB_ID = #{job_id} ]]></if>
+	</sql>
+	<!-- 添加操作 -->
+	<insert id="addWithId" useGeneratedKeys="true" parameterType="java.util.Map">
+				 INSERT INTO T_UDMP_BATCH_JOB_RUN(
+						SUCCESS_CNT, TOTAL_CNT, CREATE_TIME, SPLIT_RELA_GRP_ID, DUE_DATE, INSERT_TIME, PAGING_CONTEXT, 
+						IS_SPLIT, UPDATE_TIME, START_TIME, STATUS, JOB_ID, JOB_RUN_ID, INSERT_TIMESTAMP, 
+						FAILED_CNT, UPDATE_BY, VER, UPDATE_TIMESTAMP, INSERT_BY, AGENT_ID,JOB_CHAIN_BATCH, JOB_CHAIN_RUN_ID,PROCESS_DATE ) 
+					VALUES (
+						#{success_cnt, jdbcType=NUMERIC}, #{total_cnt, jdbcType=NUMERIC} , #{create_time, jdbcType=TIMESTAMP} , #{split_rela_grp_id, jdbcType=VARCHAR} , #{due_date, jdbcType=TIMESTAMP} , SYSDATE , #{paging_context, jdbcType=VARCHAR} 
+						, #{is_split, jdbcType=VARCHAR} , SYSDATE , #{start_time, jdbcType=TIMESTAMP} , #{status, jdbcType=VARCHAR} , #{job_id, jdbcType=NUMERIC} , #{job_run_id, jdbcType=NUMERIC} , CURRENT_TIMESTAMP
+						, #{failed_cnt, jdbcType=NUMERIC} , #{update_by, jdbcType=NUMERIC} , DEFAULT , CURRENT_TIMESTAMP, #{insert_by, jdbcType=NUMERIC} , #{agent_id, jdbcType=NUMERIC} ,
+						<if test=" job_chain_batch == null ">1,</if>
+						<if test=" job_chain_batch != null ">#{job_chain_batch, jdbcType=NUMERIC},</if>
+						#{job_chain_run_id, jdbcType=NUMERIC} ,
+						 #{process_date, jdbcType=TIMESTAMP} ) 
+	</insert>
+	<!-- 添加操作 -->
+	<insert id="add" useGeneratedKeys="true" parameterType="java.util.Map">
+		<selectKey resultType="java.math.BigDecimal" order="BEFORE"
+			keyProperty="job_run_id">
+			SELECT S_T_UDMP_BATCH_JOB_RUN.NEXTVAL FROM DUAL
+		</selectKey>
+			INSERT INTO T_UDMP_BATCH_JOB_RUN(
+				SUCCESS_CNT, TOTAL_CNT, CREATE_TIME, SPLIT_RELA_GRP_ID, DUE_DATE, INSERT_TIME, PAGING_CONTEXT, 
+				IS_SPLIT, UPDATE_TIME, START_TIME, STATUS, JOB_ID, JOB_RUN_ID, INSERT_TIMESTAMP, 
+				FAILED_CNT, UPDATE_BY, VER, UPDATE_TIMESTAMP, INSERT_BY, AGENT_ID, PROCESS_DATE, JOB_CHAIN_BATCH,JOB_CHAIN_RUN_ID) 
+			VALUES (
+				#{success_cnt, jdbcType=NUMERIC}, #{total_cnt, jdbcType=NUMERIC} , #{create_time, jdbcType=TIMESTAMP} , #{split_rela_grp_id, jdbcType=VARCHAR} , #{due_date, jdbcType=TIMESTAMP} , SYSDATE , #{paging_context, jdbcType=VARCHAR} 
+				, #{is_split, jdbcType=VARCHAR} , SYSDATE , #{start_time, jdbcType=TIMESTAMP} , #{status, jdbcType=VARCHAR} , #{job_id, jdbcType=NUMERIC} , #{job_run_id, jdbcType=NUMERIC} , CURRENT_TIMESTAMP
+				, #{failed_cnt, jdbcType=NUMERIC} , #{update_by, jdbcType=NUMERIC} , DEFAULT , CURRENT_TIMESTAMP, #{insert_by, jdbcType=NUMERIC} , #{agent_id, jdbcType=NUMERIC} , #{process_date, jdbcType=TIMESTAMP} ,
+				<if test=" job_chain_batch == null ">1,</if>
+				<if test=" job_chain_batch != null ">#{job_chain_batch, jdbcType=NUMERIC},</if> 
+				#{job_chain_run_id, jdbcType=VARCHAR}) 
+	</insert>
+
+	<!-- 删除操作 -->
+	<update id="delete" parameterType="java.util.Map">
+		<![CDATA[ UPDATE T_UDMP_BATCH_JOB_RUN ]]>
+		<set>
+			<trim suffixOverrides=",">
+				IS_DELETED = 1,
+				UPDATE_BY = #{update_by, jdbcType=NUMERIC} ,
+				UPDATE_TIME = SYSDATE ,
+				UPDATE_TIMESTAMP = CURRENT_TIMESTAMP ,
+			</trim>
+		</set>
+		<![CDATA[ WHERE JOB_RUN_ID = #{job_run_id} ]]>
+	</update>
+
+	<!-- 修改操作 -->
+	<update id="update" parameterType="java.util.Map">
+		<![CDATA[ UPDATE T_UDMP_BATCH_JOB_RUN ]]>
+		<set>
+			<trim suffixOverrides=",">
+				<if test=" success_cnt != null"><![CDATA[ SUCCESS_CNT = #{success_cnt, jdbcType=NUMERIC} ,]]></if>
+				<if test=" total_cnt != null"><![CDATA[ TOTAL_CNT = #{total_cnt, jdbcType=NUMERIC} ,]]></if>
+				<if test=" create_time  != null "><![CDATA[ CREATE_TIME = #{create_time, jdbcType=TIMESTAMP} ,]]></if>
+				<if test=" split_rela_grp_id != null"><![CDATA[ SPLIT_RELA_GRP_ID = #{split_rela_grp_id, jdbcType=VARCHAR} ,]]></if>
+				<if test=" due_date  != null "><![CDATA[ DUE_DATE = #{due_date, jdbcType=TIMESTAMP} ,]]></if>
+				<if test=" paging_context != null"><![CDATA[ PAGING_CONTEXT = #{paging_context, jdbcType=VARCHAR} ,]]></if>
+				<if test=" is_split  != null "><![CDATA[ IS_SPLIT = #{is_split, jdbcType=VARCHAR} ,]]></if>
+				UPDATE_TIME = SYSDATE ,
+				<if test=" start_time  != null "><![CDATA[ START_TIME = #{start_time, jdbcType=TIMESTAMP} ,]]></if>
+				<if test=" status  != null "><![CDATA[ STATUS = #{status, jdbcType=VARCHAR} ,]]></if>
+				<if test=" job_id != null"><![CDATA[ JOB_ID = #{job_id, jdbcType=NUMERIC} ,]]></if>
+				<if test=" failed_cnt != null"><![CDATA[ FAILED_CNT = #{failed_cnt, jdbcType=NUMERIC} ,]]></if>
+				<if test=" update_by  != null "><![CDATA[ UPDATE_BY = #{update_by, jdbcType=NUMERIC} ,]]></if>
+				<if test=" ver  != null "><![CDATA[ VER = #{ver, jdbcType=VARCHAR} ,]]></if>
+				UPDATE_TIMESTAMP = CURRENT_TIMESTAMP ,
+				<!-- <if test=" agent_id != null "><![CDATA[ AGENT_ID = #{agent_id, jdbcType=NUMERIC} 
+					,]]></if> -->
+				<if test=" process_date  != null "><![CDATA[ PROCESS_DATE = #{process_date, jdbcType=TIMESTAMP} ,]]></if>
+			</trim>
+		</set>
+		<![CDATA[ WHERE 1=1 and AGENT_ID = #{agent_id, jdbcType=NUMERIC} and JOB_RUN_ID = #{job_run_id} ]]>
+<!-- 		<if test=" job_chain_batch == null ">and JOB_CHAIN_BATCH=1 </if> -->
+		<if test=" job_chain_batch != null ">and JOB_CHAIN_BATCH=#{job_chain_batch, jdbcType=NUMERIC},</if> 
+	</update>
+
+
+	<!-- 修改操作-只更新执行记录数，不更新其他字段 -->
+	<update id="updateCntStatus" parameterType="java.util.Map">
+		<![CDATA[ UPDATE T_UDMP_BATCH_JOB_RUN ]]>
+		<set>
+			<trim suffixOverrides=",">
+				SUCCESS_CNT = #{success_cnt, jdbcType=NUMERIC} ,
+				TOTAL_CNT = #{total_cnt, jdbcType=NUMERIC} ,
+				FAILED_CNT = #{failed_cnt, jdbcType=NUMERIC} ,
+				UPDATE_TIME = SYSDATE ,
+				UPDATE_BY = #{update_by, jdbcType=NUMERIC} ,
+				UPDATE_TIMESTAMP = CURRENT_TIMESTAMP ,
+			</trim>
+		</set>
+		<![CDATA[ WHERE JOB_RUN_ID = #{job_run_id} ]]>
+	</update>
+
+	<!-- 修改操作-只更新执行记录状态，不更新其他字段 -->
+	<update id="updateStatus" parameterType="java.util.Map">
+		<![CDATA[ UPDATE T_UDMP_BATCH_JOB_RUN ]]>
+		<set>
+			<trim suffixOverrides=",">
+				STATUS = #{status, jdbcType=VARCHAR} ,
+				UPDATE_TIME = SYSDATE ,
+				UPDATE_BY = #{update_by, jdbcType=NUMERIC} ,
+				UPDATE_TIMESTAMP = CURRENT_TIMESTAMP ,
+			</trim>
+		</set>
+		<![CDATA[ WHERE JOB_RUN_ID = #{job_run_id} ]]>
+	</update>
+
+
+
+	<!-- 按索引查询操作 -->
+	<select id="find" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[SELECT A.SUCCESS_CNT, A.TOTAL_CNT, A.CREATE_TIME, A.SPLIT_RELA_GRP_ID, A.DUE_DATE, A.PAGING_CONTEXT, 
+			A.IS_SPLIT, A.START_TIME, A.STATUS, A.JOB_ID, A.JOB_RUN_ID,A.JOB_CHAIN_RUN_ID, A.FAILED_CNT, A.VER, A.AGENT_ID,A.JOB_CHAIN_BATCH, A.PROCESS_DATE,
+			B.JOB_NAME, B.JOB_ALERT_DURATION, B.JOB_EXPECT_DURATION 
+			FROM T_UDMP_BATCH_JOB_RUN A ,T_UDMP_BATCH_JOB B 
+			WHERE 1 = 1  AND A.JOB_ID = B.JOB_ID]]>
+		<include refid="queryByJobIdCondition" />
+		<include refid="queryByJobRunIdCondition" />
+		<include refid="queryByJobChainRunIdCondition" />
+		<![CDATA[ AND ROWNUM = 1 ORDER BY B.JOB_NAME ]]>
+	</select>
+
+
+	<!-- 按map查询操作 -->
+	<select id="findAllMap" resultType="java.util.Map"
+		parameterType="java.util.Map">
+		<![CDATA[ SELECT A.SUCCESS_CNT, A.TOTAL_CNT, A.CREATE_TIME, A.SPLIT_RELA_GRP_ID, A.DUE_DATE, A.PAGING_CONTEXT, 
+			A.IS_SPLIT, A.START_TIME, A.STATUS, A.JOB_ID, A.JOB_RUN_ID,A.JOB_CHAIN_RUN_ID, 
+			A.FAILED_CNT, A.VER, A.AGENT_ID,A.JOB_CHAIN_BATCH, A.PROCESS_DATE FROM T_UDMP_BATCH_JOB_RUN A WHERE 1=1 and ROWNUM <=  1000  ]]>
+		<!-- <include refid="请添加查询条件" /> -->
+		<![CDATA[ ORDER BY A.JOB_CHAIN_RUN_ID,A.JOB_CHAIN_BATCH,A.CREATE_TIME]]>
+	</select>
+
+	<!-- 查询所有操作 -->
+	<select id="findAll" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[SELECT A.SUCCESS_CNT, A.TOTAL_CNT, A.CREATE_TIME, A.SPLIT_RELA_GRP_ID, A.DUE_DATE, A.PAGING_CONTEXT, 
+			A.IS_SPLIT, A.START_TIME, A.STATUS, A.JOB_ID, A.JOB_RUN_ID, A.JOB_CHAIN_RUN_ID, 
+			A.FAILED_CNT, A.VER, A.AGENT_ID,A.JOB_CHAIN_BATCH, A.PROCESS_DATE, B.JOB_NAME, B.JOB_ALERT_DURATION, B.JOB_EXPECT_DURATION 
+			FROM T_UDMP_BATCH_JOB_RUN A ,T_UDMP_BATCH_JOB B 
+			WHERE ROWNUM <=  1000 AND A.JOB_ID = B.JOB_ID ]]>
+		<include refid="batchJobRunWhereCondition" />
+		<![CDATA[ ORDER BY A.JOB_CHAIN_RUN_ID,A.JOB_CHAIN_BATCH,B.JOB_NAME ]]>
+	</select>
+
+	<!-- 查询个数操作 -->
+	<select id="findTotal" resultType="java.lang.Integer"
+		parameterType="java.util.Map">
+		<![CDATA[ SELECT COUNT(1) FROM T_UDMP_BATCH_JOB_RUN A ,
+		T_UDMP_BATCH_JOB C WHERE 1 = 1 AND A.JOB_ID = C.JOB_ID
+			]]>
+		<if test='job_type == "S"  and resultIds.size() > 0  '>
+			<![CDATA[  and A.JOB_CHAIN_RUN_ID in ]]>
+		</if>
+		<if test='job_type != "S"  and resultIds.size() > 0  '>
+			<![CDATA[  and A.JOB_CHAIN_RUN_ID not in ]]>
+		</if>
+		<foreach item="item" index="index" collection="resultIds"
+			open="(" separator="," close=")">
+			#{item,jdbcType=VARCHAR}
+		</foreach>
+		<include refid="batchJobRunWhereCondition" />
+	</select>
+
+	<!-- 查询手动或定时任务链运行ID -->
+	<select id="queryJobChainRunIds" resultType="java.lang.String"
+		parameterType="java.util.Map">
+		<![CDATA[SELECT DISTINCT JOB_CHAIN_RUN_ID 
+			FROM T_UDMP_BATCH_JOB_RUN A ,T_UDMP_BATCH_JOB C WHERE 1 = 1 AND A.JOB_ID = C.JOB_ID
+			AND C.JOB_TYPE = 'S' ]]>
+	</select>
+	<!-- 分页查询操作 -->
+	<select id="queryForPage" resultType="java.util.Map"
+		parameterType="java.util.Map">
+		<![CDATA[SELECT A.SUCCESS_CNT, A.TOTAL_CNT, A.CREATE_TIME, A.SPLIT_RELA_GRP_ID, A.DUE_DATE, A.PAGING_CONTEXT, 
+			A.IS_SPLIT, A.START_TIME, A.STATUS, A.JOB_ID, A.JOB_RUN_ID, A.JOB_CHAIN_RUN_ID,
+			A.FAILED_CNT, A.VER, A.AGENT_ID,A.JOB_CHAIN_BATCH, A.PROCESS_DATE ,C.JOB_NAME, C.JOB_ALERT_DURATION, C.JOB_EXPECT_DURATION 
+			FROM T_UDMP_BATCH_JOB_RUN A ,T_UDMP_BATCH_JOB C 
+			WHERE  A.JOB_ID = C.JOB_ID
+			 ]]>
+		<if test='job_type == "S"  and resultIds.size() > 0  '>
+			<![CDATA[  and A.JOB_CHAIN_RUN_ID in ]]>
+		</if>
+		<if test='job_type != "S"  and resultIds.size() > 0  '>
+			<![CDATA[  and A.JOB_CHAIN_RUN_ID not in ]]>
+		</if>
+		<foreach item="item" index="index" collection="resultIds"
+			open="(" separator="," close=")">
+			#{item,jdbcType=VARCHAR}
+		</foreach>
+		<include refid="batchJobRunWhereCondition" />
+		<![CDATA[ ORDER BY A.JOB_CHAIN_RUN_ID,A.JOB_CHAIN_BATCH,C.JOB_NAME ]]>
+	</select>
+
+</mapper>

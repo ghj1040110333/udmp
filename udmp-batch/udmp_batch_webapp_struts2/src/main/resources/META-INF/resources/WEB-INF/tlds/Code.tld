@@ -1,0 +1,38 @@
+<taglib xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:acme="http://acme.com/"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+	http:/java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_1.xsd
+	http:/acme.com /http:/acme.com/acme.xsd "
+	version="2.1">
+	<description>
+		Simple Math Tag Library.
+		Contains ACME sound extensions
+		with helpful voice annotations
+		that describe how to use the tags in
+		this library.
+	</description>
+	<tlibversion>1.0</tlibversion>
+	<jspversion>2.0</jspversion>
+	<shortname>CodeTag</shortname>
+	<uri>http://www.git.com.cn/taglib/udmp/code</uri>
+	<tag>
+		<name>codeTable</name>
+		<tagclass>cn.com.git.udmp.batch.common.tag.CodeTableTag</tagclass>
+		<bodycontent>empty</bodycontent>
+		<attribute>
+			<name>codeType</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>codeId</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>codeValue</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+</taglib>

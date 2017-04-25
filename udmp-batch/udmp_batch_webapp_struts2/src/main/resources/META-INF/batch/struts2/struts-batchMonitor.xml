@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="struts-batchMonitor"  extends="default" namespace="/batchMonitor" >
+	<action name="*_*" method="{1}" class="{2}">
+		<result name="showBatchMonitorIndexPage">/batch/pages/batchMonitor/batchMonitorIndex.jsp</result>
+		<result name="showBatchMonitorDetailPage">/batch/pages/batchMonitor/batchMonitorDetail.jsp</result>
+		<result name="showBatchMonitorIndexPage1">/batch/pages/batchMonitor/batchMonitorIndex1.jsp</result>
+	</action>
+	</package>
+</struts>

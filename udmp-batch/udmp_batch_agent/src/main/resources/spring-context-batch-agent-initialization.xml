@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:cache="http://www.springframework.org/schema/cache" xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xsi:schemaLocation="http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-3.1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+		http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<!-- spring上下文工具类 -->
+	<bean class="cn.com.git.udmp.common.utils.SpringContextHolder"></bean>
+	
+	
+	
+	<!-- agent的sockerServer -->
+	<bean id="agentSocketServer"
+		class="cn.com.git.udmp.component.batch.core.agent.communicate.AgentServer">
+		<property name="chainExecutors">
+			<map>
+				<entry key="DISPATCH" value-ref="agentQueryCountChain"></entry>
+				<entry key="HEARTBEAT" value-ref="agentHeartBeatChain"></entry>
+			</map>
+		</property>
+	</bean>
+	
+
+	<!-- 加载器工厂 -->
+	<bean id="agentLoaderFactory" class="cn.com.git.udmp.component.batch.io.LoaderFactory">
+		<property name="loaders">
+			<list>
+				<ref bean="agentSocketLoader" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="agentSocketLoader"
+		class="cn.com.git.udmp.component.batch.core.agent.io.AgentSocketLoader">
+		<property name="port" value="10000" />
+		<property name="agentSocketServer" ref="agentSocketServer" />
+	</bean>
+
+	<!-- <bean id="agentServerInit" class="cn.com.git.udmp.component.batch.core.ServerInit"> -->
+	<!-- <property name="initFlag" value="false"/> -->
+	<!-- <property name="booters"> -->
+	<!-- <list> -->
+	<!-- <ref bean="agentLoaderFactory" /> -->
+	<!-- </list> -->
+	<!-- </property> -->
+	<!-- </bean> -->
+
+	<!-- agent端的查询总数责任链配置 -->
+	<bean id="agentQueryCountChain"
+		class="cn.com.git.udmp.component.batch.core.component.chain.ChainExecutor">
+		<property name="dutys">
+			<array>
+				<ref bean="agentQueryCountDuty" />
+				<ref bean="agentRemoteReportDuty" />
+			</array>
+		</property>
+	</bean>
+	<!-- 心跳监听链 -->
+	<bean id="agentHeartBeatChain"
+		class="cn.com.git.udmp.component.batch.core.component.chain.ChainExecutor">
+		<property name="dutys">
+			<array>
+				<ref bean="agentHeartBeatDuty" />
+				<ref bean="agentRemoteReportDuty" />
+			</array>
+		</property>
+	</bean>
+
+</beans>

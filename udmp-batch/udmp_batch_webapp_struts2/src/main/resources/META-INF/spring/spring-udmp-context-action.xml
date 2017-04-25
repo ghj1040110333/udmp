@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:cache="http://www.springframework.org/schema/cache" xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xsi:schemaLocation="http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-3.1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+		http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+<!-- 	<bean id="batchAgentPortAction" -->
+<!-- 		class="cn.com.git.udmp.batch.web.controller.BatchAgentPortAction" -->
+<!-- 		scope="prototype"> -->
+<!-- 	</bean> -->
+	<bean id="mainInitAction"
+		class="cn.com.git.udmp.batch.web.controller.MainInitAction"
+		scope="prototype">
+	</bean>
+	<bean id="batchServerPortAction"
+		class="cn.com.git.udmp.batch.web.controller.BatchServerPortAction"
+		scope="prototype">
+	</bean>
+	
+<!-- 	<bean id="batchAgentAction" class="cn.com.git.udmp.batch.web.controller.BatchAgentAction" scope="prototype"> -->
+<!-- 		<property name="batchAgentUCC" ref="batchAgentUCC"></property> -->
+<!-- 	</bean> -->
+<!-- 	<bean id="batchAsyncJobAction" class="cn.com.git.udmp.batch.web.controller.BatchAsyncJobAction" scope="prototype"> -->
+<!-- 		<property name="batchJobUCC" ref="batchJobUCC"></property> -->
+<!-- 		<property name="startJobController" ref="dispatchJobController"></property> -->
+<!-- 	</bean> -->
+	
+<!-- 	<bean id="batchJobAction" class="cn.com.git.udmp.batch.web.controller.BatchJobAction" scope="prototype"> -->
+<!-- 		<property name="batchJobUCC" ref="batchJobUCC"></property> -->
+<!-- 		<property name="batchTaskUCC" ref="batchTaskUCC"></property> -->
+<!-- 		<property name="subParamUCC" ref="subParamUCC"></property> -->
+<!-- 		<property name="batchJobRunUCC" ref="batchJobRunUCC"></property> -->
+<!-- 		<property name="startJobController" ref="runJobController"></property> -->
+<!-- 		<property name="paramManageUCC" ref="paramManageUCC"></property> -->
+<!-- 		<property name="batchJobDependUCC" ref="batchJobDependUCC"></property> -->
+<!-- 		<property name="batchJobParamUCC" ref="batchJobParamUCC"></property> -->
+<!-- 	</bean> -->
+	
+<!-- 	<bean id="batchJobGroupAction" class="cn.com.git.udmp.batch.web.controller.BatchJobGroupAction" scope="prototype"> -->
+<!-- 		<property name="batchJobUCC" ref="batchJobUCC"></property> -->
+<!-- 	</bean> -->
+	
+<!-- 	<bean id="batchJobRunLogAction" class="cn.com.git.udmp.batch.web.controller.BatchJobRunLogAction" scope="prototype"> -->
+<!-- 		<property name="batchJobRunLogUCC" ref="batchJobRunLogUCC"></property> -->
+<!-- 	</bean> -->
+	
+<!-- 	<bean id="batchMonitorAction" class="cn.com.git.udmp.batch.web.controller.BatchMonitorAction" scope="prototype"> -->
+<!-- 		<property name="batchJobRunUCC" ref="batchJobRunUCC"></property> -->
+<!-- 		<property name="stopJobController" ref="stopJobController"></property> -->
+<!-- 		<property name="startJobController" ref="dispatchJobController"></property> -->
+<!-- 		<property name="jobDependManager" ref="jobDependManager"></property> -->
+<!-- 	</bean> -->
+	
+<!-- 	<bean id="batchParamAction" class="cn.com.git.udmp.batch.web.controller.BatchParamAction" scope="prototype"> -->
+<!-- 		<property name="paramUCC" ref="paramManageUCC"></property> -->
+<!-- 	</bean> -->
+	
+<!-- 	<bean id="batchTaskAction" class="cn.com.git.udmp.batch.web.controller.BatchTaskAction"> -->
+<!-- 		<property name="batchTaskUCC" ref="batchTaskUCC"></property> -->
+<!-- 		<property name="paramUCC" ref="paramManageUCC"></property> -->
+<!-- 		<property name="batchJobUCC" ref="batchJobUCC"></property> -->
+<!-- 	</bean> -->
+	<!-- cn.com.git.udmp.batch.web.controller -->
+</beans>

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.git.udmp.impl.batch.jobParam.dao.IBatchJobParamDao">
+
+	<sql id="batchJobParamWhereCondition">
+		<if test=" task_param_id  != null "><![CDATA[ AND A.TASK_PARAM_ID = #{task_param_id} ]]></if>
+		<if test=" array_param_order  != null "><![CDATA[ AND A.ARRAY_PARAM_ORDER = #{array_param_order} ]]></if>
+		<if test=" job_param_id  != null "><![CDATA[ AND A.JOB_PARAM_ID = #{job_param_id} ]]></if>
+		<if test=" job_id  != null "><![CDATA[ AND A.JOB_ID = #{job_id} ]]></if>
+		<if test=" is_deleted != null and is_deleted != ''  "><![CDATA[ AND A.IS_DELETED = #{is_deleted} ]]></if>
+		<if test=" ver != null and ver != ''  "><![CDATA[ AND A.VER = #{ver} ]]></if>
+		<if test=" param_value != null and param_value != ''  "><![CDATA[ AND A.PARAM_VALUE = #{param_value} ]]></if>
+	</sql>
+
+
+<!-- 按索引生成的查询条件 -->	
+	<sql id="queryByJobParamIdCondition">
+		<if test=" job_param_id  != null "><![CDATA[ AND A.JOB_PARAM_ID = #{job_param_id} ]]></if>
+	</sql>	
+	
+	<!-- 基于任务id查询集合的查询条件 -->
+	<sql id="queryByJobIdCondition">
+		<if test=" job_id  != null "><![CDATA[ AND A.JOB_ID = #{job_id} ]]></if>
+	</sql>	
+
+<!-- 添加操作 -->
+	<insert id="add"  useGeneratedKeys="true" parameterType="java.util.Map">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="job_param_id">
+			select LAST_INSERT_ID()
+		</selectKey>
+		<![CDATA[
+			INSERT INTO T_UDMP_BATCH_JOB_PARAM(
+				INSERT_TIME, TASK_PARAM_ID, UPDATE_TIME, ARRAY_PARAM_ORDER, JOB_PARAM_ID, JOB_ID, IS_DELETED, 
+				INSERT_TIMESTAMP, UPDATE_BY, VER, UPDATE_TIMESTAMP, PARAM_VALUE, INSERT_BY ) 
+			VALUES (
+				SYSDATE(), #{task_param_id, jdbcType=NUMERIC} , SYSDATE() , #{array_param_order, jdbcType=NUMERIC} , #{job_param_id, jdbcType=NUMERIC} , #{job_id, jdbcType=NUMERIC} , DEFAULT 
+				, CURRENT_TIMESTAMP(), #{update_by, jdbcType=NUMERIC} , DEFAULT, CURRENT_TIMESTAMP(), #{param_value, jdbcType=VARCHAR} , #{insert_by, jdbcType=NUMERIC} ) 
+		 ]]>
+	</insert>
+	
+	<!-- 批量添加操作 -->
+	<insert id="batchSave" parameterType="java.util.List"> 
+			INSERT INTO T_UDMP_BATCH_JOB_PARAM(
+				INSERT_TIME, TASK_PARAM_ID, UPDATE_TIME, ARRAY_PARAM_ORDER, JOB_ID,  
+				INSERT_TIMESTAMP, UPDATE_BY, UPDATE_TIMESTAMP, PARAM_VALUE, INSERT_BY ) 
+			VALUES
+		<foreach  collection="list" item="item" separator=",">
+				(SYSDATE() , #{item.task_param_id, jdbcType=NUMERIC} , SYSDATE(), #{item.array_param_order, jdbcType=NUMERIC} , #{item.job_id, jdbcType=NUMERIC} 
+				, CURRENT_TIMESTAMP(), #{item.update_by, jdbcType=NUMERIC}, CURRENT_TIMESTAMP(), #{item.param_value, jdbcType=VARCHAR} , #{item.insert_by, jdbcType=NUMERIC})
+		</foreach>
+			
+	</insert>
+
+<!-- 删除操作 -->	
+	<update id="delete" parameterType="java.util.Map">
+		<![CDATA[ UPDATE T_UDMP_BATCH_JOB_PARAM ]]>
+		<set>
+		<trim suffixOverrides=",">
+			IS_DELETED = 1,
+			UPDATE_BY = #{update_by, jdbcType=NUMERIC} ,
+			UPDATE_TIME = SYSDATE() ,			    
+			UPDATE_TIMESTAMP = CURRENT_TIMESTAMP() ,
+		</trim>
+		</set>
+		<![CDATA[ WHERE JOB_ID = #{job_id} AND IS_DELETED = #{is_deleted}]]>
+	</update>
+	
+	<!-- 通过任务id进行逻辑删除操作，将任务下的参数值都置为逻辑删除，用于修改时使用 -->
+	<update id="deleteByJobId" parameterType="java.util.Map">
+		<![CDATA[ UPDATE T_UDMP_BATCH_JOB_PARAM ]]>
+		<set>
+		<trim suffixOverrides=",">
+			IS_DELETED = 1,
+			UPDATE_BY = #{update_by, jdbcType=NUMERIC} ,
+			UPDATE_TIME = SYSDATE() ,			    
+			UPDATE_TIMESTAMP = CURRENT_TIMESTAMP() ,
+		</trim>
+		</set>
+		<![CDATA[ WHERE JOB_ID = #{job_id} ]]>
+	</update>
+
+<!-- 修改操作 -->
+	<update id="update" parameterType="java.util.Map">
+		<![CDATA[ UPDATE T_UDMP_BATCH_JOB_PARAM ]]>
+		<set>
+		<trim suffixOverrides=",">
+		    TASK_PARAM_ID = #{task_param_id, jdbcType=NUMERIC} ,
+			UPDATE_TIME = SYSDATE() , 
+		    ARRAY_PARAM_ORDER = #{array_param_order, jdbcType=NUMERIC} ,
+		    JOB_ID = #{job_id, jdbcType=NUMERIC} ,
+			IS_DELETED = #{is_deleted, jdbcType=VARCHAR} ,
+		    UPDATE_BY = #{update_by, jdbcType=NUMERIC} ,
+			VER = #{ver, jdbcType=VARCHAR} ,
+		    UPDATE_TIMESTAMP = CURRENT_TIMESTAMP() ,
+			PARAM_VALUE = #{param_value, jdbcType=VARCHAR} ,
+		</trim>
+		</set>
+		<![CDATA[ WHERE JOB_PARAM_ID = #{job_param_id} ]]>
+	</update>
+	
+	<!-- 批量更新操作 -->
+	<update id="batchUpdate"  parameterType="java.util.List">
+       UPDATE T_UDMP_BATCH_JOB_PARAM
+       <trim prefix="SET" suffixOverrides=",">
+           <trim prefix="TASK_PARAM_ID = CASE " suffix="END,">
+           		<foreach collection="list" item="item" index="index">
+                 	<if test="item.task_param_id != null"> WHEN JOB_PARAM_ID=#{item.job_param_id} THEN #{item.task_param_id} </if>
+                </foreach>
+           </trim>
+           <trim prefix="UPDATE_TIME = CASE " suffix="END,">
+           		<foreach collection="list" item="item" index="index">
+                 	WHEN JOB_PARAM_ID=#{item.job_param_id} THEN SYSDATE()
+                </foreach>
+           </trim>
+           <trim prefix="ARRAY_PARAM_ORDER = CASE " suffix="END,">
+           		<foreach collection="list" item="item" index="index">
+                 	<if test="item.array_param_order != null"> WHEN JOB_PARAM_ID=#{item.job_param_id} THEN #{item.array_param_order} </if>
+                </foreach>
+           </trim>
+           <trim prefix="JOB_ID = CASE " suffix="END,">
+           		<foreach collection="list" item="item" index="index">
+                 	<if test="item.job_id != null"> WHEN JOB_PARAM_ID=#{item.job_param_id} THEN #{item.job_id} </if>
+                </foreach>
+           </trim>
+           <trim prefix="IS_DELETED = CASE " suffix="END,">
+           		<foreach collection="list" item="item" index="index">
+                 	<if test="item.is_deleted != null"> WHEN JOB_PARAM_ID=#{item.job_param_id} THEN #{item.is_deleted} </if>
+                </foreach>
+           </trim>
+           <trim prefix="UPDATE_BY = CASE " suffix="END,">
+           		<foreach collection="list" item="item" index="index">
+                 	<if test="item.update_by != null"> WHEN JOB_PARAM_ID=#{item.job_param_id} THEN #{item.update_by} </if>
+                </foreach>
+           </trim>
+           <trim prefix="VER = CASE " suffix="END,">
+           		<foreach collection="list" item="item" index="index">
+                 	<if test="item.ver != null"> WHEN JOB_PARAM_ID=#{item.job_param_id} THEN #{item.ver} </if>
+                </foreach>
+           </trim>
+           <trim prefix="PARAM_VALUE = CASE " suffix="END,">
+           		<foreach collection="list" item="item" index="index">
+                 	<if test="item.param_value != null"> WHEN JOB_PARAM_ID=#{item.job_param_id} THEN #{item.param_value} </if>
+                </foreach>
+           </trim>
+           <trim prefix="UPDATE_TIMESTAMP = CASE " suffix="END,">
+           		<foreach collection="list" item="item" index="index">
+                 	WHEN JOB_PARAM_ID=#{item.job_param_id} THEN CURRENT_TIMESTAMP()
+                </foreach>
+           </trim>
+        </trim>
+        WHERE
+        <foreach collection="list" separator="or" item="item" index="index" > JOB_PARAM_ID=#{item.job_param_id} </foreach> 
+    </update>
+
+<!-- 按索引查询操作 -->	
+	<select id="findByJobParamId" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[ SELECT A.TASK_PARAM_ID, A.ARRAY_PARAM_ORDER, A.JOB_PARAM_ID, A.JOB_ID, A.IS_DELETED, 
+			A.VER, A.PARAM_VALUE FROM T_UDMP_BATCH_JOB_PARAM A WHERE 1 = 1  ]]>
+		<include refid="queryByJobParamIdCondition" />
+		<![CDATA[ ORDER BY A.JOB_PARAM_ID ]]>
+	</select>
+	
+	<!-- 通过任务信息，查找任务对应的参数列表 -->	
+	<select id="findByJobId" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[ SELECT A.TASK_PARAM_ID, A.ARRAY_PARAM_ORDER, A.JOB_PARAM_ID, A.JOB_ID, A.IS_DELETED, 
+			A.VER, A.PARAM_VALUE FROM T_UDMP_BATCH_JOB_PARAM A WHERE 1 = 1  ]]>
+		<include refid="queryByJobIdCondition" />
+		<![CDATA[ ORDER BY A.JOB_PARAM_ID ]]>
+	</select>	
+
+<!-- 按map查询操作 -->
+	<select id="findAllMap" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[ SELECT A.TASK_PARAM_ID, A.ARRAY_PARAM_ORDER, A.JOB_PARAM_ID, A.JOB_ID, A.IS_DELETED, 
+			A.VER, A.PARAM_VALUE FROM T_UDMP_BATCH_JOB_PARAM A WHERE 1=1  ]]>
+		<!-- <include refid="请添加查询条件" /> -->
+		<![CDATA[ ORDER BY A.JOB_PARAM_ID ]]>
+		<![CDATA[ limit  1000  ]]>
+	</select>
+
+<!-- 查询所有操作 -->
+	<select id="findAll" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[ SELECT A.TASK_PARAM_ID, A.ARRAY_PARAM_ORDER, A.JOB_PARAM_ID, A.JOB_ID, A.IS_DELETED, 
+			A.VER, A.PARAM_VALUE FROM T_UDMP_BATCH_JOB_PARAM A WHERE 1=1 ]]>
+		<include refid="batchJobParamWhereCondition" />
+		<![CDATA[ ORDER BY A.JOB_PARAM_ID ]]> 
+		<![CDATA[ limit  1000  ]]>
+	</select>
+
+<!-- 查询个数操作 -->
+	<select id="findTotal" resultType="java.lang.Integer" parameterType="java.util.Map">
+		<![CDATA[ SELECT COUNT(1) FROM T_UDMP_BATCH_JOB_PARAM A WHERE 1 = 1  ]]>
+		<!-- <include refid="请添加查询条件" /> -->
+	</select>
+
+<!-- 分页查询操作 -->
+	<select id="queryForPage" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[SELECT A.TASK_PARAM_ID, A.ARRAY_PARAM_ORDER, A.JOB_PARAM_ID, A.JOB_ID, A.IS_DELETED, 
+			A.VER, A.PARAM_VALUE FROM T_UDMP_BATCH_JOB_PARAM A WHERE 1=1  ]]>
+		<include refid="batchJobParamWhereCondition" />
+		<![CDATA[ ORDER BY A.JOB_PARAM_ID ]]> 
+	</select>
+	
+</mapper>

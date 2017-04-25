@@ -1,0 +1,45 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>cn.com.git</groupId>
+	<artifactId>aplus_batch_server</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<description>批处理服务端总控工程</description>
+	<packaging>war</packaging>
+	<parent>
+		<groupId>cn.com.git</groupId>
+		<artifactId>udmp_parent</artifactId>
+		<version>0.3.0-SNAPSHOT</version>
+	</parent>
+	<properties>
+		<webserver.port>8080</webserver.port>
+	</properties>
+	<dependencies>
+		<dependency>
+			<artifactId>udmp_batch_webapp_struts2</artifactId>
+			<groupId>cn.com.git</groupId>
+			<version>0.3.0-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+<!-- 	<build> -->
+<!-- 		<pluginManagement> -->
+<!-- 			<plugins> -->
+<!-- 				<plugin> -->
+<!-- 					<groupId>org.apache.tomcat.maven</groupId> -->
+<!-- 					<artifactId>tomcat7-maven-plugin</artifactId> -->
+<!-- 					<version>${tomcat.version}</version> -->
+<!-- 					<executions> -->
+<!-- 						<execution> -->
+<!-- 							<phase>aplus_batch_server</phase> -->
+<!-- 						</execution> -->
+<!-- 					</executions> -->
+<!-- 					<configuration> -->
+<!-- 						<port>${webserver.port}</port> -->
+<!-- 						<path>/${project.artifactId}</path> -->
+<!-- 						<uriEncoding>${project.build.sourceEncoding}</uriEncoding> -->
+<!-- 					</configuration> -->
+<!-- 				</plugin> -->
+<!-- 			</plugins> -->
+<!-- 		</pluginManagement> -->
+<!-- 	</build> -->
+</project>

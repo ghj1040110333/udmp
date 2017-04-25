@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-fragment id="batch" version="3.0"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-fragment_3_0.xsd">
+	<name>batch</name>
+	<ordering>
+		<after><name>udmp</name></after>
+	</ordering>
+<!-- 	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath*:/META-INF/spring-context*.xml</param-value>
+	</context-param> -->
+	<filter>
+		<filter-name>struts2</filter-name>
+		<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+		<init-param>
+			<param-name>config</param-name>
+			<param-value>struts-default.xml,struts-plugin.xml,struts.xml,struts-init.xml,struts-sys.xml</param-value>
+		</init-param>
+		
+<!-- 		<init-param>
+			<param-name>filterConfig</param-name>  
+			<param-value>classpath*:META-INF/struts*.xml</param-value>  
+		</init-param> -->
+		
+		<init-param>
+        	<param-name>loggerFactory</param-name>
+        	<param-value>com.opensymphony.xwork2.util.logging.slf4j.Slf4jLoggerFactory</param-value>
+        </init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>struts2</filter-name>
+		<url-pattern>*.action</url-pattern>
+	</filter-mapping>
+	
+</web-fragment>

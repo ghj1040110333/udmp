@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.git.udmp.impl.batch.param.dao.ISubParamDao">
+
+	<sql id="subParamWhereCondition">
+		<if test=" param_item_id != null"><![CDATA[ AND A.PARAM_ITEM_ID = #{param_item_id} ]]></if>
+		<if test=" param_id != null"><![CDATA[ AND A.Param_ID = #{param_id} ]]></if>
+		<if test=" param_item_name != null and param_item_name != ''  "><![CDATA[ AND A.PARAM_ITEM_NAME = #{param_item_name} ]]></if>
+		<if test=" param_item_value != null and param_item_value != ''  "><![CDATA[ AND A.PARAM_ITEM_VALUE = #{param_item_value} ]]></if>
+		<if test=" param_item_order != null"><![CDATA[ AND A.PARAM_ITEM_ORDER = #{param_item_order} ]]></if>
+		<if test=" is_deleted  != null and param_desc != ''  "><![CDATA[ AND A.IS_DELETED = #{is_deleted} ]]></if>
+	</sql>
+	
+<!-- 查询单条数据 -->
+	<select id="find" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[ SELECT A.PARAM_ITEM_ID, A.Param_ID, A.PARAM_ITEM_NAME, A.PARAM_ITEM_VALUE,  
+			A.PARAM_ITEM_ORDER, A.IS_DELETED FROM T_UDMP_BATCH_PARAM_SUB A WHERE 1 = 1  ]]>
+		<include refid="subParamWhereCondition" />
+		<![CDATA[ ORDER BY A.PARAM_ITEM_ID ]]>
+	</select>
+
+<!-- 查询全部数据 -->
+	<select id="findAll" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[ SELECT A.PARAM_ITEM_ID, A.Param_ID, A.PARAM_ITEM_NAME, A.PARAM_ITEM_VALUE,  
+			A.PARAM_ITEM_ORDER, A.IS_DELETED FROM T_UDMP_BATCH_PARAM_SUB A WHERE A.IS_DELETED = 0 AND ROWNUM <=  1000  ]]>
+		<include refid="subParamWhereCondition" />
+		<![CDATA[ ORDER BY A.PARAM_ITEM_ID ]]>
+	</select>
+	
+<!-- 添加操作 -->
+    <insert id="add" useGeneratedKeys="true" parameterType="java.util.Map">
+		<selectKey resultType="java.math.BigDecimal" order="BEFORE" keyProperty="param_item_id">
+			SELECT S_T_UDMP_BATCH_PARAM_SUB.NEXTVAL FROM DUAL
+		</selectKey>
+		<![CDATA[
+			INSERT INTO T_UDMP_BATCH_PARAM_SUB(
+				PARAM_ITEM_ID, Param_ID, PARAM_ITEM_NAME, PARAM_ITEM_VALUE, PARAM_ITEM_ORDER, IS_DELETED, VER,
+				INSERT_BY, INSERT_TIME, INSERT_TIMESTAMP, UPDATE_BY, UPDATE_TIME, UPDATE_TIMESTAMP) 
+			VALUES (
+				 #{param_item_id, jdbcType=NUMERIC} ,#{param_id, jdbcType=NUMERIC} ,#{param_item_name, jdbcType=VARCHAR} ,
+				 #{param_item_value, jdbcType=VARCHAR} ,#{param_item_order, jdbcType=VARCHAR} ,DEFAULT, DEFAULT ,
+				 #{insert_by, jdbcType=NUMERIC} ,SYSDATE, CURRENT_TIMESTAMP, #{insert_by, jdbcType=NUMERIC} ,SYSDATE, CURRENT_TIMESTAMP )				 
+		]]>
+	</insert>
+	
+<!-- 删除操作 -->
+	<update id="deleteById" parameterType="java.util.Map">
+		<![CDATA[ UPDATE T_UDMP_BATCH_PARAM_SUB ]]>
+		<set>
+			<trim suffixOverrides=",">
+				IS_DELETED = 1,
+				UPDATE_BY = #{update_by, jdbcType=NUMERIC} ,
+				UPDATE_TIME = SYSDATE ,			    
+			    UPDATE_TIMESTAMP = CURRENT_TIMESTAMP ,
+			</trim>
+		</set>
+		<![CDATA[ WHERE PARAM_ID = #{param_id} AND IS_DELETED = 0]]>
+	</update>
+
+<!-- 修改操作 -->	
+	<update id="updateById" parameterType="java.util.Map">
+		<![CDATA[ UPDATE T_UDMP_BATCH_PARAM_SUB ]]>
+		<set>
+			<trim suffixOverrides=",">
+				PARAM_ITEM_NAME = #{param_item_name, jdbcType=VARCHAR} ,
+				PARAM_ITEM_VALUE = #{param_item_value, jdbcType=VARCHAR} ,
+				PARAM_ITEM_ORDER = #{param_item_order, jdbcType=VARCHAR} ,
+				UPDATE_BY = #{update_by, jdbcType=NUMERIC} ,
+				UPDATE_TIME = SYSDATE ,
+			    UPDATE_TIMESTAMP = CURRENT_TIMESTAMP ,
+			</trim>
+		</set>
+		<![CDATA[ WHERE PARAM_ID = #{param_id} ]]>
+	</update>	
+</mapper>

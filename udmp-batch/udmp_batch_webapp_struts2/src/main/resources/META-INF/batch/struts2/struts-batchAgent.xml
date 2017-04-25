@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="struts-batchAgent"  extends="default" namespace="/batchAgent" >
+	<action name="*_*" method="{1}" class="{2}">
+		<result name="showBatchAgentIndexPage">/batch/pages/batchAgent/batchAgentIndex.jsp</result>
+		<result name="showInsertBatchAgentPage">/batch/pages/batchAgent/batchAgentAdd.jsp</result>
+		<result name="showUpdateBatchAgentPage">/batch/pages/batchAgent/batchAgentUpdate.jsp</result>
+	</action>
+	</package>
+</struts>

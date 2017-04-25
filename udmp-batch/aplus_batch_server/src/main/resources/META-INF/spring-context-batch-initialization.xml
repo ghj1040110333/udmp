@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:cache="http://www.springframework.org/schema/cache" xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xsi:schemaLocation="http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-3.1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+		http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<!-- 加载器工厂 -->
+	<bean id="loaderFactory" class="cn.com.git.udmp.component.batch.io.LoaderFactory">
+		<property name="loaders">
+			<list>
+				<bean class="cn.com.git.udmp.component.batch.core.server.io.JobLoader" >
+					<property name="jobManager" ref="jobManager"/>
+				</bean>
+				<!-- 任务关系加载器 -->
+				<bean
+					class="cn.com.git.udmp.component.batch.core.server.io.JobRelationLoader" />
+				<!-- 心跳监听加载器 -->
+				<bean class="cn.com.git.udmp.component.batch.core.server.io.HeartBeatLoader" >
+					<property name="listenStrategy" ref="defaultListenStrategy"></property>
+				</bean>
+				<!-- 定时任务加载器 -->
+				<bean class="cn.com.git.udmp.component.batch.core.server.io.QuartzJobLoader" >
+					<property name="batchJobUCC" ref="batchJobUCC"/>
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 默认心跳监听策略 -->
+<!-- 	<bean id="defaultListenStrategy" class="cn.com.git.udmp.component.batch.core.strategy.impl.DefaultListenStrategy"> -->
+<!-- 		<property name="heartBeatController" ref="heartBeatController"></property> -->
+<!-- 	</bean> -->
+	
+	<!-- 心跳监听的控制器 -->
+	<bean id="heartBeatController" class="cn.com.git.udmp.component.batch.core.server.job.impl.HeartBeatJobController">
+		<property name="dutys">
+			<array>
+				<ref bean="remoteDispatchDuty" />
+			</array>
+		</property>
+	</bean>
+	
+	<!-- 分片信息查询任务的控制器 -->
+	<bean id="dispatchJobController" class="cn.com.git.udmp.component.batch.core.server.job.impl.DispatchJobController">
+		<property name="dutys">
+			<array>
+				<ref bean="checkRunConditionDuty" />
+				<ref bean="remoteDispatchDuty" />
+			</array>
+		</property>
+	</bean>
+	
+	<!--执行任务控制器 -->
+	<bean id="runJobController"
+		class="cn.com.git.udmp.component.batch.core.server.job.impl.RunJobController">
+		<property name="dutys">
+			<array>
+				<ref bean="remoteDispatchDuty" />
+			</array>
+		</property>
+	</bean>
+	<!-- 停止任务控制器 -->
+	<bean id="stopJobController"
+		class="cn.com.git.udmp.component.batch.core.server.job.impl.StopJobController">
+		<property name="dutys">
+			<array>
+				<ref bean="remoteDispatchDuty" />
+			</array>
+		</property>
+	</bean>
+	<!-- 暂停任务控制器 -->
+<!-- 	<bean id="pauseJobController" -->
+<!-- 		class="cn.com.git.udmp.component.batch.core.server.job.impl.PauseJobController"> -->
+<!-- 	</bean> -->
+	
+	
+	<!-- 运行过程中汇报执行数据的消息处理类 -->
+<!-- 	<bean id="serverStatusReportDuty" -->
+<!-- 		class="cn.com.git.udmp.component.batch.core.server.duty.impl.StatusReportDuty"> -->
+<!-- 		<property name="batchJobRunUCC" ref="batchJobRunUCC"></property> -->
+<!-- 		<property name="batchAgentUCC" ref="batchAgentUCC"></property> -->
+<!-- 	</bean> -->
+	
+	<!-- 完成任务的责任点 -->
+<!-- 	<bean id="completeJobDuty" -->
+<!-- 		class="cn.com.git.udmp.component.batch.core.server.duty.impl.CompleteJobDuty"> -->
+<!-- 		<property name="batchJobRunUCC" ref="batchJobRunUCC"></property> -->
+<!-- 		<property name="batchAgentUCC" ref="batchAgentUCC"></property> -->
+<!-- 	</bean> -->
+	
+	<!-- 运行过程中异常数据消息处理类 -->
+<!-- 	<bean id="exceptionReportDuty" -->
+<!-- 		class="cn.com.git.udmp.component.batch.core.server.duty.impl.ExceptionReportDuty"> -->
+<!-- 		<property name="batchJobRunLogUCC" ref="batchJobRunLogUCC"></property> -->
+<!-- 	</bean> -->
+	
+	<!-- 查询总数返回的执行duty -->
+<!-- 	<bean id="dispatchBackDuty" class="cn.com.git.udmp.component.batch.core.server.duty.impl.DispatchBackDuty"> -->
+<!-- 		<property name="runJobController" ref="runJobController"></property> -->
+<!-- 	</bean> -->
+	<!-- 心跳检测责任点 -->
+<!-- 	<bean id="heartListenDuty" -->
+<!-- 		class="cn.com.git.udmp.component.batch.core.server.duty.impl.HeartListenReportDuty"></bean> -->
+	<!-- 负载均衡责任点 -->
+<!-- 	<bean id="jobBalanceDuty" -->
+<!-- 		class="cn.com.git.udmp.component.batch.core.server.duty.impl.JobBalanceDuty"></bean> -->
+	<!-- 任务分发责任点 -->
+<!-- 	<bean id="remoteDispatchDuty" -->
+<!-- 		class="cn.com.git.udmp.component.batch.core.server.duty.impl.RemoteDispatchDuty"> -->
+<!-- 		<property name="jobCommunicator" ref="jobCommunicator"></property> -->
+<!-- 		<property name="batchJobRunUCC" ref="batchJobRunUCC"></property> -->
+<!-- 		<property name="batchJobRunLogUCC" ref="batchJobRunLogUCC"></property> -->
+<!-- 		<property name="jobManager" ref="jobManager"></property> -->
+<!-- 		<property name="agentManager" ref="agentManager"></property> -->
+<!-- 	</bean> -->
+	<!-- 执行任务的 -->
+<!-- 	<bean id="jobAuditDuty" class="cn.com.git.udmp.component.batch.core.server.duty.impl.JobAuditDuty"> -->
+<!-- 		<property name="batchJobRunUCC" ref="batchJobRunUCC"></property> -->
+<!-- 	</bean> -->
+	
+	
+	
+	<!-- 通讯模块 -->
+<!-- 	<bean id="communicator" -->
+<!-- 		class="cn.com.git.udmp.component.batch.communication.protobuf.protobuf.ProtoCommunicator"> -->
+<!-- 	</bean> -->
+<!-- 	<bean id="jobCommunicator" class="cn.com.git.udmp.component.batch.core.server.communicate.impl.JobProtoCommunicator"> -->
+<!-- 		<property name="communicator" ref="communicator"></property> -->
+<!-- 		<property name="jobManager" ref="jobManager"></property> -->
+<!-- 	</bean> -->
+	
+	
+	<!-- manager的属性注入 -->
+	<!-- 任务管理类 -->
+<!-- 	<bean id="jobManager" class="cn.com.git.udmp.component.batch.core.server.manage.impl.JobManagerInDB"> -->
+<!-- 		<property name="batchJobUCC" ref="batchJobUCC"></property> -->
+<!-- 		<property name="batchTaskUCC" ref="batchTaskUCC"></property> -->
+<!-- 		<property name="batchJobParamUCC" ref="batchJobParamUCC"></property> -->
+<!-- 	</bean> -->
+	<!-- 任务依赖管理类 -->
+<!-- 	<bean id="jobDependManager" class="cn.com.git.udmp.component.batch.core.server.manage.impl.JobDependManagerInDB"> -->
+<!-- 		<property name="runJobController" ref="dispatchJobController"/> -->
+<!-- 		<property name="stopJobController" ref="stopJobController"/> -->
+<!-- 		<property name="jobManager" ref="jobManager"></property> -->
+<!-- 		<property name="batchJobDependUCC" ref="batchJobDependUCC"></property> -->
+<!-- 		<property name="batchJobRunUCC" ref="batchJobRunUCC"></property> -->
+<!-- 	</bean> -->
+	<!-- 任务状态管理类 --> 
+<!-- 	<bean id="jobStatusManager" class="cn.com.git.udmp.component.batch.core.server.manage.JobStatusManager"> -->
+<!-- 		<property name="jobDependManager" ref="jobDependManager"></property> -->
+<!-- 	</bean> -->
+	
+	<!-- agent管理类 -->
+<!-- 	<bean id="agentManager" class="cn.com.git.udmp.component.batch.core.server.manage.AgentManager"> -->
+<!-- 		<property name="batchAgentUCC" ref="batchAgentUCC"/> -->
+<!-- 		<property name="batchJobRunUCC" ref="batchJobRunUCC"/> -->
+<!-- 	</bean> -->
+	
+	<!-- 任务负载均衡 -->
+<!-- 	<bean id="jobBalancer" class="cn.com.git.udmp.component.batch.core.component.strategy.balancing.JobBalancer"> -->
+<!-- 		<property name="jobManager" ref="jobManager"></property> -->
+<!-- 		<property name="agentManager" ref="agentManager"></property> -->
+<!-- 	</bean> -->
+	
+	
+</beans>

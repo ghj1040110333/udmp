@@ -1,0 +1,40 @@
+.bigautocomplete-layout{
+	display: none;;
+	background-color: #FFFFFF;
+	border: 1px solid #BCBCBC;
+	position: absolute;
+	z-index: 2147483647;
+	max-height: 220px;
+	overflow-x:hidden;
+	overflow-y:auto; 
+}
+.bigautocomplete-layout table{
+	border-collapse: collapse;
+    border-spacing: 0;	
+	background: none repeat scroll 0 0 #FFFFFF;
+	width: 100%;
+	cursor: default;
+}
+
+.bigautocomplete-layout table tr{
+	background: none repeat scroll 0 0 #FFFFFF;
+}
+
+.bigautocomplete-layout .ct{
+	background: none repeat scroll 0 0 #D2DEE8 !important;
+}
+.bigautocomplete-layout div{
+	word-wrap:break-word;
+	word-break:break-all;
+	padding:1px 5px;
+}
+
+.bigautocomplete-layout div {
+    border-bottom: 1px dotted #B8D0D6;
+    border-left: 1px solid #B8D0D6;
+    border-right: 1px solid #B8D0D6;
+    padding: 2px 5px;
+    text-align: left;
+    word-break: break-all;
+    word-wrap: break-word;
+}

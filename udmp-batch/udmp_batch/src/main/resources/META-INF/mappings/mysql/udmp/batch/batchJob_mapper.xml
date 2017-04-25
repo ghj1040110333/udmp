@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.git.udmp.impl.batch.job.dao.IBatchJobDao">
+
+	<sql id="batchJobWhereCondition">
+		<if test=" job_end_window  != null  and  job_end_window  != ''  "><![CDATA[ AND A.JOB_END_WINDOW = #{job_end_window} ]]></if>
+		<if test=" job_start_window  != null  and  job_start_window  != ''  "><![CDATA[ AND A.JOB_START_WINDOW = #{job_start_window} ]]></if>
+		<if test=" is_allow_manu != null and is_allow_manu != ''  "><![CDATA[ AND A.IS_ALLOW_MANU = #{is_allow_manu} ]]></if>
+		<if test=" is_enable != null and is_enable != ''  "><![CDATA[ AND A.IS_ENABLE = #{is_enable} ]]></if>
+		<if test=" job_expect_duration  != null "><![CDATA[ AND A.JOB_EXPECT_DURATION = #{job_expect_duration} ]]></if>
+		<if test=" task_id  != null "><![CDATA[ AND A.TASK_ID = #{task_id} ]]></if>
+		<if test=" job_frequency != null and job_frequency != ''  "><![CDATA[ AND A.JOB_FREQUENCY = #{job_frequency} ]]></if>
+		<if test=" job_id  != null "><![CDATA[ AND A.JOB_ID = #{job_id} ]]></if>
+		<if test=" is_deleted != null and is_deleted != ''  "><![CDATA[ AND A.IS_DELETED = #{is_deleted} ]]></if>
+		<if test=" job_name != null and job_name != ''  "><![CDATA[ AND A.JOB_NAME LIKE CONCAT('%',#{job_name},'%')]]></if>
+		<if test=" job_batch_size  != null "><![CDATA[ AND A.JOB_BATCH_SIZE = #{job_batch_size} ]]></if>
+		<if test=" ver != null and ver != ''  "><![CDATA[ AND A.VER = #{ver} ]]></if>
+		<if test=" job_group_id  != null "><![CDATA[ AND A.JOB_GROUP_ID = #{job_group_id} ]]></if>
+		<if test=" is_allow_split != null and is_allow_split != ''  "><![CDATA[ AND A.IS_ALLOW_SPLIT = #{is_allow_split} ]]></if>
+		<if test=" job_thread_limit_cnt  != null "><![CDATA[ AND A.JOB_THREAD_LIMIT_CNT = #{job_thread_limit_cnt} ]]></if>
+		<if test=" job_type != null and job_type != ''  "><![CDATA[ AND A.JOB_TYPE = #{job_type} ]]></if>
+		<if test=" is_group != null and is_group != ''  "><![CDATA[ AND A.IS_GROUP = #{is_group} ]]></if>
+		<if test=" job_alert_duration  != null "><![CDATA[ AND A.JOB_ALERT_DURATION = #{job_alert_duration} ]]></if>
+		<if test=" is_loop  != null "><![CDATA[ AND A.IS_LOOP = #{is_loop} ]]></if>
+	</sql>
+
+
+<!-- 按索引生成的查询条件 -->	
+	<sql id="queryByJobIdCondition">
+		<if test=" job_id  != null "><![CDATA[ AND A.JOB_ID = #{job_id} ]]></if>
+	</sql>	
+
+<!-- 添加操作 -->
+	<insert id="add"  useGeneratedKeys="true" parameterType="java.util.Map">
+		<selectKey resultType="java.math.BigDecimal" order="AFTER" keyProperty="job_id">
+			 select LAST_INSERT_ID()
+		</selectKey>
+		<![CDATA[
+			INSERT INTO T_UDMP_BATCH_JOB(
+				JOB_END_WINDOW, JOB_START_WINDOW, IS_ALLOW_MANU, INSERT_TIME, IS_ENABLE, JOB_EXPECT_DURATION, UPDATE_TIME, 
+				TASK_ID, JOB_FREQUENCY, JOB_ID, IS_DELETED, INSERT_TIMESTAMP, JOB_NAME, UPDATE_BY, 
+				JOB_BATCH_SIZE, VER, JOB_GROUP_ID, IS_ALLOW_SPLIT, UPDATE_TIMESTAMP, JOB_THREAD_LIMIT_CNT, INSERT_BY, 
+				JOB_TYPE, IS_GROUP, JOB_ALERT_DURATION,IS_LOOP ) 
+			VALUES (
+				#{job_end_window, jdbcType=TIMESTAMP}, #{job_start_window, jdbcType=TIMESTAMP} , #{is_allow_manu, jdbcType=VARCHAR} , SYSDATE() , #{is_enable, jdbcType=VARCHAR} , #{job_expect_duration, jdbcType=NUMERIC} , SYSDATE() 
+				, #{task_id, jdbcType=NUMERIC} , #{job_frequency, jdbcType=VARCHAR} , #{job_id, jdbcType=NUMERIC} , DEFAULT , CURRENT_TIMESTAMP(), #{job_name, jdbcType=VARCHAR} , #{update_by, jdbcType=NUMERIC} 
+				, #{job_batch_size, jdbcType=NUMERIC} , DEFAULT , #{job_group_id, jdbcType=NUMERIC} , #{is_allow_split, jdbcType=VARCHAR} , CURRENT_TIMESTAMP(), #{job_thread_limit_cnt, jdbcType=NUMERIC} , #{insert_by, jdbcType=NUMERIC} 
+				, #{job_type, jdbcType=VARCHAR} , #{is_group, jdbcType=VARCHAR} , #{job_alert_duration, jdbcType=NUMERIC}, #{is_loop, jdbcType=VARCHAR} ) 
+		 ]]>
+	</insert>
+
+<!-- 删除操作 -->	
+	<update id="delete" parameterType="java.util.Map">
+		<![CDATA[ UPDATE T_UDMP_BATCH_JOB ]]>
+		<set>
+		<trim suffixOverrides=",">
+			IS_DELETED = 1,
+			UPDATE_BY = #{update_by, jdbcType=NUMERIC} ,
+			UPDATE_TIME = SYSDATE() ,			    
+			UPDATE_TIMESTAMP = CURRENT_TIMESTAMP() ,
+		</trim>
+		</set>
+		<![CDATA[ WHERE JOB_ID = #{job_id} ]]>
+	</update>
+
+<!-- 修改操作 -->
+	<update id="update" parameterType="java.util.Map">
+		<![CDATA[ UPDATE T_UDMP_BATCH_JOB ]]>
+		<set>
+		<trim suffixOverrides=",">
+		    <if test=" job_end_window != null "><![CDATA[ JOB_END_WINDOW = #{job_end_window, jdbcType=TIMESTAMP} , ]]></if>
+		    <if test=" job_start_window != null "><![CDATA[ JOB_START_WINDOW = #{job_start_window, jdbcType=TIMESTAMP} , ]]></if>
+			<if test=" is_allow_manu != null "><![CDATA[ IS_ALLOW_MANU = #{is_allow_manu, jdbcType=VARCHAR} , ]]></if>
+			<if test=" is_enable != null "><![CDATA[ IS_ENABLE = #{is_enable, jdbcType=VARCHAR} , ]]></if>
+		    <if test=" job_expect_duration != null "><![CDATA[ JOB_EXPECT_DURATION = #{job_expect_duration, jdbcType=NUMERIC} , ]]></if>
+			UPDATE_TIME = SYSDATE() ,
+		    <if test=" task_id != null "><![CDATA[ TASK_ID = #{task_id, jdbcType=NUMERIC} , ]]></if>
+			<if test=" job_frequency != null "><![CDATA[ JOB_FREQUENCY = #{job_frequency, jdbcType=VARCHAR} , ]]></if>
+			<if test=" is_deleted != null "><![CDATA[ IS_DELETED = #{is_deleted, jdbcType=VARCHAR} , ]]></if>
+			<if test=" job_name != null "><![CDATA[ JOB_NAME = #{job_name, jdbcType=VARCHAR} , ]]></if>
+		    <if test=" update_by != null "><![CDATA[ UPDATE_BY = #{update_by, jdbcType=NUMERIC} , ]]></if>
+		    <if test=" job_batch_size != null "><![CDATA[ JOB_BATCH_SIZE = #{job_batch_size, jdbcType=NUMERIC} , ]]></if>
+			<if test=" ver != null "><![CDATA[ VER = #{ver, jdbcType=VARCHAR} , ]]></if>
+		    <if test=" job_group_id != null "><![CDATA[ JOB_GROUP_ID = #{job_group_id, jdbcType=NUMERIC} , ]]></if>
+			<if test=" is_allow_split != null "><![CDATA[ IS_ALLOW_SPLIT = #{is_allow_split, jdbcType=VARCHAR} , ]]></if>
+		    UPDATE_TIMESTAMP = CURRENT_TIMESTAMP() ,
+		    <if test=" job_thread_limit_cnt != null "><![CDATA[ JOB_THREAD_LIMIT_CNT = #{job_thread_limit_cnt, jdbcType=NUMERIC} , ]]></if>
+			<if test=" job_type != null "><![CDATA[ JOB_TYPE = #{job_type, jdbcType=VARCHAR} , ]]></if>
+			<if test=" is_group != null "><![CDATA[ IS_GROUP = #{is_group, jdbcType=VARCHAR} , ]]></if>
+		    <if test=" job_alert_duration != null "><![CDATA[ JOB_ALERT_DURATION = #{job_alert_duration, jdbcType=NUMERIC} , ]]></if>
+		    <if test=" is_loop != null "><![CDATA[ IS_LOOP = #{is_loop, jdbcType=VARCHAR} , ]]></if>
+		</trim>
+		</set>
+		<![CDATA[ WHERE JOB_ID = #{job_id} ]]>
+	</update>
+
+<!-- 按索引查询操作 -->	
+	<select id="find" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[ SELECT A.JOB_END_WINDOW, A.JOB_START_WINDOW, A.IS_ALLOW_MANU, A.IS_ENABLE, A.JOB_EXPECT_DURATION, 
+			A.TASK_ID, A.JOB_FREQUENCY, A.JOB_ID, A.IS_DELETED, A.JOB_NAME, 
+			A.JOB_BATCH_SIZE, A.VER, A.JOB_GROUP_ID, A.IS_ALLOW_SPLIT, A.JOB_THREAD_LIMIT_CNT, 
+			A.JOB_TYPE, A.IS_GROUP, A.JOB_ALERT_DURATION,A.IS_LOOP FROM T_UDMP_BATCH_JOB A WHERE 1 = 1  ]]>
+		<include refid="queryByJobIdCondition" />
+		<![CDATA[ ORDER BY A.IS_GROUP ,A.JOB_NAME ]]>
+	</select>	
+
+<!-- 按map查询操作 -->
+	<select id="findAllMap" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[ SELECT A.JOB_END_WINDOW, A.JOB_START_WINDOW, A.IS_ALLOW_MANU, A.IS_ENABLE, A.JOB_EXPECT_DURATION, 
+			A.TASK_ID, A.JOB_FREQUENCY, A.JOB_ID, A.IS_DELETED, A.JOB_NAME, 
+			A.JOB_BATCH_SIZE, A.VER, A.JOB_GROUP_ID, A.IS_ALLOW_SPLIT, A.JOB_THREAD_LIMIT_CNT, 
+			A.JOB_TYPE, A.IS_GROUP, A.JOB_ALERT_DURATION,A.IS_LOOP FROM T_UDMP_BATCH_JOB A WHERE 1=1 ]]>
+		<!-- <include refid="请添加查询条件" /> -->
+		<![CDATA[ ORDER BY A.IS_GROUP ,A.JOB_NAME ]]>
+		<![CDATA[ limit  1000  ]]>
+	</select>
+
+<!-- 查询所有操作 -->
+	<select id="findAll" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[ SELECT A.JOB_END_WINDOW, A.JOB_START_WINDOW, A.IS_ALLOW_MANU, A.IS_ENABLE, A.JOB_EXPECT_DURATION, 
+			A.TASK_ID, A.JOB_FREQUENCY, A.JOB_ID, A.IS_DELETED, A.JOB_NAME, 
+			A.JOB_BATCH_SIZE, A.VER, A.JOB_GROUP_ID, A.IS_ALLOW_SPLIT, A.JOB_THREAD_LIMIT_CNT, 
+			A.JOB_TYPE, A.IS_GROUP, A.JOB_ALERT_DURATION,A.IS_LOOP FROM T_UDMP_BATCH_JOB A WHERE 1=1 AND A.IS_DELETED = '0' ]]>
+		<include refid="batchJobWhereCondition" />
+		<![CDATA[ ORDER BY A.IS_GROUP ,A.JOB_NAME ]]> 
+		<![CDATA[ limit  1000  ]]>
+	</select>
+
+<!-- 查询个数操作 -->
+	<select id="findTotal" resultType="java.lang.Integer" parameterType="java.util.Map">
+		<![CDATA[ SELECT COUNT(1) FROM T_UDMP_BATCH_JOB A WHERE 1 = 1 AND A.IS_DELETED = 0]]>
+		<include refid="batchJobWhereCondition" />
+	</select>
+
+<!-- 分页查询操作 -->
+	<select id="queryForPage" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[ SELECT  A.JOB_END_WINDOW, A.JOB_START_WINDOW, A.IS_ALLOW_MANU, A.IS_ENABLE, A.JOB_EXPECT_DURATION, 
+			A.TASK_ID, A.JOB_FREQUENCY, A.JOB_ID, A.IS_DELETED, A.JOB_NAME, 
+			A.JOB_BATCH_SIZE, A.VER, A.JOB_GROUP_ID, A.IS_ALLOW_SPLIT, A.JOB_THREAD_LIMIT_CNT, 
+			A.JOB_TYPE, A.IS_GROUP, A.JOB_ALERT_DURATION,A.IS_LOOP FROM T_UDMP_BATCH_JOB A WHERE 1=1 AND A.IS_DELETED = 0]]>
+		<include refid="batchJobWhereCondition" />
+		<![CDATA[ ORDER BY A.IS_GROUP ,A.JOB_NAME ]]> 
+	</select>
+	
+</mapper>

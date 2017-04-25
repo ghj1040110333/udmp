@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<!-- 批处理页面 -->
+	<package name="struts-batchAgentPort"  extends="default" namespace="/batchAgentPort" >
+	<action name="*_*" method="{1}" class="{2}">
+		<result name="showBatchAgentPortIndexPage">/udmp/pages/batch/batchAgentPort/batchAgentPortIndex.jsp</result>
+	</action>
+	</package>
+</struts>

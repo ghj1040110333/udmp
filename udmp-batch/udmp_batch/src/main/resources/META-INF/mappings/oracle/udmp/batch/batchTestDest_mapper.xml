@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nci.udmp.impl.batch.demo.dao.IBatchDemoDestDAO">
+
+	<sql id="batchTestDestWhereCondition">
+		<if test=" num_a  != null "><![CDATA[ AND A.NUM_A = #{num_a} ]]></if>
+		<if test=" clob_d  != null  and  clob_d  != ''  "><![CDATA[ AND A.CLOB_D = #{clob_d} ]]></if>
+		<if test=" char_b != null and char_b != ''  "><![CDATA[ AND A.CHAR_B = #{char_b} ]]></if>
+		<if test=" vchar_c != null and vchar_c != ''  "><![CDATA[ AND A.VCHAR_C = #{vchar_c} ]]></if>
+	</sql>
+
+
+<!-- 按索引生成的查询条件 -->	
+	<sql id="queryByNumACondition">
+		<if test=" num_a  != null "><![CDATA[ AND A.NUM_A = #{num_a} ]]></if>
+	</sql>	
+
+<!-- 添加操作 -->
+	<insert id="add"  useGeneratedKeys="true" parameterType="java.util.Map">
+		<selectKey resultType="java.math.BigDecimal" order="BEFORE" keyProperty="num_a">
+			SELECT S_T_UDMP_BATCH_TEST_DEST.NEXTVAL FROM DUAL
+		</selectKey>
+		<![CDATA[
+			INSERT INTO T_UDMP_BATCH_TEST_DEST(
+				INSERT_TIMESTAMP, NUM_A, UPDATE_BY, INSERT_TIME, CLOB_D, UPDATE_TIMESTAMP, UPDATE_TIME, 
+				CHAR_B, INSERT_BY, VCHAR_C ) 
+			VALUES (
+				CURRENT_TIMESTAMP, #{num_a, jdbcType=NUMERIC} , #{update_by, jdbcType=NUMERIC} , SYSDATE , #{clob_d, jdbcType=DATE} , CURRENT_TIMESTAMP, SYSDATE 
+				, #{char_b, jdbcType=VARCHAR} , #{insert_by, jdbcType=NUMERIC} , #{vchar_c, jdbcType=VARCHAR} ) 
+		 ]]>
+	</insert>
+
+<!-- 删除操作 -->	
+	<delete id="delete" parameterType="java.util.Map">
+		<![CDATA[ DELETE FROM T_UDMP_BATCH_TEST_DEST WHERE NUM_A = #{num_a} ]]>
+	</delete>
+
+<!-- 修改操作 -->
+	<update id="update" parameterType="java.util.Map">
+		<![CDATA[ UPDATE T_UDMP_BATCH_TEST_DEST ]]>
+		<set>
+		<trim suffixOverrides=",">
+		    UPDATE_BY = #{update_by, jdbcType=NUMERIC} ,
+		    CLOB_D = #{clob_d, jdbcType=DATE} ,
+		    UPDATE_TIMESTAMP = CURRENT_TIMESTAMP ,
+			UPDATE_TIME = SYSDATE , 
+			CHAR_B = #{char_b, jdbcType=VARCHAR} ,
+			VCHAR_C = #{vchar_c, jdbcType=VARCHAR} ,
+		</trim>
+		</set>
+		<![CDATA[ WHERE NUM_A = #{num_a} ]]>
+	</update>
+
+<!-- 按索引查询操作 -->	
+	<select id="findByNumA" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[ SELECT A.NUM_A, A.CLOB_D, 
+			A.CHAR_B, A.VCHAR_C FROM T_UDMP_BATCH_TEST_DEST A WHERE 1 = 1  ]]>
+		<include refid="queryByNumACondition" />
+		<![CDATA[ ORDER BY A.NUM_A ]]>
+	</select>
+	
+
+<!-- 按map查询操作 -->
+	<select id="findAllMap" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[ SELECT A.NUM_A, A.CLOB_D, 
+			A.CHAR_B, A.VCHAR_C FROM T_UDMP_BATCH_TEST_DEST A WHERE ROWNUM <=  1000  ]]>
+		<!-- <include refid="请添加查询条件" /> -->
+		<![CDATA[ ORDER BY A.NUM_A ]]>
+	</select>
+
+<!-- 查询所有操作 -->
+	<select id="findAll" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[ SELECT A.NUM_A, A.CLOB_D, 
+			A.CHAR_B, A.VCHAR_C FROM T_UDMP_BATCH_TEST_DEST A WHERE ROWNUM <=  1000  ]]>
+		<!-- <include refid="请添加查询条件" /> -->
+		<![CDATA[ ORDER BY A.NUM_A ]]> 
+	</select>
+
+<!-- 分页查询操作 -->
+	<select id="queryForPage" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[ SELECT A.NUM_A, A.CLOB_D, 
+			A.CHAR_B, A.VCHAR_C FROM T_UDMP_BATCH_TEST_DEST A WHERE 1=1 ]]>
+		<!-- <include refid="请添加查询条件" /> -->
+		<![CDATA[ ORDER BY A.NUM_A ]]> 
+	</select>
+	
+	<select id="find" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[ SELECT * FROM ( SELECT rownum as rn, A.NUM_A, A.CLOB_D, 
+			A.CHAR_B, A.VCHAR_C FROM T_UDMP_BATCH_TEST_DEST A WHERE 1=1 ]]>
+		<include refid="batchTestDestWhereCondition" />
+		<![CDATA[ ORDER BY A.NUM_A )m where m.rn>=#{start_num} and m.rn<#{end_num}]]> 		
+	</select>
+	
+</mapper>

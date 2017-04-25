@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<!-- 指定truts2请求处理的后缀，多个则以英文逗号分隔，如华夏银行缩写是hxb，我们设置个性化后缀hxb且同时支持action后缀 -->
+	<constant name="struts.action.extension" value="nci,action" />
+	<!-- truts2用来指定默认编码的 ,相当于用HttpRequest的setCharacterEncoding -->
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+	<!--设置浏览器是否缓存静态内容，默认为TRUE 开发阶段最好关闭 ,发布时改成TRUE -->
+	<constant name="struts.server.static.browserCache" value="false" />
+	<!-- Struts2配置文件后不许重启服务器，开发模式下最好开启，到生产时回复默认false -->
+	<constant name="struts.configuration.xml.reload" value="true" />
+	<!-- 默认的视图主题 -->
+	<constant name="struts.ui.theme" value="simple" />
+	<!-- action 交给spring管理 -->
+	<constant name="struts.objectFactory"
+		value="org.apache.struts2.spring.StrutsSpringObjectFactory" />
+	<constant name="struts.objectFactory.spring.autoWire" value="type" />
+
+	<package name="default" namespace="/" extends="struts-default">
+		<!-- 定义拦截器 -->
+		<interceptors>
+			<interceptor name="exceptionInterceptor"
+				class="cn.com.git.udmp.batch.web.base.ExceptionInterceptor" />
+			<interceptor-stack name="CommonsStack">
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="exceptionInterceptor" />
+			</interceptor-stack>
+		</interceptors>
+		<!-- 默认调用拦截器 -->
+		<default-interceptor-ref name="CommonsStack" />
+		<global-results>
+			<result name="error">/udmp/pages/common/error/error.jsp</result>
+			<result name="login" type="redirect">/login.jsp</result>
+		</global-results>
+		<global-exception-mappings>
+			<exception-mapping result="error" exception="java.lang.Exception" />
+		</global-exception-mappings>
+	</package>
+
+	<!-- 添加模块的struts的引用 -->
+	<include file="struts-init.xml" />
+	<include file="struts-sys.xml" />
+	<include file="META-INF/batch/struts2/struts-module-name.xml" />
+	<include file="META-INF/batch/struts2/struts-paramManage.xml" />
+	<include file="META-INF/batch/struts2/struts-batch-task.xml" />
+	<include file="META-INF/batch/struts2/struts-batchAgent.xml" />
+	<include file="META-INF/batch/struts2/struts-batchJob.xml" />
+	<include file="META-INF/batch/struts2/struts-batch-audit-log.xml" />
+	<include file="META-INF/batch/struts2/struts-batchMonitor.xml" />
+	<include file="META-INF/batch/struts2/struts-batchJobGroup.xml" />
+	<include file="META-INF/batch/struts2/struts-batchJobRunLog.xml" />
+	<include file="META-INF/batch/struts2/struts-batchServerPort.xml" />
+	<include file="META-INF/batch/struts2/struts-batchAgentPort.xml"/>
+	<include file="META-INF/batch/struts2/struts-batchAsyncJob.xml" />
+</struts>

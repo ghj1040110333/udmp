@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="struts-demo"  extends="default" namespace="/demo" >
+		<action name="*_*" method="{1}" class="{2}">
+			<result name="demoList">/nb/pages/sys/demo/demo.jsp</result>
+			<!-- <result name="newModel">/nb/pages/sys/demo/demo_add.jsp</result> -->
+			<result name="newModel1">/nb/pages/sys/demo/demo_add1.jsp</result>
+			<result name="newModel2">/nb/pages/sys/demo/demo_add2.jsp</result>
+			<result name="newModel3">/nb/pages/sys/demo/demo_add3.jsp</result>
+			<result name="newModel4">/nb/pages/sys/demo/demo_add4.jsp</result>
+			<!-- 机构树页面 -->
+			<result name="showTree">/nb/pages/sys/demo/showTree.jsp</result>
+			<result name="upload">/nb/pages/sys/demo/upload.jsp</result>
+			<result name="demoList1">/nb/pages/sys/demo/demo1.jsp</result>
+			<result name="demoList2">/nb/pages/sys/demo/demo2.jsp</result>
+			<result name="showdata">/nb/pages/sys/demo/demo_data.jsp</result>
+			<!-- 大日历 -->
+			<result name="showCalendar">/nb/pages/sys/demo/holidayDate.jsp</result>
+			<!-- 选项卡 -->
+			<result name="firstTab">/nb/pages/sys/demo/firstTab.jsp</result>
+			<result name="secondTab">/nb/pages/sys/demo/secodeTab.jsp</result>
+			<!--选项卡中角色页面-->
+			<result name="queryUserList">/nb/pages/sys/demo/user/userManage.jsp</result>
+			<result name="addUser">/nb/pages/sys/demo/user/userAdd.jsp</result>
+			<result name="updateUser">/nb/pages/sys/demo/user/userUpdate.jsp</result>
+			<result name="updateUserRole">/nb/pages/sys/demo/user/userRoleUpdate.jsp</result>
+			<!-- treeTable -->
+			<result name="showTreeTable">/nb/pages/sys/demo/showTreeTable.jsp</result>
+			<result name="treeTableModel">/nb/pages/sys/demo/treeTableModel.jsp</result>
+			<!-- tableTrAdd-->
+			<result name="tableAddTrDemo">/nb/pages/sys/demo/tableAddTrDemo.jsp</result>
+			<result name="tableLookSuggest">/nb/pages/sys/demo/tableLookSuggest.jsp</result>
+			
+			<!-- iFrame -->
+			<result name="otherIframeShow">/nb/pages/sys/demo/otherIframe.jsp</result>
+			
+			<!-- OrganTree -->
+			<result name="toOrganTree">/nb/pages/sys/demo/</result>
+			<!-- OrganTree -->
+		</action>
+	</package>
+</struts>

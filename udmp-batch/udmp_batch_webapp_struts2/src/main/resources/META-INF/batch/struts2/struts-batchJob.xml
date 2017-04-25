@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="struts-batchJob" extends="default" namespace="/batchJob">
+		<action name="*_*" method="{1}" class="{2}">
+			<result name="showBatchJobIndexPage">/batch/pages/batchJob/batchJobIndex.jsp</result>
+			<result name="showInsertBatchJobPage">/batch/pages/batchJob/batchJobAdd.jsp</result>
+			<result name="showUpdateBatchJobPage">/batch/pages/batchJob/batchJobUpdate.jsp</result>
+			<result name="showBatchJobCronPage">/batch/pages/batchJob/batchJobCron.jsp</result>
+			<result name="showBatchJobExecutePage">/batch/pages/batchJob/batchJobExecute.jsp</result>
+		</action>
+	</package>
+</struts>

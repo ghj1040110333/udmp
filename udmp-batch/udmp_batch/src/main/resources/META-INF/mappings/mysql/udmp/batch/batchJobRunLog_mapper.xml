@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.git.udmp.impl.batch.jobRunLog.dao.IBatchJobRunLogDao">
+
+	<sql id="batchJobRunLogWhereCondition">
+		<if test=" job_run_log_id  != null "><![CDATA[ AND A.JOB_RUN_LOG_ID = #{job_run_log_id} ]]></if>
+		<if test=" log_time  != null  and  log_time  != ''  "><![CDATA[ AND A.LOG_TIME = #{log_time} ]]></if>
+		<if test=" log_timeStart  != null  and  log_timeStart  != ''  "><![CDATA[ AND A.LOG_TIME >= #{log_timeStart} ]]></if>
+		<if test=" log_timeEnd  != null  and  log_timeEnd  != ''  "><![CDATA[ AND A.LOG_TIME <= #{log_timeEnd} ]]></if>
+		<if test=" log_info != null and log_info != ''  "><![CDATA[ AND A.LOG_INFO = #{log_info} ]]></if>
+		<if test=" log_level != null and log_level != ''  "><![CDATA[ AND A.LOG_LEVEL = #{log_level} ]]></if>
+		<if test=" log_type != null and log_type != ''  "><![CDATA[ AND A.LOG_TYPE = #{log_type} ]]></if>
+		<if test=" job_run_id  != null "><![CDATA[ AND A.JOB_RUN_ID = #{job_run_id} ]]></if>
+	</sql>
+
+
+<!-- 按索引生成的查询条件 -->	
+	<sql id="queryByJobRunLogIdCondition">
+		<if test=" job_run_log_id  != null "><![CDATA[ AND A.JOB_RUN_LOG_ID = #{job_run_log_id} ]]></if>
+	</sql>	
+
+<!-- 添加操作 -->
+	<insert id="add"  useGeneratedKeys="true"  parameterType="java.util.Map">
+		<selectKey resultType="java.math.BigDecimal" order="AFTER" keyProperty="job_run_log_id">
+			select LAST_INSERT_ID()
+		</selectKey>
+		<![CDATA[
+			INSERT INTO T_UDMP_BATCH_JOB_RUN_LOG(
+				JOB_RUN_LOG_ID, LOG_TIME, LOG_INFO, LOG_LEVEL, LOG_TYPE, JOB_RUN_ID ) 
+			VALUES (
+				#{job_run_log_id, jdbcType=NUMERIC}, SYSDATE() , #{log_info, jdbcType=VARCHAR} , #{log_level, jdbcType=VARCHAR} , #{log_type, jdbcType=VARCHAR} , #{job_run_id, jdbcType=NUMERIC} ) 
+		 ]]>
+	</insert>
+
+<!-- 删除操作 -->	
+	<update id="delete" parameterType="java.util.Map">
+		<![CDATA[ UPDATE T_UDMP_BATCH_JOB_RUN_LOG ]]>
+		<set>
+		<trim suffixOverrides=",">
+			IS_DELETED = 1,
+			UPDATE_BY = #{update_by, jdbcType=NUMERIC} ,
+			UPDATE_TIME = SYSDATE() ,			    
+			UPDATE_TIMESTAMP = CURRENT_TIMESTAMP() ,
+		</trim>
+		</set>
+		<![CDATA[ WHERE JOB_RUN_LOG_ID = #{job_run_log_id} ]]>
+	</update>
+
+<!-- 修改操作 -->
+	<update id="update" parameterType="java.util.Map">
+		<![CDATA[ UPDATE T_UDMP_BATCH_JOB_RUN_LOG ]]>
+		<set>
+		<trim suffixOverrides=",">
+		    JOB_RUN_LOG_ID = #{job_run_log_id, jdbcType=NUMERIC} ,
+		    LOG_TIME = #{log_time, jdbcType=DATE} ,
+			LOG_INFO = #{log_info, jdbcType=VARCHAR} ,
+			LOG_LEVEL = #{log_level, jdbcType=VARCHAR} ,
+			LOG_TYPE = #{log_type, jdbcType=VARCHAR} ,
+		    JOB_RUN_ID = #{job_run_id, jdbcType=NUMERIC} ,
+		</trim>
+		</set>
+		<![CDATA[ WHERE JOB_RUN_LOG_ID = #{job_run_log_id} ]]>
+	</update>
+
+<!-- 按索引查询操作 -->	
+	<select id="find" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[ SELECT A.JOB_RUN_LOG_ID, A.LOG_TIME, A.LOG_INFO, A.LOG_LEVEL, A.LOG_TYPE, A.JOB_RUN_ID FROM T_UDMP_BATCH_JOB_RUN_LOG A WHERE 1 = 1  ]]>
+		<include refid="queryByJobRunLogIdCondition" />
+	</select>
+	
+
+<!-- 按map查询操作 -->
+	<select id="findAllMap" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[ SELECT A.JOB_RUN_LOG_ID, A.LOG_TIME, A.LOG_INFO, A.LOG_LEVEL, A.LOG_TYPE, A.JOB_RUN_ID FROM T_UDMP_BATCH_JOB_RUN_LOG A WHERE 1=1  ]]>
+		<!-- <include refid="请添加查询条件" /> -->
+		<![CDATA[ limit  1000  ]]>
+	</select>
+
+<!-- 查询所有操作 -->
+	<select id="findAll" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[ SELECT A.JOB_RUN_LOG_ID, A.LOG_TIME, A.LOG_INFO, A.LOG_LEVEL, A.LOG_TYPE, A.JOB_RUN_ID FROM T_UDMP_BATCH_JOB_RUN_LOG A WHERE 1=1  ]]>
+		<include refid="batchJobRunLogWhereCondition" />
+		<![CDATA[ ORDER BY A.JOB_RUN_LOG_ID ]]>
+		<![CDATA[ limit  1000  ]]>
+	</select>
+
+<!-- 查询个数操作 -->
+	<select id="findTotal" resultType="java.lang.Integer" parameterType="java.util.Map">
+		<![CDATA[ SELECT COUNT(1) FROM T_UDMP_BATCH_JOB_RUN_LOG A WHERE 1 = 1  ]]>
+		<include refid="batchJobRunLogWhereCondition" />
+	</select>
+
+<!-- 分页查询操作 -->
+	<select id="queryForPage" resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[ SELECT A.JOB_RUN_LOG_ID, A.LOG_TIME, A.LOG_INFO, A.LOG_LEVEL, A.LOG_TYPE, A.JOB_RUN_ID FROM T_UDMP_BATCH_JOB_RUN_LOG A WHERE 1=1  ]]>
+		<include refid="batchJobRunLogWhereCondition" />
+		<![CDATA[ ORDER BY A.JOB_RUN_LOG_ID ]]>
+	</select>
+	
+</mapper>
