@@ -1,0 +1,144 @@
+/**
+ * Description:
+ * @author Seadon
+ * @date 2016-2-29
+ * tags
+ */
+
+@CHARSET "UTF-8";
+
+body
+{
+  font-family: 'Microsoft Yahei','Helvetica Neue',Helvetica,Arial,sans-serif;
+  background-color: #fff;
+  overflow: hidden;
+}
+/*diy font*/
+@font-face {font-family: 'git';
+    src: url('fonts/diy/iconfont.eot'); /* IE9*/
+    src: url('fonts/diy/iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('fonts/diy/iconfont.woff') format('woff'), /* chrome、firefox */
+    url('fonts/diy/iconfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+    url('fonts/diy/iconfont.svg#iconfont') format('svg'); /* iOS 4.1- */
+}
+.git{
+    font-family:"git" !important;
+    font-size:18px;font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+}
+/*base reset*/
+.i-rt {
+  position: relative;
+  top: 5px;
+  color: #00bee2;
+}
+.m-l10-r5 {
+  margin-left: 10px;
+  margin-right: 5px;
+}
+.m-left-20 {
+  margin-left: 20px;
+}
+.p-t5-l15 {
+  padding: 5px 15px;
+}
+.p-t5 {
+  padding: 5px 0;
+}
+.m-t5 {
+  margin: 5px 0;
+}
+.m-t5-b10 {
+  margin: 5px 0 10px 0;
+}
+
+/*input*/
+.container-fluid {
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 4px;
+}
+.form-control {
+  height: 30px;
+  padding: 3px 8px;
+}
+.form-control-feedback {
+  height: 30px;
+  line-height: 30px;
+}
+.btn {
+  padding: 4px 10px;
+}
+input:read-only{
+  cursor: not-allowed;
+}
+.i-btn {
+  border-radius: 6px;
+  border: solid 1px #00ccff;
+  color: #fff;
+  background-color: #00ccff;
+  padding: 4px 10px;
+}
+.i-btn:hover, .i-btn:active, .i-btn:focus, .i-btn:active:focus{
+  background-color: #00b4d7;
+  border: solid 1px #00b4d7;
+  color: #fff;
+  outline: none;
+}
+
+/*panel title*/
+.i-title h3 {
+  font-family:'SimHei','Microsoft Yahei';
+  float: left;
+  margin-top: 2px;
+  margin-bottom: 8px;
+  color: #5b5b5b;
+  font-size: 16px;
+  font-weight: 600;
+}
+.i-title h3 > i{
+  font-weight: 400;
+  font-size: 16px;
+  color: #00ccff;
+  position: relative;
+}
+
+/*datepicker*/
+.calendar-table td {
+  font-size: 14px;
+}
+
+/* scroll */
+::-webkit-scrollbar {  
+  width: 14px;  
+  height: 14px;  
+}  
+  
+::-webkit-scrollbar-track,  
+::-webkit-scrollbar-thumb {  
+  border-radius: 999px;  
+  border: 5px solid transparent;  
+}  
+  
+::-webkit-scrollbar-track {  
+  box-shadow: 1px 1px 5px rgba(0,0,0,.2) inset;  
+}  
+  
+::-webkit-scrollbar-thumb {  
+  min-height: 20px;  
+  background-clip: content-box;  
+  box-shadow: 0 0 0 5px rgba(0,0,0,.2) inset;  
+}  
+  
+::-webkit-scrollbar-corner {  
+  background: transparent;  
+}  
+/*response*/
+@media all and (min-width: 769px){
+}
+@media all and (min-width: 769px) and (max-width: 1140px) {
+}
+@media all and (max-width: 768px) {
+}

@@ -1,0 +1,6 @@
+{
+    "repos": "https://github.com/zTree/zTree_v3.git",
+    "version": "v3.5.24",
+    "name": "ztree",
+    "main": "js/jquery.ztree.all.js"
+}

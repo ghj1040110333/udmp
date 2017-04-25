@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div id = 'app'>
+	<div class='col-md-3'>
+	    <v-select :value.sync="select.value" :options="select.options"
+	          multiple name="animals[]" limit="3"
+	          search justified required clear-button close-on-select ></v-select>
+	</div>	
+    <alert :show.sync="showRight" placement="top-right" duration="3000" type="success" width="400px" dismissable>
+        <span class="icon-ok-circled alert-icon-float-left"></span>
+        <strong>Well Done!</strong>
+        <p>You successfully read this important alert message.</p>
+    </alert>
+
+    <test></test>
+</div>
+<script type="text/javascript" src="/udmp_core_test/static/bin/sea.js"></script>
+<script type="text/javascript" src="/udmp_core_test/static/bin/seajs-config.js"></script>
+<script src="/udmp_core_test/static/bin/vue.min.js"></script>
+<script>
+
+idefine('test',function(require,exports,module){
+	require('udmp/widget/common/form.min');
+	require('udmp/widget/common/test.min');
+	window.cc = TestCommon.test;
+    var dd = new Vue({
+        el: '#app',
+        components: {
+            alert: UdmpCommon.alert,
+            vSelect: UdmpCommon.select,
+            vOption: UdmpCommon.option,
+            test:cc
+        },
+        data () {
+            return {
+              select: {
+                options: [
+                  {value: 1, label: 'Cat'},
+                  {value: 2, label: 'Cow'},
+                  {value: 3, label: 'Dog'},
+                  {value: 4, label: 'Elephant'},
+                  {value: 5, label: 'Fish'},
+                  {value: 6, label: 'Lion'},
+                  {value: 7, label: 'Tiger'},
+                  {value: 8, label: 'Turtle'}
+                ],
+                justified: true,
+                search: true
+              },
+              ajax: {
+                value:null
+              },
+              single: []
+            }
+          },
+    })
+});
+seajs.use('test');
+</script>
+</body>
+</html>

@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>timeline</title>
+    <script src="bin/vue.js"></script>
+    <script src="lib/jquery/jquery.js"></script>
+    <script src ="lib/bootstrap-daterangepicker/moment.min.js"></script>
+    <script src ="lib/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <link rel="stylesheet" href="lib/bootstrap3/css/bootstrap.css" media="screen" title="no title" charset="utf-8">
+    <link rel="stylesheet" href="lib/bootstrap-daterangepicker/daterangepicker.css" media="screen" title="no title" charset="utf-8">
+    <style>
+      #timeline {
+        padding: 20px 0;
+      }
+      #i-timeline-form {
+        margin-bottom: 20px
+      }
+      .timeline {
+        position: relative;
+        height: 145px;
+        border-bottom: 1px solid #cfcfcf;
+        background-color: #f3f4f5;
+        overflow: hidden;
+        -webkit-user-select: none;
+           -moz-user-select: none;
+            -ms-user-select: none;
+                user-select: none;
+      }
+      .timeline .i-timeline-slider {
+        position: absolute;
+        top: 0;
+        left: 0;
+        cursor: move;
+      }
+      .timeline .i-month-label {
+        position: relative;
+        height: 28px;
+        line-height: 44px;
+        color: #38393c;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .timeline .i-month-label .i-month {
+        position: absolute;
+      }
+      .timeline .i-day-label {
+        position: relative;
+        height: 26px;
+        line-height: 26px;
+      }
+      .timeline .i-day-label .i-day {
+        position: absolute;
+        width: 18px;
+        text-align: center;
+        font-size: 12px;
+        color: #676767;
+      }
+      .timeline .i-day-label .i-day.today {
+        color: #f00;
+        font-weight: 600;
+      }
+      .timeline .i-scale-line {
+        height: 6px;
+        background-color: #cfcfcf;
+      }
+      .timeline .i-day-diff {
+        position: absolute;
+        top: 54px;
+        left: 0;
+        width: 0;
+        height: 6px;
+        background-color: #009cde;
+        z-index: 1;
+      }
+      .timeline .i-scale-label {
+        position: relative;
+        height: 74px;
+      }
+      .timeline .i-scale-label .i-scale {
+        position: absolute;
+        top: 0;
+        width: 20px;
+        height: 15px;
+        background-color: #cfcfcf;
+        border: 9px solid transparent;
+        border-top-width: 0;
+        border-bottom-width: 0;
+        cursor: pointer;
+        background-clip: padding-box;
+      }
+      .timeline .i-scale-label .i-scale.first-day {
+        height: 74px;
+      }
+      .timeline .i-scale-label .i-scale .i-snapshot {
+        position: absolute;
+        top: 22px;
+        left: -7px;
+        padding-top: 4px;
+        width: 16px;
+        height: 48px;
+        background-color: #a9afb2;
+        font: 12px/14px Arial, '\5b8b\4f53', sans-serif;
+        text-align: center;
+        color: #fff;
+      }
+      .timeline .i-scale-label .i-scale .i-snapshot::before {
+        position: absolute;
+        top: -22px;
+        left: 50%;
+        margin-left: -1px;
+        content: '';
+        width: 2px;
+        height: 22px;
+        background-color: #a9afb2;
+      }
+      .timeline .i-scale-label .i-scale .i-snapshot::after {
+        position: absolute;
+        top: -8px;
+        left: 0;
+        content: '';
+        width: 0;
+        height: 0;
+        border-top: 0;
+        border-right: 8px dotted transparent;
+        border-bottom: 8px solid #a9afb2;
+        border-left: 8px dotted transparent;
+      }
+      .timeline .i-scale-label .i-scale .i-snapshot:hover {
+        background-color: #75c8eb;
+      }
+      .timeline .i-scale-label .i-scale .i-snapshot:hover::before {
+        background-color: #75c8eb;
+      }
+      .timeline .i-scale-label .i-scale .i-snapshot:hover::after {
+        border-bottom-color: #75c8eb;
+      }
+      .timeline .i-scale-label .i-scale .i-snapshot.active {
+        background-color: #009cde;
+      }
+      .timeline .i-scale-label .i-scale .i-snapshot.active .label-danger{
+        font-style: normal;
+        width: 16px;
+        padding: 2px;
+        position: absolute;
+        left: 0;
+        top: 47px;
+      }
+      .timeline .i-scale-label .i-scale .i-snapshot.active::before {
+        background-color: #009cde;
+      }
+      .timeline .i-scale-label .i-scale .i-snapshot.active::after {
+        border-bottom-color: #009cde;
+      }
+
+      #i-timeline-show {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      #i-timeline-show .i-timeline-item {
+        position: relative;
+        padding-bottom: 12px;
+      }
+      #i-timeline-show .i-timeline-item .i-item-tail{
+        position: absolute;
+        left: 5px;
+        top: 0;
+        height: 100%;
+        border-left: 2px solid #e9e9e9;
+      }
+      #i-timeline-show .i-timeline-item:last-child .i-item-tail{
+        display: none;
+      }
+      #i-timeline-show .i-timeline-item .i-item-head {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        background-color: #ffffff;
+        border-radius: 100px;
+        border: 2px solid #009cde;
+      }
+      #i-timeline-show .i-timeline-item .i-item-content {
+        padding: 0 0 10px 24px;
+        font-size: 16px;
+        position: relative;
+        top: -6px
+      }
+
+      #i-tool-tip {
+        display: none;
+        width: 220px;
+        opacity: 1;
+        padding: 0 10px;
+        top: -25px;
+      }
+      #i-tool-tip .tooltip-arrow {
+        border-width: 10px 10px 10px 0;
+        border-right-color: #009cde;
+      }
+      #i-tool-tip .tooltip-inner {
+        padding: 0;
+        background: transparent;
+      }
+      #i-tool-tip .tooltip-inner .panel {
+        margin-bottom: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="timeline">
+      <form id="i-timeline-form" class="form-inline">
+        <div class="form-group">
+          <label for="rangedate" class="sr-only">时间范围</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" id="rangedate" readonly="readonly">
+          </div>
+        </div>
+      </form>
+      <div id="i-timeline-panel">
+        <div id="i-timeline-wrap" class="timeline">
+          <div class="i-timeline-slider" :style="{ width: lineWidth + 'px' }">
+            <div class="i-month-label">
+              <span class="i-month" v-for="month in months" :style="{left: month.monthPos + 'px'}">
+                {{month.month}}
+              </span>
+            </div>
+            <div class="i-day-label">
+              <span class="i-day" v-for="day in days" :style="{left: day.dayPos + 'px'}">
+                {{day.day}}
+              </span>
+            </div>
+            <div class="i-scale-line"></div>
+            <div class="i-day-diff"></div>
+            <div class="i-scale-label">
+              <a class="i-scale" v-for="scale in days" :data-date="scale.date" :style="{left: scale.scalePos + 'px'}" :class="scale.scaleClass"></a>
+              <div id="i-tool-tip" class="tooltip right">
+                <div class="tooltip-arrow"></div>
+                <div class="tooltip-inner">
+                  <div class="panel panel-default">
+                    <div class="panel-heading">还款金额为（元）：</div>
+                    <div class="panel-body">
+                      <div class="input-group">
+                        <input type="text" id="i-repay-money" class="form-control">
+                        <span class="input-group-btn">
+                          <button id="i-btn-save" class="btn btn-default" type="button">保存</button>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="i-show-panel" style="padding: 20px; display:none;">
+          <div class="page-header" style = "font-family: Microsoft YaHei;">
+            <h1>还款时间表 <small>仅供参考</small></h1>
+          </div>
+          <ul id="i-timeline-show">
+            <li class="i-timeline-item" v-for="item in items">
+              <div class="i-item-tail"></div>
+              <div class="i-item-head"></div>
+              <div class="i-item-content">
+                <span class="label label-info">日期：{{item.date}}</span>
+                <span class="label label-primary">需还款金额：{{item.money}}元</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <script>
+      var Utils,timeline,options,datas;
+
+      //实用方法
+      Utils = {
+        prefixZero: function(num) {
+          return num < 10 ? '0' + num : num;
+        },
+        isEmptyObject: function(e){
+          var t;
+          for (t in e)
+              return !1;
+          return !0
+        }
+      };
+
+      //默认属性
+      option = {
+        endDate: moment().add(90, 'days'),
+        locale: {
+          format: 'YYYY/MM/DD',
+          applyLabel: '选择',
+          cancelLabel: '取消'
+        }
+      };
+
+      //初始化时间范围插件
+      $('#rangedate').daterangepicker(option, function(start, end, label){
+
+        //获取数据
+        datas = getTimeline(start.format('YYYY/MM/DD'),end.format('YYYY/MM/DD'));
+
+        //Vue初始化
+        if(timeline._isVue){
+          $('#i-timeline-wrap .i-day-diff').css({left:0,width:0});
+          $('.i-show-panel').hide();
+          timeline.months = datas.months;
+          timeline.days = datas.days;
+          timeline.lineWidth = datas.lineWidth;
+        }
+
+      });
+
+      function getTimeline(from,to){
+        var Timeline,
+          f = typeof from === 'string' ? new Date(from.replace(/-/g, '/')) : from,
+          t = typeof to === 'string' ? new Date(to.replace(/-/g, '/')) : to,
+          timestamp = t - f,
+          day = 24 * 60 * 60 * 1000,
+          today = new Date(),
+          miliStart = f.getTime(),
+          dayCount = Math.floor(timestamp / day) + 1,
+          offLeft = 12, // 初始日期左边距
+          offRight = 12, // 结束日期右边距
+          offDay = 20, // 日与日之间的间距
+          lineLength = dayCount * offDay + offLeft + offRight,
+          months = [],
+          days = [];
+
+        //循环生成日数据
+        for(var i= 0; i<dayCount; i++) {
+          var d = new Date(miliStart + i* day),
+              left = i * offDay + offLeft,
+              monthObj = {},
+              dayObj = {};
+
+          //判断如果是当天，添加样式
+          if (d.getFullYear() === today.getFullYear() && d.getMonth() === today.getMonth() && d.getDate() === today.getDate()) {
+            dayObj['dayClass'] = "today";
+          }
+
+          //如果是当月第一天，添加样式
+          if (d.getDate() === 1) {
+            monthObj['month'] = d.getFullYear() + '/' + Utils.prefixZero(d.getMonth() + 1);
+            monthObj['monthPos'] = left - 2;
+            dayObj['scaleClass'] = "first-day";
+          }
+
+          //日期所在天，位置
+          dayObj['day'] = d.getDate();
+          dayObj['dayPos'] = left - 9;
+
+          //时间刻度日期，位置
+          dayObj['date'] = d.getFullYear() + '/' + Utils.prefixZero(d.getMonth() + 1) + '/' + Utils.prefixZero(d.getDate());
+          dayObj['scalePos'] = left - 10;
+
+          //添加到数据集
+          days.push(dayObj);
+          if(!Utils.isEmptyObject(monthObj))
+            months.push(monthObj);
+        };
+
+        Timeline = {
+          days: days,
+          months: months,
+          lineWidth : lineLength
+        };
+
+        //返回数据
+        return Timeline;
+      }
+
+      //获取数据
+      datas = getTimeline(moment().format('YYYY/MM/DD'),moment().add(90, 'days').format('YYYY/MM/DD'));
+
+      //Vue初始化
+      timeline = new Vue({
+        el: "#i-timeline-panel",
+        data: {
+          months: datas.months,
+          days: datas.days,
+          lineWidth: datas.lineWidth,
+          items: null
+        }
+      });
+
+      // 时间线拖动逻辑
+      $('#i-timeline-wrap').on('mousedown', '.i-timeline-slider', function(ev){
+        var originX = ev.clientX,
+          moveX = originX,
+          delta = 0,
+          $doc = $(document),
+          $wrap = $('#i-timeline-wrap'),
+          $slider = $('.i-timeline-slider'),
+          originLeft = parseFloat($slider.css('left'));
+        if ($slider.width() < $wrap.width()) {
+          return true;
+        }
+        $slider.data('moved', false);
+        $doc.bind('mousemove', function(ev){
+          moveX = ev.clientX;
+          delta = moveX - originX;
+          if (Math.abs(delta) > 10) {
+            $slider.css('left', originLeft + delta + 'px');
+          }
+        });
+        $doc.bind('mouseup', function(ev){
+          $doc.unbind('mousemove');
+          $doc.unbind('mouseup');
+
+          if (Math.abs(delta) <= 10) {
+            $slider.data('moved', false);
+          } else {
+            $slider.data('moved', true);
+          }
+
+          var tLeft = parseFloat($slider.css('left')),
+              tWidth = $wrap.width();
+          if (tLeft > 0) {
+            $slider.animate({'left': 0}, 300, function(){});
+          } else if (Math.abs(tLeft) > $slider.width() - tWidth) {
+            $slider.animate({'left': '-' + ($slider.width() - tWidth) + 'px'}, 300, function(){});
+          }
+        });
+      }).on('click', '.i-scale', function(){
+        var $this = $(this),
+            $slider = $('.i-timeline-slider'),
+            $diff = $('.i-day-diff'),
+            $tip = $('#i-tool-tip'),
+            $repay = $('#i-repay-money'),
+            date = $this.data('date'),
+            dateArr = date.split('/'),
+            left = $this.css('left'),
+            nextEle = $this.nextAll('.has-snap'),
+            nLast,lastDate,diffLen;
+        $this.parent().find('.active').removeClass('active').find('.label-danger').remove();
+        if($this.find('.i-snapshot').length === 0) {
+          $this.addClass('has-snap').html('<span class="i-snapshot active">' + dateArr[1] + '月' + dateArr[2] + '<i class="label label-danger">X</i></span>');
+        }
+        else {
+          $this.find('.i-snapshot').addClass('active').append('<i class="label label-danger">X</i></span>');
+        }
+        //时间间隔选取
+        if(nextEle.length) {
+          nLast = nextEle;
+          lastDate = new Date(nLast.data('date'));
+        } else {
+          nLast = $slider.find('.i-scale').last();
+          lastDate = new Date(nLast.data('date'));
+        }
+        //添加样式
+        diffLen = parseFloat(nLast.css('left')) - parseFloat(left) + 2;
+        $diff.css({left: parseFloat(left) + 9, width: 0});
+        $diff.animate({width: diffLen}, 300);
+
+        //设置还款金额
+        $repay.val('');
+        $tip.css('left',parseFloat(left)+15).show();
+        var oRepay = $("#i-timeline-wrap .i-scale .active").data('repay');
+        if (oRepay)
+          $repay.val(oRepay);
+      }).on('click','.label-danger',function(e){
+        e.stopPropagation();
+        $(this).closest('.has-snap').removeClass('has-snap').empty();
+        $('.i-day-diff').css('width',0);
+        saveRepay();
+      });
+
+      //保存还款金额
+      function saveRepay(){
+        var $active = $('#i-timeline-wrap .i-scale .active'),
+            $tip = $('#i-tool-tip'),
+            $repay = $('#i-repay-money');
+
+        $active.data('repay',$repay.val());
+        timeline.items = getRepayDate(3333);
+        $repay.val('');
+        $tip.hide();
+        $('.i-show-panel').show();
+      }
+
+      //还款时间表
+      function getRepayDate(amount){
+        var $slider = $('.i-timeline-slider'),
+            $snapEle = $slider.find('.has-snap'),
+            nLast,lastDate,repayDate,rDate,money,
+            totalMoney = 0,
+            dateArr = [];
+        //根据还款自定义情况，生成timeline
+        if($snapEle.length) {
+          $('#i-timeline-wrap .has-snap').each(function(i,n){
+            rDate = $(this).data('date');
+            money = parseFloat($(this).find('.i-snapshot').data('repay'))||0;
+            repayDate = {date: rDate,money: money};
+            totalMoney += money;
+            dateArr.push(repayDate);
+          })
+        }
+        if(totalMoney !== amount) {
+          nLast = $slider.find('.i-scale').last();
+          lastDate = nLast.data('date');
+          repayDate = {date: lastDate,money: amount - totalMoney};
+          dateArr.push(repayDate);
+        }
+        return dateArr;
+      }
+      //保存还款金额事件
+      $('#i-btn-save').on('click',function(){
+        saveRepay();
+      });
+      $('#i-repay-money').on('keyup',function(event){
+        if(event.keyCode ==13){
+          saveRepay();
+        }
+      })
+
+    </script>
+  </body>
+</html>
