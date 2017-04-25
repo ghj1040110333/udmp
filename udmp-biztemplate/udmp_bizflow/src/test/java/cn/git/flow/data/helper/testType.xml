@@ -1,0 +1,21 @@
+<schema>
+	<!--schema下的第一个complexType是一个固定名称为 Params的complexType，之下会有多个element，一个element代表着一个参数 -->
+	<complexType name="Params">
+		<element name="request">
+			<complexType name="CustomerInfo" class="cn.git.flow.mapping.helper.CustomerInfo">
+				<element name="ecif" type="String"></element>
+				<element name="addressInfos" many="true">
+					<complexType name="AddressInfo">
+						<element name="ecif" type="String"></element>
+						<element name="address" type="String"></element>
+					</complexType>
+				</element>
+				<element name="customerBaseInfo">
+					<complexType name="CustomerBaseInfo">
+						<element name="name"  type="String"></element>
+					</complexType>
+				</element>
+			</complexType>
+		</element>
+	</complexType>
+</schema>

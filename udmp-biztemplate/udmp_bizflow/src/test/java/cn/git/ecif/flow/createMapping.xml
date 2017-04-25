@@ -1,0 +1,6 @@
+<mapping>
+	<!-- 目的dataObject对象的name和类型，及数据存放地，这里表明数据是全start的请求对象中的name中获取 -->
+	<field name="name" type="String" value="$/start/name"></field>
+	<field name="address" type="String" value="$/start/address"></field>
+	<field name="ecifId" type="String" value="$/start/ecifId"></field>
+</mapping>

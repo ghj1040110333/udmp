@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	
+	<bean name="testLocalServiceBean" class="cn.git.flow.helper.TestLocalServiceBean"/>
+	
+	<bean name="userBS" class="cn.git.ecif.flow.user.bs.UserBS"/>
+		
+	<bean name="userUCC" class="cn.git.ecif.flow.user.ucc.UserUCC">
+		<!-- 注入流程执行器，一个UCC可以注入多个不同的执行器 -->
+		<property name="workFlowExcutor" ref="createUserFlow"/>
+	</bean>
+</beans>

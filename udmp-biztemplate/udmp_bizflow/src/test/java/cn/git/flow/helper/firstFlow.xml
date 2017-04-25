@@ -1,0 +1,24 @@
+<flow name="firstFlow">
+	<start name="firstStart">
+		<connections>
+			<connection to="localService1" />
+		</connections>
+	</start>
+	
+	<localService name="localService1" beanName="testLocalServiceBean" method="testService">
+		<connections>
+			<connection to="isNotExist"/>
+		</connections>
+	</localService>
+	
+	<contentBase name="isNotExist" targetName="${localService1.get('name')==null?'':'localService2'}">
+		<connections>
+			<connection to="localService2" />
+		</connections>
+	</contentBase>
+	
+	<localService name="localService2" beanName="testLocalServiceBean" method="testService2">
+	
+	</localService>
+
+</flow>

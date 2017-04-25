@@ -1,0 +1,29 @@
+<!-- 流程的配置，name=流称的名称 -->
+<flow name="createUserFlow">
+	<!-- 起始活动，此活动是必须的，流程是通过此活动来进行调用，此活动在一个流程中是唯一的 -->
+	<start name="start">
+		<connections>
+			<!-- 连接到下一个活动节点 -->
+			<connection to="checkUser" />
+		</connections>
+	</start>
+	<!-- local service活动调用本地服务，这里的本地服务的参数与活动的输入参数一致，所以不用进行映射 -->
+	<localService name="checkUser"  beanName="userBS" method="check">
+		<connections>
+			<connection to="isNotExist" />
+		</connections>
+	</localService>
+	<!-- 内容路由，通过targetName中的el解析来解析出下一个节点的名称，payload是上一个活动的返回值 -->
+	<!-- 逻辑是payload如果exist属性为true直接返回，如果为false则执行createUser节点 -->
+	<contentBase name="isNotExist" targetName="${checkUser.get('exist')?'':'createUser'}">
+		<connections>
+			<connection to="createUser" />
+		</connections>
+	</contentBase>
+	<!-- 创建用户，此时 payload的已经checkUser的响应参数，所以必须要进行报文映射，返回参数是一致的，不需要映射-->
+	<localService name="createUser" beanName="userBS" method="create">
+		<!-- <requestChain>
+			<mapping path="classpath:cn\git\ecif\flow\createMapping.xml"></mapping>
+		</requestChain> -->
+	</localService>
+</flow>

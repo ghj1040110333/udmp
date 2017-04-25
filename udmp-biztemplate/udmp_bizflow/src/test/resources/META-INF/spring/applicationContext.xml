@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	
+	<bean name="workFlowExcoutorFactory" class="cn.com.git.udmp.bizflow.WorkFlowExecutorFactory">
+		<property name="flowConfigs">
+			<list>
+				<value>classpath:cn/git/flow/helper/firstFlow.xml</value>
+				<value>classpath:cn/git/ecif/flow/createUserFlow.xml</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean name="testServiceExecutor" class="cn.com.git.udmp.bizflow.SpringWorkFlowExecutorFactory">
+		<property name="flowName" value="firstFlow"/>
+		<property name="workFlowExecutorFactory" ref="workFlowExcoutorFactory"></property>
+	</bean>
+	
+	<!-- 配置一个流程解析器 -->
+	<bean name="createUserFlow" class="cn.com.git.udmp.bizflow.SpringWorkFlowExecutorFactory">
+		<!-- 流程的名称 -->
+		<property name="flowName" value="createUserFlow"/>
+		<property name="workFlowExecutorFactory" ref="workFlowExcoutorFactory"/>
+	</bean>
+	
+</beans>

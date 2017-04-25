@@ -1,0 +1,9 @@
+<schema>
+	<complexType name="Params" class="cn.git.flow.data.DataObject">
+		<element name="request" many="true" value="$/start/addressInfos">
+			<complexType name="AddressInfo" class="cn.git.flow.mapping.helper.AddressInfo">
+			
+			</complexType>
+		</element>
+	</complexType>
+</schema>

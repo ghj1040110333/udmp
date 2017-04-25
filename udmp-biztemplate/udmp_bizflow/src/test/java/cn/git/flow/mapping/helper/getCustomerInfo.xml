@@ -1,0 +1,19 @@
+<schema>
+	<complexType name="Params">
+		<element name="request" value="$/start/customerBaseInfo">
+			<complexType name="customerInfo" class="cn.git.flow.mapping.helper.CustomerInfo">
+				<element name="testName" value="$/start/customerBaseInfo/name"/>
+				<element name="addressInfos" many="true" value="$/start/addressInfos">
+					<complexType name="AddressInfo" class="cn.git.flow.mapping.helper.AddressInfo">
+						<element name="ecifId" value="$/start/ecifId"></element>
+						<element name="address" value="$address"></element>
+					</complexType>
+				</element>
+				<element name="customerBaseInfo" value="$/start/customerBaseInfo">
+					<complexType name="customerBaseInfo" class="cn.git.flow.mapping.helper.CustomerBaseInfo">
+					</complexType>
+				</element>
+			</complexType>
+		</element>
+	</complexType>
+</schema>
