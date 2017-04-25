@@ -1,1 +1,0 @@
-telegraf.exe --config telegraf.conf
