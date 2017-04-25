@@ -6,6 +6,8 @@
 	<version>0.2.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
+	
+ 	<!--ä»“åº“åœ°å€-->	
 	<repositories>
 		<repository>
 			<id>nexus-repos</id>
@@ -28,7 +30,7 @@
 		</repository>
 		-->
 	</repositories>
-	<!-- Éè¶¨²å¼þ²Ö¿â -->
+	<!-- è®¾å®šæ’ä»¶ä»“åº“ -->
 	<pluginRepositories>
 
 		<pluginRepository>
@@ -36,7 +38,7 @@
 			<name>Team Nexus Repository</name>
 			<url>http://10.100.14.13:8081/nexus/content/groups/public/</url>
 		</pluginRepository>
-		<!-- ÈçÓÐNexusË½·þ, È¡Ïû×¢ÊÍ²¢Ö¸ÏòÕýÈ·µÄ·þÎñÆ÷µØÖ·. <pluginRepository> <id>oschina-repos</id> 
+		<!-- å¦‚æœ‰Nexusç§æœ, å–æ¶ˆæ³¨é‡Šå¹¶æŒ‡å‘æ­£ç¡®çš„æœåŠ¡å™¨åœ°å€. <pluginRepository> <id>oschina-repos</id> 
 			<name>Oschina Releases</name> <url>http://maven.oschina.net/content/groups/public</url> 
 			</pluginRepository> -->
 
@@ -58,7 +60,7 @@
 		<outputDirectory>${project.basedir}/src/main/webapp/WEB-INF/classes/</outputDirectory>
 		<pluginManagement>
 			<plugins>
-				<!-- Compiler ²å¼þ, Éè¶¨JDK°æ±¾ -->
+				<!-- Compiler æ’ä»¶, è®¾å®šJDKç‰ˆæœ¬ -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
@@ -70,7 +72,7 @@
 					</configuration>
 				</plugin>
 
-				<!-- ´ò°üjarÎÄ¼þÊ±£¬ÅäÖÃmanifestÎÄ¼þ£¬¼ÓÈëlib°üµÄjarÒÀÀµ -->
+				<!-- æ‰“åŒ…jaræ–‡ä»¶æ—¶ï¼Œé…ç½®manifestæ–‡ä»¶ï¼ŒåŠ å…¥libåŒ…çš„jarä¾èµ– -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
@@ -85,7 +87,7 @@
 						</execution> </executions> -->
 				</plugin>
 
-				<!-- »ìÏý´úÂë <plugin> <groupId>com.github.wvengen</groupId> <artifactId>proguard-maven-plugin</artifactId> 
+				<!-- æ··æ·†ä»£ç  <plugin> <groupId>com.github.wvengen</groupId> <artifactId>proguard-maven-plugin</artifactId> 
 					<version>2.0.6</version> <executions> <execution> <phase>prepare-package</phase> 
 					<goals> <goal>proguard</goal> </goals> </execution> </executions> <configuration> 
 					<obfuscate>true</obfuscate> <options> <option>-injars ${project.build.directory}/${project.artifactId}/WEB-INF/lib/jeesite.jar</option> 
@@ -98,7 +100,7 @@
 					<artifactId>proguard-base</artifactId> <version>4.9</version> <scope>runtime</scope> 
 					</dependency> </dependencies> </plugin> -->
 
-				<!-- war ´ò°ü²å¼þ, Éè¶¨war°üÃû³Æ²»´ø°æ±¾ºÅ -->
+				<!-- war æ‰“åŒ…æ’ä»¶, è®¾å®šwaråŒ…åç§°ä¸å¸¦ç‰ˆæœ¬å· -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-war-plugin</artifactId>
@@ -134,7 +136,7 @@
 					</configuration>
 				</plugin>
 
-				<!-- Eclipse ²å¼þ -->
+				<!-- Eclipse æ’ä»¶ -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-eclipse-plugin</artifactId>
@@ -159,7 +161,7 @@
 					</configuration>
 				</plugin>
 
-				<!-- tomcat6²å¼þ -->
+				<!-- tomcat6æ’ä»¶ -->
 				<plugin>
 					<groupId>org.apache.tomcat.maven</groupId>
 					<artifactId>tomcat6-maven-plugin</artifactId>
@@ -171,7 +173,7 @@
 					</configuration>
 				</plugin>
 
-				<!-- tomcat7²å¼þ -->
+				<!-- tomcat7æ’ä»¶ -->
 				<plugin>
 					<groupId>org.apache.tomcat.maven</groupId>
 					<artifactId>tomcat7-maven-plugin</artifactId>
@@ -183,7 +185,7 @@
 					</configuration>
 				</plugin>
 
-				<!-- jetty²å¼þ -->
+				<!-- jettyæ’ä»¶ -->
 				<plugin>
 					<groupId>org.mortbay.jetty</groupId>
 					<artifactId>jetty-maven-plugin</artifactId>
@@ -206,13 +208,13 @@
 					</configuration>
 				</plugin>
 
-				<!-- resource²å¼þ -->
+				<!-- resourceæ’ä»¶ -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
 					<version>2.6</version>
 				</plugin>
-				<!-- source²å¼þ -->
+				<!-- sourceæ’ä»¶ -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-source-plugin</artifactId>
@@ -228,46 +230,46 @@
 					</executions>
 				</plugin>
 
-				<!-- install²å¼þ -->
+				<!-- installæ’ä»¶ -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-install-plugin</artifactId>
 					<version>2.4</version>
 				</plugin>
 
-				<!-- clean²å¼þ -->
+				<!-- cleanæ’ä»¶ -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-clean-plugin</artifactId>
 					<version>2.5</version>
 				</plugin>
 
-				<!-- ant²å¼þ -->
+				<!-- antæ’ä»¶ -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-antrun-plugin</artifactId>
 					<version>1.7</version>
 				</plugin>
 
-				<!-- dependency²å¼þ -->
+				<!-- dependencyæ’ä»¶ -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-dependency-plugin</artifactId>
 					<version>2.5.1</version>
 				</plugin>
-				<!-- ÅäÖÃ¿ÉÖ´ÐÐµÄjarÎÄ¼þ -->
+				<!-- é…ç½®å¯æ‰§è¡Œçš„jaræ–‡ä»¶ -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-shade-plugin</artifactId>
 					<version>2.3</version>
 				</plugin>
-				<!-- Í³Ò»ÐÞ¸Ä°æ±¾µÄmaven²å¼þ -->
+				<!-- ç»Ÿä¸€ä¿®æ”¹ç‰ˆæœ¬çš„mavenæ’ä»¶ -->
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>versions-maven-plugin</artifactId>
 					<version>2.2</version>
 				</plugin>
-				<!--Ö´ÐÐÃüÁîÐÐ²å¼þ -->
+				<!--æ‰§è¡Œå‘½ä»¤è¡Œæ’ä»¶ -->
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>exec-maven-plugin</artifactId>
@@ -277,7 +279,7 @@
 			</pluginManagement>
 	</build>
 	<profiles>
-		<!-- ³õÊ¼»¯Êý¾Ý¿â -->
+		<!-- åˆå§‹åŒ–æ•°æ®åº“ -->
 		<profile>
 			<id>init-db</id>
 			<dependencies>
@@ -339,7 +341,7 @@
 								<taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask"
 									classpathref="maven.test.classpath" />
 
-								<!-- mysql¡¢mssql -->
+								<!-- mysqlã€mssql -->
 								<dbunit driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}"
 									password="${jdbc.password}">
 
