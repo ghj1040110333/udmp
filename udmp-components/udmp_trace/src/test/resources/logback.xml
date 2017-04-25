@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- For assistance related to logback-translator or configuration -->
+<!-- files in general, please contact the logback user mailing list -->
+<!-- at http://www.qos.ch/mailman/listinfo/logback-user -->
+<!-- -->
+<!-- For professional support please see -->
+<!-- http://www.qos.ch/shop/products/professionalSupport -->
+<!-- -->
+<configuration scan="true" scanPeriod="1 seconds" Debug="false">
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern> %d{yyyy-M-d
+				HH:mm:ss}|%t|%p|%X{bizSeq}|%X{transCode}|%X{systemNo}|%X{invokeSeq}|%m|%F|%L|%n
+			</pattern>
+		</encoder>
+	</appender>
+	<appender name="stdout2" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{yyyy-M-d HH:mm:ss}|%t|%p|%m|%F|%L|%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="file"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>./logs/nb-web-%d{yyyy-M-d}.log</FileNamePattern>
+			<MaxHistory> 30 </MaxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-M-d
+				HH:mm:ss}|%t|%p|%X{bizSeq}|%X{transCode}|%X{systemNo}|%X{invokeSeq}|%m|%F|%L|%n
+			</pattern>
+		</encoder>
+		<tiggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>10MB</MaxFileSize>
+		</tiggeringPolicy>
+	</appender>
+	<logger name="cn.com.git" level="DEBUG"/>
+	<root level="info">
+		<appender-ref ref="stdout2" />
+		<!-- <appender-ref ref="file"/> -->
+	</root>
+</configuration>

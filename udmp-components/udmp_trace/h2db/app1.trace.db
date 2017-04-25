@@ -1,0 +1,45 @@
+08-31 11:45:10 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Table "USER" not found; SQL statement:
+DROP TABLE user; [42102-182]
+08-31 11:46:14 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "INSERT INTO USER ('name'[*]) VALUES ('hello world') "; expected "identifier"; SQL statement:
+INSERT INTO user ('name') VALUES ('hello world') [42001-182]
+08-31 11:53:19 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "INSERT INTO USER ('name'[*]) VALUES ('hello world') "; expected "identifier"; SQL statement:
+INSERT INTO user ('name') VALUES ('hello world') [42001-182]
+08-31 11:53:40 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "INSERT INTO USER ('name'[*]) VALUES ('hello world') "; expected "identifier"; SQL statement:
+INSERT INTO user ('name') VALUES ('hello world') [42001-182]
+08-31 11:53:55 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "INSERT INTO USER ('name'[*]) VALUES ('hello world') "; expected "identifier"; SQL statement:
+INSERT INTO user ('name') VALUES ('hello world') [42001-182]
+08-31 11:54:59 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "INSERT INTO USER ('NAME'[*]) VALUES ('hello world') "; expected "identifier"; SQL statement:
+INSERT INTO user ('NAME') VALUES ('hello world') [42001-182]
+08-31 11:55:39 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "INSERT INTO USER ('NAME'[*]) VALUES ('hello') "; expected "identifier"; SQL statement:
+INSERT INTO user ('NAME') VALUES ('hello') [42001-182]
+08-31 11:55:54 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Table "SYS_USER" not found; SQL statement:
+DROP TABLE sys_user; [42102-182]
+08-31 11:55:54 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "INSERT INTO SYS_USER ('NAME'[*]) VALUES ('hello') "; expected "identifier"; SQL statement:
+INSERT INTO sys_user ('NAME') VALUES ('hello') [42001-182]
+08-31 16:35:49 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "INSERT INTO SYS_USER ('NAME'[*]) VALUES ('hello') "; expected "identifier"; SQL statement:
+INSERT INTO sys_user ('NAME') VALUES ('hello') [42001-182]
+08-31 17:00:49 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "INSERT INTO SYS_USER ('NAME'[*]) VALUES ('hello') "; expected "identifier"; SQL statement:
+INSERT INTO sys_user ('NAME') VALUES ('hello') [42001-182]
+08-31 17:12:09 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "INSERT INTO SYS_USER ('NAME'[*]) VALUES ('hello') "; expected "identifier"; SQL statement:
+INSERT INTO sys_user ('NAME') VALUES ('hello') [42001-182]
+08-31 17:15:19 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "INSERT INTO SYS_USER ('NAME'[*]) VALUES ('hello') "; expected "identifier"; SQL statement:
+INSERT INTO sys_user ('NAME') VALUES ('hello') [42001-182]
+08-31 17:16:32 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "INSERT INTO SYS_USER ('NAME'[*]) VALUES ('hello') "; expected "identifier"; SQL statement:
+INSERT INTO sys_user ('NAME') VALUES ('hello') [42001-182]
+08-31 17:19:42 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "INSERT INTO SYS_USER ('NAME'[*]) VALUES ('hello') "; expected "identifier"; SQL statement:
+INSERT INTO sys_user ('NAME') VALUES ('hello') [42001-182]

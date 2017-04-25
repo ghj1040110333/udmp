@@ -1,0 +1,2 @@
+udmpTraceConsumerFilter=cn.com.git.udmp.trace.dubbo.DubboConsumerInterceptor
+udmpTraceProviderFilter=cn.com.git.udmp.trace.dubbo.DubboProviderInterceptor

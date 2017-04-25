@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.0.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd
+		http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd"
+	default-lazy-init="true">
+
+	<!-- <dubbo:annotation package="cn.com.git" /> -->
+
+	<!-- 提供方应用信息，用于计算依赖关系 -->
+	<dubbo:application name="hello-world-app" />
+	<!-- 用rest协议在8080端口暴露服务 -->
+	<dubbo:protocol name="rest" port="8080" server="tomcat" />
+	<dubbo:protocol name="dubbo" serialization="kryo"
+		optimizer="cn.com.git.udmp.test.commons.dubbox.SerializationOptimizerImpl" />
+	<dubbo:registry address="zookeeper://127.0.0.1:2181" group="dubbo"/>
+	<!-- 声明需要暴露的rest服务接口 -->
+	<dubbo:service
+		interface="cn.com.git.udmp.test.commons.dubbox.rest.support.UserService"
+		ref="userService" protocol="rest" />
+
+	<!-- 和本地bean一样实现服务 -->
+	<bean id="userService"
+		class="cn.com.git.udmp.test.commons.dubbox.rest.support.UserServiceImpl" />
+
+
+	<!-- 声明需要暴露的rpc服务接口 -->
+	<dubbo:service
+		interface="cn.com.git.udmp.test.commons.dubbox.rpc.support.DemoService"
+		ref="demoService" protocol="dubbo" />
+
+	<!-- 和本地bean一样实现服务 -->
+	<bean id="demoService"
+		class="cn.com.git.udmp.test.commons.dubbox.rpc.support.DemoServiceImpl" />
+
+</beans>
