@@ -1,0 +1,34 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>udmp_parent</artifactId>
+	<packaging>pom</packaging>
+	<version>${udmp.version}</version>
+	
+	<properties>
+		<jdk.version>1.8</jdk.version>
+		<udmp.version>0.3.0-SNAPSHOT</udmp.version>
+	</properties>
+	
+	<dependencies>
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<!-- TEST begin -->
+		<!-- <dependency> -->
+		<!-- <groupId>junit</groupId> -->
+		<!-- <artifactId>junit</artifactId> -->
+		<!-- </dependency> -->
+	</dependencies>
+	<parent>
+		<groupId>cn.com.git</groupId>
+		<artifactId>udmp_dependency_parent</artifactId>
+		<version>0.3.0-SNAPSHOT</version>
+	</parent>
+</project>

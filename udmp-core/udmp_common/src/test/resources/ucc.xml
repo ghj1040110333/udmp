@@ -1,0 +1,18 @@
+
+/**
+ * @description ${packageName}UCC实现类
+ * @author yangfeiit@newchinalife.com
+ * @date 2015-02-04 11:07:49
+ */
+@Service
+public class ${packageName}UCC extends BaseBatchUCC<${packageName}VO, ${packageName}BO, ${packageName}PO>
+        implements I${packageName}UCC {
+    @Autowired
+    private IBaseBatchService<${packageName}BO, ${packageName}PO> service;
+
+    @Override
+    public IBaseBatchService<${packageName}BO, ${packageName}PO> getService() {
+        return service;
+    }
+
+}

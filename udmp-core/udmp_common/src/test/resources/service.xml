@@ -1,0 +1,17 @@
+/** 
+ * @description ${packageName}ServiceImpl实现类
+ */
+@Service
+ public class ${packageName}ServiceImpl extends BaseBatchService<${packageName}BO,${packageName}PO>{
+    @Autowired
+    private IBaseDao<${packageName}PO> dao;
+    @Override
+    public IBaseDao<${packageName}PO> getDao() {
+        return dao;
+    }
+    public void setDao(IBaseDao<${packageName}PO> dao) {
+        this.dao = dao;
+    }
+    
+    
+}
