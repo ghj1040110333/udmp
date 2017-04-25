@@ -1,0 +1,14 @@
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<configuration>
+		<wildcard>false</wildcard>
+	</configuration>
+	<mapping>
+		<class-a>cn.com.git.udmp.calc.camel.mappings.Order</class-a>
+		<class-b>cn.com.git.udmp.calc.camel.mappings.Report</class-b>
+		<field>
+			<a>custId</a>
+			<b>repid</b>
+		</field>
+	</mapping>
+</mappings>

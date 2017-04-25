@@ -1,0 +1,115 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>udmp_camel_springboot_case</artifactId>
+	<parent>
+		<groupId>cn.com.git</groupId>
+		<artifactId>udmp_springboot_parent</artifactId>
+		<version>0.3.0-SNAPSHOT</version>
+	</parent>
+	<properties>
+		<camel-version>2.13.4</camel-version>
+		<kafka.version>0.8.2.2</kafka.version>
+		<udmp.springboot.version>0.3.0-SNAPSHOT</udmp.springboot.version>
+	</properties>
+	<repositories>
+		<repository>
+			<id>spring-ext</id>
+			<url>http://repo.spring.io/ext-release-local/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>http://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>http://repo.spring.io/snapshot</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>http://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>http://repo.spring.io/snapshot</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<dependencies>
+		<!-- spring boot web所需依赖 -->
+		<!-- spring boot web所需依赖 end -->
+
+		<!-- camel dependency -->
+
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc6</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>cn.com.git</groupId>
+			<artifactId>udmp_springboot_camel</artifactId>
+			<version>${udmp.springboot.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>cn.com.git</groupId>
+			<artifactId>udmp_springboot_mybatis</artifactId>
+			<version>${udmp.springboot.version}</version>
+		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>cn.com.git</groupId> -->
+<!-- 			<artifactId>udmp_mq_kafka_boot</artifactId> -->
+<!-- 			<version>${udmp.springboot.version}</version> -->
+<!-- 		</dependency> -->
+	<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-core</artifactId>
+			<version>${camel-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-spring</artifactId>
+			<version>${camel-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-dozer</artifactId>
+			<version>${camel-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-test</artifactId>
+			<version>${camel-version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-test-spring</artifactId>
+			<version>${camel-version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>

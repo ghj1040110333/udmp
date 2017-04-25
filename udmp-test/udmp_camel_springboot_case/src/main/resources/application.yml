@@ -1,0 +1,20 @@
+#kafka
+#kafka:
+#  broker:
+    #split by comma,but only use first ipaddr
+#    address: 127.0.0.1:9092
+#  zookeeper:
+#    connect: 127.0.0.1:2181
+#  topic: test8.topic
+#  messageKey: test8.key
+#  inputChannel: toKafka
+#  outputChannel: fromKafka
+
+#zookeeper
+#zookeeper:
+#  host: 127.0.0.1
+#  port: 2181
+
+#mq
+#mq:
+#  enabled: false

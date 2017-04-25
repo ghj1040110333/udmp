@@ -1,0 +1,12 @@
+<mappings xmlns="http://dozer.sourceforge.net" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
+  <mapping>
+    <class-a>cn.com.git.udmp.boot.camel.entity.Message</class-a>
+    <class-b>cn.com.git.udmp.calc.camel.mappings.Order</class-b>
+     <field>
+      <a map-get-method="getPayload" map-set-method="setPayload" key="payload" >payload</a>
+      <b>custId</b>
+    </field>
+  </mapping>
+</mappings>

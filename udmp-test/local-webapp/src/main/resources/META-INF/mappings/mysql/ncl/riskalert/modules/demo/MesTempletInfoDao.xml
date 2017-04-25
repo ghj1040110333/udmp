@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.git.ncl.riskalert.modules.demo.dao.MesTempletInfoDao">
+	<sql id="mesTempletInfoColumns">
+		a.id AS "id",
+		a.templet_num AS "templetNum",
+		a.templet_type
+		AS "templetType",
+		a.templet_ver AS "templetVer",
+		a.push_channel AS
+		"pushChannel",
+		a.templet_state AS "templetState",
+		a.templet_content AS
+		"templetContent",
+		a.create_by AS "createBy.id",
+		a.create_date AS
+		"createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS
+		"updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+
+	<sql id="mesTempletInfoJoins">
+	</sql>
+
+	<select id="get" resultType="cn.com.git.ncl.riskalert.modules.demo.entity.MesTempletInfo">
+		SELECT
+		<include refid="mesTempletInfoColumns" />
+		FROM mes_templet_info a
+		<include refid="mesTempletInfoJoins" />
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="cn.com.git.ncl.riskalert.modules.demo.entity.MesTempletInfo">
+		SELECT
+		<include refid="mesTempletInfoColumns" />
+		FROM mes_templet_info a
+		<include refid="mesTempletInfoJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="cn.com.git.ncl.riskalert.modules.demo.entity.MesTempletInfo">
+		SELECT
+		<include refid="mesTempletInfoColumns" />
+		FROM mes_templet_info a
+		<include refid="mesTempletInfoJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO mes_templet_info(
+		id,
+		templet_num,
+		templet_type,
+		templet_ver,
+		push_channel,
+		templet_state,
+		templet_content,
+		create_by,
+		create_date,
+		update_by,
+		update_date,
+		remarks,
+		del_flag
+		) VALUES (
+		#{id},
+		#{templetNum},
+		#{templetType},
+		#{templetVer},
+		#{pushChannel},
+		#{templetState},
+		#{templetContent},
+		#{createBy.id},
+		#{createDate},
+		#{updateBy.id},
+		#{updateDate},
+		#{remarks},
+		#{delFlag}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE mes_templet_info SET
+		templet_num = #{templetNum},
+		templet_type = #{templetType},
+		templet_ver = #{templetVer},
+		push_channel = #{pushChannel},
+		templet_state = #{templetState},
+		templet_content = #{templetContent},
+		update_by = #{updateBy.id},
+		update_date = #{updateDate},
+		remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		UPDATE mes_templet_info SET
+		del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+</mapper>

@@ -1,0 +1,9 @@
+spring:
+    boot:
+     admin:
+      url: http://localhost:8080
+      #如果部署在servelt容器中需要配置service-url
+#      client:
+#        service-url: http://localhost:8181/aplus_ote_ui
+server:
+  port: 8888 
