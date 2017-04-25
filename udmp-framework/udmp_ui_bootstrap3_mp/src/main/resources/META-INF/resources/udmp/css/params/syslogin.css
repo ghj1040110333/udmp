@@ -1,0 +1,362 @@
+/**
+ * Description:
+ * @author Seadon
+ * @date 2016-1-28
+ * tags
+ */
+@CHARSET 'UTF-8';
+html
+{
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+    padding: 90px 0;
+
+    background: url('../images/login_full.png') no-repeat center center fixed;
+    -webkit-background-size: cover;
+       -moz-background-size: cover;
+            background-size: cover;
+
+    overflow: hidden;
+}
+html,
+body
+{
+    font-family: 'microsoft yahei',Helvetica, Georgia, Arial, sans-serif;
+
+    width: 100%;
+    height: 100%;
+}
+html,
+body,
+h3,
+h5
+{
+    margin: 0;
+}
+a
+{
+    text-decoration: none;
+}
+/*diy font*/
+@font-face
+{
+    font-family: 'login';
+
+    src: url('../fonts/login/Alpine.eot'),
+    url('../fonts/login/Alpine.woff') format('woff');
+}
+.l-info
+{
+    font-family: 'login' !important;
+    font-size: 18px;
+    font-style: normal;
+    color: #fff;
+    top: 0;
+    right: 0;
+    padding: 0 5px;
+    position: absolute;
+    z-index: -1;
+}
+
+.f-left
+{
+    float: left;
+}
+.f-right
+{
+    float: right;
+}
+.w-left
+{
+    position: relative;
+
+    box-sizing: border-box;
+    width: 75%;
+    padding: 0 20px;
+}
+.w-right
+{
+    position: absolute;
+    top: 20%;
+    right: 5%;
+
+    width: 323px;
+
+    border-radius: 5px;
+    background-color: rgba(255,255,255,.3);
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, .9) 0%, rgba(0, 0, 0, .1) 50%, rgba(0, 0, 0, .2) 100%);
+
+    filter: progid:DXImageTransform.Microsoft.Gradient(startColorStr=#ddd,endColorStr=#eee);
+}
+#header,
+#container,
+#footer
+{
+    position: relative;
+    top: -90px;
+}
+
+/*heads info*/
+#header
+{
+    padding: 50px 50px 10px;
+}
+#header .i-login-logo
+{
+    width: 122px;
+    height: 43px;
+}
+#header h3
+{
+    font-size: 30px;
+    font-weight: 400;
+
+    padding-top: 3px;
+
+    color: #fff;
+}
+
+/*container info*/
+#container
+{
+    display: table;
+
+    width: 100%;
+    height: 100%;
+}
+#content
+{
+    position: relative;
+
+    display: table-cell;
+
+    vertical-align: middle;
+}
+#container .login-bg
+{
+    height: 100%;
+}
+#loginForm
+{
+    padding: 20px 25px 30px;
+}
+#loginForm .c-title
+{
+    font-size: 22px;
+    font-weight: 400;
+
+    margin-bottom: 15px;
+
+    color: #666;
+}
+#messageBox
+{
+    display: none;
+}
+.c-uname,
+.c-upwd,
+.validateCode
+{
+    line-height: 2;
+
+    margin-bottom: 10px;
+
+    color: #fff;
+}
+#username,
+#password,
+#c-submit
+{
+    font-size: 14px;
+    line-height: 42px;
+
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+    width: 270px;
+    height: 42px;
+    padding: 0 15px;
+
+    -webkit-transition: all .2s;
+       -moz-transition: all .2s;
+        -ms-transition: all .2s;
+         -o-transition: all .2s;
+
+    color: #fff;
+    border: 1px solid #3d3d3d;
+    border: 1px solid rgba(255,255,255,.15);
+    -webkit-border-radius: 6px;
+       -moz-border-radius: 6px;
+            border-radius: 6px;
+    outline: none;
+    background: #2d2d2d;
+    background: rgba(45,45,45,.15);
+    -webkit-box-shadow: 0 2px 3px 0 rgba(0,0,0,.1) inset;
+       -moz-box-shadow: 0 2px 3px 0 rgba(0,0,0,.1) inset;
+            box-shadow: 0 2px 3px 0 rgba(0,0,0,.1) inset;
+    text-shadow: 0 1px 2px rgba(0,0,0,.1);
+    ;
+}
+#username:focus,
+#password:focus
+{
+    outline: none;
+    -webkit-box-shadow: 0 2px 3px 0 rgba(0,0,0,.1) inset,
+    0 2px 7px 0 rgba(0,0,0,.2);
+       -moz-box-shadow: 0 2px 3px 0 rgba(0,0,0,.1) inset,
+    0 2px 7px 0 rgba(0,0,0,.2);
+            box-shadow: 0 2px 3px 0 rgba(0,0,0,.1) inset,
+    0 2px 7px 0 rgba(0,0,0,.2);
+}
+#c-submit
+{
+    font-weight: 600;
+
+    text-align: center;
+
+    color: #fff;
+    border-color: #04e9f9;
+    background-color: #00deed;
+    box-shadow: none;
+}
+#c-submit:hover
+{
+    cursor: pointer;
+
+    border-color: #00bfce;
+    background-color: #00c8d7;
+}
+#validateCode
+{
+    position: relative;
+    top: -7px;
+
+    width: 55px;
+    padding: 5px;
+}
+.validateCode .mid
+{
+    position: relative;
+    top: 2px;
+
+    margin-bottom: 0;
+}
+.c-remem
+{
+    display: block;
+
+    color: #fff;
+}
+#i-element{
+  line-height: 1.4;
+}
+.o-circle
+{
+    position: absolute;
+    left: 600px;
+    margin-top: 200px;
+    width: 100px;
+    height: 100px;
+    padding: 10px;
+    background-color: #ddebfa;
+    opacity: 0.5;
+    border-radius: 200px;
+    box-sizing: border-box;
+    z-index: -2;
+}
+.i-circle
+{
+    height: 100%;
+    width: 100%;
+    background-color: #66a6e8;
+    border-radius: 100px;
+}
+.cp.o-circle
+{
+  -moz-transform:scale(0.5);
+  -moz-transform-origin:top left;
+}
+/*footer info*/
+#footer
+{
+    padding: 20px 50px;
+
+    color: #fff;
+}
+
+/*alert*/
+.message
+{
+    font-size: 12px;position: fixed;top: -50px;width: 100%;padding: 15px;-webkit-animation: animate-bg 5s linear infinite;-moz-animation: animate-bg 5s linear infinite;text-align: center;color: #fff;border: 1px solid;-webkit-background-size: 40px 40px;-moz-background-size: 40px 40px;background-size: 40px 40px;-webkit-box-shadow: inset 0 -1px 0 rgba(255,255,255,.4);-moz-box-shadow: inset 0 -1px 0 rgba(255,255,255,.4);box-shadow: inset 0 -1px 0 rgba(255,255,255,.4);text-shadow: 0 1px 0 rgba(0,0,0,.5);_position: absolute;
+}
+.msg-info
+{
+    border-color: #3b8eb5;
+    background-color: #4ea5cd;
+}
+.msg-error
+{
+    border-color: #c43d3d;
+    background-color: #d74c46;
+}
+.msg-warning
+{
+    border-color: #d99a36;
+    background-color: #eaaf51;
+}
+.msg-success
+{
+    border-color: #55a12c;
+    background-color: #5cb85c;
+}
+.message h3
+{
+    font-size: 18px;margin: 0 0 5px 0;
+}
+.message p
+{
+    margin: 0;
+}
+
+.clearfix:before,
+.clearfix:after
+{
+    display: table;
+
+    content: ' ';
+}
+.clearfix:after
+{
+    clear: both;
+}
+
+@media (max-width:570px)
+{
+    .w-right
+    {
+        position: static;
+
+        margin: 0 auto;
+    }
+    .f-left
+    {
+        display: none;
+    }
+    .f-right
+    {
+        float: none;
+    }
+    #header .f-right
+    {
+        text-align: center;
+    }
+    #header
+    {
+        padding: 30px 50px 0;
+    }
+    #footer
+    {
+        text-align: center;
+    }
+}
