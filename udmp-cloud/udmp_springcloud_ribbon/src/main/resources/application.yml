@@ -1,0 +1,5 @@
+server:
+  port: 8812
+spring:
+  application:
+    name: udmp_ribbon

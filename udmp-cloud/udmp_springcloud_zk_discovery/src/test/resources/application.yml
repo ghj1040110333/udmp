@@ -1,0 +1,10 @@
+server:
+  port: 8844
+spring:
+  application:
+    name: discovery-client
+  cloud:
+    zookeeper:
+      connect-string: 10.210.33.53:2181
+      discovery:
+        register: false  
