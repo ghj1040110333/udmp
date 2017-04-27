@@ -77,7 +77,10 @@ public class TaskHandler implements ILog {
     private void logFailure(int workId, BatchBizException e) {
         // TODO 记录有异常的线程情况
         statusMap.put(workId, StatusEnum.FAIL);
+        //回执异常信息
         this.reportException(e);
+        //回执整体状态
+        this.reportStatus();
     }
 
     // private void sendBack(Map<String, String> results) {

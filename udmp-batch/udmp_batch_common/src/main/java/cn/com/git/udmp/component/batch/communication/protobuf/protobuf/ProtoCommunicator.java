@@ -12,6 +12,7 @@ import com.google.common.collect.Maps;
 
 import cn.com.git.udmp.component.batch.communication.protobuf.BatchMessage.Message;
 import cn.com.git.udmp.component.batch.communication.protobuf.ICommunicator;
+import cn.com.git.udmp.core.exception.FrameworkRemoteException;
 
 /**
  * @description protobuf的通信实现类
@@ -43,6 +44,7 @@ public class ProtoCommunicator implements ICommunicator {
                 }catch (Exception e) {
                     logger.error("发送消息发生异常:{}",e);
                     saveFailedMsg(message);
+                    throw new FrameworkRemoteException("消息发送异常，等待消息重发");
                 }
             } else {
                 // 将消息缓存

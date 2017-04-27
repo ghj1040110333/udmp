@@ -31,11 +31,12 @@ import cn.com.git.udmp.component.batch.model.AgentInfo;
 import cn.com.git.udmp.component.batch.model.AgentWithJob;
 import cn.com.git.udmp.component.batch.model.JobConfig;
 import cn.com.git.udmp.component.batch.model.JobParam;
+import cn.com.git.udmp.core.exception.FrameworkRemoteException;
 import cn.com.git.udmp.utils.lang.UtilDate;
 
 /**
  * @description 任务的通讯类
- * @author liuliang 
+ * @author liuliang
  * @date 2015年2月3日 下午2:32:02
  */
 @Component
@@ -53,32 +54,13 @@ public class JobProtoCommunicator implements IJobCommunicator {
      */
     public void sendJob(final AgentWithJob agent, final CommandEnum command) {
         // 将通信放入线程当中，防止主线程堵塞
-        Thread thread = new Thread() {
-            public void run() {
-                try{
-                    sendJobByThread(agent, command);
-                }catch (Exception e) {
-                    logger.error("发送报文中发生异常:{}",e);
-                }
-            };
+        try {
+            sendJobByThread(agent, command);
+        } catch (Exception e) {
+            // 保证线程不会异常退出
+            logger.error("发送报文中发生异常:{}", e);
+        }
 
-            /**
-             * @description 通信线程的关闭逻辑,附加上通信的关闭调用
-             * @see java.lang.Thread#interrupt() 
-            */
-            @Override
-            public void interrupt() {
-                try {
-                    // 防止SOCKET通信的IO堵塞引起线程无法关闭的情况
-                    communicator.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                super.interrupt();
-            }
-        };
-        thread.start();
-        threads.add(thread);
     }
 
     /**
@@ -94,15 +76,14 @@ public class JobProtoCommunicator implements IJobCommunicator {
         BatchMsgPatchUtil.patchReceiver(messageBuilder, agent.getAgentIp(), String.valueOf(agent.getAgentPort())); // 组装响应方报文
 
         /**
-         * modified by liang on 2016-09-13 
-         * description：设置返回报文的extension
+         * modified by liang on 2016-09-13 description：设置返回报文的extension
          * 
          */
         JobSessionContext jsContext = agent.getJsContext();
-        if(jsContext!=null&&jsContext.getExtension()!=null&&jsContext.getExtension().size()!=0){
+        if (jsContext != null && jsContext.getExtension() != null && jsContext.getExtension().size() != 0) {
             BatchMsgPatchUtil.patchExtensions(messageBuilder, jsContext.getExtension());
         }
-        
+
         if (!StringUtils.isEmpty(agent.getJobId())) {
             JobConfig jobConfig = jobManager.getJob(agent.getJobId());
             cn.com.git.udmp.component.batch.communication.protobuf.BatchMessage.Message.Job.Builder jobBuilder = Job
@@ -115,9 +96,9 @@ public class JobProtoCommunicator implements IJobCommunicator {
             baseInfoBuilder.setIsSpringBean(Integer.valueOf(jobConfig.getIsSpringBean()));
             baseInfoBuilder.setId(agent.getJobId());
             baseInfoBuilder.setBatchSize(jobConfig.getJobBatchSize());
-            baseInfoBuilder.setRunId(agent.getJobRunId()==null?"":agent.getJobRunId()); // 任务实例ID
-            //add by L.liang on 2017/1/10 添加任务链实例ID的设置
-            if(!StringUtils.isEmpty(agent.getJobChainId())){
+            baseInfoBuilder.setRunId(agent.getJobRunId() == null ? "" : agent.getJobRunId()); // 任务实例ID
+            // add by L.liang on 2017/1/10 添加任务链实例ID的设置
+            if (!StringUtils.isEmpty(agent.getJobChainId())) {
                 baseInfoBuilder.setChainRunId(agent.getJobChainId());
             }
             // TODO 按需添加name属性
@@ -125,13 +106,13 @@ public class JobProtoCommunicator implements IJobCommunicator {
             baseInfoBuilder.setJobThreadLimit(agent.getJobThreadLimit());
             // 设置启动时间
             if (jobConfig.getJobStartWindow() != null) {
-                baseInfoBuilder.setJobStartWindow(UtilDate.format(jobConfig.getJobStartWindow(),
-                        BatchCommonConst.TIME_WINDOW_FORMAT));
+                baseInfoBuilder.setJobStartWindow(
+                        UtilDate.format(jobConfig.getJobStartWindow(), BatchCommonConst.TIME_WINDOW_FORMAT));
             }
             // 设置停止时间
             if (jobConfig.getJobEndWindow() != null) {
-                baseInfoBuilder.setJobEndWindow(UtilDate.format(jobConfig.getJobEndWindow(),
-                        BatchCommonConst.TIME_WINDOW_FORMAT));
+                baseInfoBuilder.setJobEndWindow(
+                        UtilDate.format(jobConfig.getJobEndWindow(), BatchCommonConst.TIME_WINDOW_FORMAT));
             }
             // 添加一个轮询任务的标识
             baseInfoBuilder.setIsLoop(BatchCommonConst.BATCH_FLAG_TRUE.equals(jobConfig.getIsLoop()) ? true : false);
@@ -162,12 +143,14 @@ public class JobProtoCommunicator implements IJobCommunicator {
         }
         try {
             communicator.communicate(messageBuilder.build(), agent.getAgentIp(), String.valueOf(agent.getAgentPort()));
+        } catch (FrameworkRemoteException e) {
+            logger.error("通信异常:{}", e.getMessage());
+            unActiveAgent(agent);
+            throw e;
         } catch (UnknownHostException e) {
-            // e.printStackTrace();
             logger.error("通信异常:{}", e.getMessage());
             unActiveAgent(agent);
         } catch (IOException e) {
-            // e.printStackTrace();
             logger.error("通信异常:{}", e.getMessage());
             unActiveAgent(agent);
         }
@@ -178,7 +161,7 @@ public class JobProtoCommunicator implements IJobCommunicator {
      * @param agent agent信息
      */
     private void unActiveAgent(AgentWithJob agent) {
-        logger.debug("将代理{}:{}设为异常", agent.getAgentIp(),agent.getAgentPort());
+        logger.debug("将代理{}:{}设为异常", agent.getAgentIp(), agent.getAgentPort());
         AgentInfo info = new AgentInfo();
         try {
             BeanUtils.copyProperties(info, agent);
@@ -207,14 +190,16 @@ public class JobProtoCommunicator implements IJobCommunicator {
 
     /**
      * @description 通讯关闭逻辑，防止IO操作堵塞线程
-     * @see cn.com.git.udmp.component.batch.core.ICloser#close() 
-    */
+     * @see cn.com.git.udmp.component.batch.core.ICloser#close()
+     */
     @Override
+    @Deprecated
     public void close() {
-        if(threads!=null&&threads.size()!=0){
-            for(Thread key:threads){
+        if (threads != null && threads.size() != 0) {
+            for (Thread key : threads) {
                 key.interrupt();
             }
         }
+        
     }
 }

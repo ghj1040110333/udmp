@@ -176,7 +176,7 @@ public class BatchMonitorAction extends FrameworkBaseAction {
 
     /**
      * @title
-     * @description 重跑
+     * @description 失败重跑
      * 
      * @return
      */
@@ -185,32 +185,43 @@ public class BatchMonitorAction extends FrameworkBaseAction {
         // System.out.println(jobRunId);
         Preconditions.checkNotNull(jobRunId);
 
-        // 若当前任务实例状态为成功、则往下找失败任务；若当前任务实例状态为失败，则往上找第一个失败任务
-        BatchJobRunVO vo = new BatchJobRunVO();
-        vo.setJobRunId(new BigDecimal(jobRunId));
-        List<BatchJobRunVO> resultList = batchJobRunUCC.findAll(vo);
-        if (resultList != null && resultList.size() != 0) {
-            try {
-                BatchJobRunVO result = resultList.get(0);
-                if (result != null) {
-                    String jobId = result.getJobId().toPlainString();
-                    String jobChainRunId = result.getJobChainRunId();
-                    Preconditions.checkNotNull(jobChainRunId);
-                    if (!JobRunStatus.SUCCESS.equals(result.getStatus())) {
-                        activePre(jobId, JobDependManagerInDB.getJobStatusFromResult(resultList), jobChainRunId);
-                    } else {
-                        activeAfter(jobId, JobDependManagerInDB.getJobStatusFromResult(resultList), jobChainRunId);
-                    }
-                } else {
-                    logger.error("{}任务实例不存在", jobRunId);
-                }
-            } catch (Exception e) {
-                outAjax(Constants.DWZ_STATUSCODE_300, "重启失败任务失败!"+e.getMessage(), "", "", "");
-                logger.error(" 重启失败任务失败  !,{}", e);
-                return ;
-            }
-            outAjax(Constants.DWZ_STATUSCODE_200, Constants.DWZ_MESSAGE_200, "", "", "");
+        //updated by Liang on 2017/4/27 封装重跑方法到UCC层中
+        try{
+            batchJobRunUCC.failReBootJob(jobRunId);
+        }catch (Exception e) {
+            outAjax(Constants.DWZ_STATUSCODE_300, "重启失败任务失败!"+e.getMessage(), "", "", "");
+            logger.error(" 重启失败任务失败  !,{}", e);
+            return ;
         }
+        outAjax(Constants.DWZ_STATUSCODE_200, Constants.DWZ_MESSAGE_200, "", "", "");
+            
+        
+        // 若当前任务实例状态为成功、则往下找失败任务；若当前任务实例状态为失败，则往上找第一个失败任务
+//        BatchJobRunVO vo = new BatchJobRunVO();
+//        vo.setJobRunId(new BigDecimal(jobRunId));
+//        List<BatchJobRunVO> resultList = batchJobRunUCC.findAll(vo);
+//        if (resultList != null && resultList.size() != 0) {
+//            try {
+//                BatchJobRunVO result = resultList.get(0);
+//                if (result != null) {
+//                    String jobId = result.getJobId().toPlainString();
+//                    String jobChainRunId = result.getJobChainRunId();
+//                    Preconditions.checkNotNull(jobChainRunId);
+//                    if (!JobRunStatus.SUCCESS.equals(result.getStatus())) {
+//                        activePre(jobId, JobDependManagerInDB.getJobStatusFromResult(resultList), jobChainRunId);
+//                    } else {
+//                        activeAfter(jobId, JobDependManagerInDB.getJobStatusFromResult(resultList), jobChainRunId);
+//                    }
+//                } else {
+//                    logger.error("{}任务实例不存在", jobRunId);
+//                }
+//            } catch (Exception e) {
+//                outAjax(Constants.DWZ_STATUSCODE_300, "重启失败任务失败!"+e.getMessage(), "", "", "");
+//                logger.error(" 重启失败任务失败  !,{}", e);
+//                return ;
+//            }
+//            outAjax(Constants.DWZ_STATUSCODE_200, Constants.DWZ_MESSAGE_200, "", "", "");
+//        }
     }
 
     /**
@@ -546,6 +557,7 @@ public class BatchMonitorAction extends FrameworkBaseAction {
         logger.info("手动重跑任务{}", jobRunId);
         sendJob(startJobController, jobRunId);
     }
+    
 
     private void sendJob(IJobController jobController, String jobRunId) {
         BatchJobRunVO batchJobRun = new BatchJobRunVO();

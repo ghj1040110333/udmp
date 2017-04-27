@@ -2,8 +2,11 @@ package cn.com.git.udmp.component.batch.core.agent;
 
 import java.util.Map;
 
+import com.google.common.base.Preconditions;
+
 import cn.com.git.udmp.common.utils.SpringContextHolder;
 import cn.com.git.udmp.component.batch.context.JobSessionContext;
+import cn.com.git.udmp.component.batch.exception.BatchBizException;
 import cn.com.git.udmp.component.batch.template.job.AbstractPrePostJobTemplate;
 import cn.com.git.udmp.core.exception.FrameworkRuntimeException;
 import cn.com.git.udmp.utils.log.MDCLogUtil;
@@ -39,7 +42,7 @@ public class Work implements IWork<Boolean> {
      * @param jsContext 上下文参数
      * @param handler 作业处理器
      */
-    public Work(int workId, JobSessionContext jsContext,TaskHandler handler) {
+    public Work(int workId, JobSessionContext jsContext, TaskHandler handler) {
         this.workId = workId;
         this.jsContext = jsContext;
         this.taskHandler = handler;
@@ -48,7 +51,6 @@ public class Work implements IWork<Boolean> {
 
     @Override
     public Boolean call() throws Exception {
-
         MDCLogUtil.setJobContext(jsContext);
         // TODO
         // bhib-006-可以添加启动前和启动后的过滤器，添加在pre和after方法中就可以，能添加filter的list。更liuliang确认后再添加
@@ -56,7 +58,6 @@ public class Work implements IWork<Boolean> {
         executeWork();
         afterWork();
         return this.isFinished() && !this.isStoped();
-
     }
 
     @Override
@@ -65,6 +66,9 @@ public class Work implements IWork<Boolean> {
         logger.debug("线程{}正在执行作业", Thread.currentThread().getName());
         if (jsContext.isSpringBean()) {
             job = (AbstractPrePostJobTemplate) SpringContextHolder.getBean(jsContext.getJobClazzName());
+            if (null == job) {
+                throw new FrameworkRuntimeException("请检查{}是否使用spring声明", jsContext.getJobClazzName());
+            }
         } else {
             try {
                 job = (AbstractPrePostJobTemplate) Class.forName(jsContext.getJobClazzName()).newInstance();
@@ -82,6 +86,7 @@ public class Work implements IWork<Boolean> {
                 throw new FrameworkRuntimeException("job初始化失败");
             }
         }
+        Preconditions.checkNotNull(job);
         job.setJobSessionContext(jsContext);
         // 执行预操作
         job.preExecute(jsContext);

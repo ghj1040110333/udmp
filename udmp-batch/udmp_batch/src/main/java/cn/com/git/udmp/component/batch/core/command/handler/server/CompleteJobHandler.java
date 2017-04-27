@@ -42,6 +42,27 @@ public class CompleteJobHandler implements IServerCommandHandler {
     public JobSessionContext handle(JobSessionContext context) {
         Message message = (Message) ((JobSessionContext) context).get("message");
 
+        //记录完成状态
+        BatchJobRunVO batchJobRunVO = auditComplete(context, message);
+        //尝试激活后续任务
+        activeNext(context, batchJobRunVO);
+        
+        return context;
+    }
+
+    private void activeNext(JobSessionContext context, BatchJobRunVO batchJobRunVO) {
+      /**
+        * 更改任务状态并激活任务依赖
+        * 当前组下所有任务实例不全都在（成功、失败、部分成功）状态集中的状态，那么认为RUNNING状态，不进行依赖触发;当前组下所有任务实例全都有在（成功、失败、部分成功）状态集中的状态，那么进行逻辑判断
+        * 1.当前组下所有实例状态都是成功：JobStatusManager.setJobStatus(context.getJobId(),StatusEnum.SUCCESS);
+        * 2.当前组下所有实例状态都是失败：JobStatusManager.setJobStatus(context.getJobId(),StatusEnum.FAIL);
+        * 3.当前组下状态有成功或失败：JobStatusManager.setJobStatus(context.getJobId(),StatusEnum.PART_SUCCESS);
+        * 通过任务实例id找到这个任务组下所有实例，并判断出状态
+      */
+         changeJobStatus(context,batchJobRunVO.getJobRunId());
+    }
+
+    private BatchJobRunVO auditComplete(JobSessionContext context, Message message) {
         // 状态常量 cn.com.git.udmp.component.batch.common.constants.JobRunStatus
 
         BatchJobRunVO batchJobRunVO = new BatchJobRunVO();
@@ -51,6 +72,7 @@ public class CompleteJobHandler implements IServerCommandHandler {
         batchJobRunVO.setJobRunId(new BigDecimal(basicInfo.getRunId()));
         // 待更新的数据记录状态
         batchJobRunVO.setStatus(basicInfo.getStatus());
+        
         //updated by Liang on 2016/12/30  返回结果需要根据JobRunId和AgentId一起查询更新
         String fromIp = message.getSender().getFromIp();
         String fromPort = message.getSender().getFromPort();
@@ -60,19 +82,8 @@ public class CompleteJobHandler implements IServerCommandHandler {
         batchJobRunUCC.update(batchJobRunVO);
         logger.info("任务实例：{},agentIp:{},agentPort:{},执行状态更新成功,时间：{},更新后状态：{}", basicInfo.getRunId(), fromIp,fromPort,new Date(), basicInfo.getStatus());
 
-        // 更改任务状态并激活任务依赖
-        // 当前组下所有任务实例不全都在（成功、失败、部分成功）状态集中的状态，那么认为RUNNING状态，不进行依赖触发
-        // 当前组下所有任务实例全都有在（成功、失败、部分成功）状态集中的状态，那么进行逻辑判断
-        // 1.当前组下所有实例状态都是成功：JobStatusManager.setJobStatus(context.getJobId(),
-        // StatusEnum.SUCCESS);
-        // 2.当前组下所有实例状态都是失败：JobStatusManager.setJobStatus(context.getJobId(),
-        // StatusEnum.FAIL);
-        // 3.当前组下状态有成功或失败：JobStatusManager.setJobStatus(context.getJobId(),
-        // StatusEnum.PART_SUCCESS);
-        // 通过任务实例id找到这个任务组下所有实例，并判断出状态
-         StatusEnum status = changeJobStatus(context,new BigDecimal(basicInfo.getRunId()));
+        return batchJobRunVO;
         
-        return context;
     }
     
     @Override
@@ -120,12 +131,6 @@ public class CompleteJobHandler implements IServerCommandHandler {
         StatusEnum status = null;
         BatchJobRunVO batchJobRunVOQryByJobRunId = new BatchJobRunVO();
         batchJobRunVOQryByJobRunId.setJobRunId(jobRunId);
-//        // 通过任务实例id找到这个任务实例，然后获取任务组编号
-//        BatchJobRunVO currentBatchJobRunVO = batchJobRunUCC.find(batchJobRunVOQryByJobRunId);
-//        String grpId = currentBatchJobRunVO.getSplitRelaGrpId();
-//
-//        BatchJobRunVO batchJobRunVOQryByGrpId = new BatchJobRunVO();
-//        batchJobRunVOQryByGrpId.setSplitRelaGrpId(grpId);
         //updated by liang on 2016/12/30 通过jobRUnId查询任务实例集合
         List<BatchJobRunVO> batchJobRunVOList = batchJobRunUCC.findAll(batchJobRunVOQryByJobRunId);
 

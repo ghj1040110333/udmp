@@ -27,7 +27,7 @@ public class ChainExecutor implements IChain {
             logger.info("发现责任链终止信号");
             return;
         } catch (FrameworkException e) {
-            logger.error("任务链执行运行时异常:errorCode:{},errorMessage:{}",e.getErrCode(),e);
+//            logger.error("任务链执行运行时异常:errorCode:{},errorMessage:{}",e.getErrCode(),e);
             throw e;
         } catch (RuntimeException e) {
             logger.error("任务链执行异常:{}", e.getMessage());

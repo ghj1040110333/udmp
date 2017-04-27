@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import cn.com.git.udmp.component.batch.common.constants.BatchCommonConst;
 import cn.com.git.udmp.component.batch.common.constants.CommandEnum;
@@ -16,7 +17,7 @@ import cn.com.git.udmp.utils.lang.DateUtilsEx;
 
 
 @Component
-public class ExceptionHandler implements IServerCommandHandler {
+public class ExceptionHandler  implements IServerCommandHandler {
     /**
      * @Fields batchJobRunLogUCC : batch_job_run_log表的ucc
      */
@@ -41,13 +42,15 @@ public class ExceptionHandler implements IServerCommandHandler {
         batchJobRunLogVO.setLogInfo(basicInfo.getLogInfo());
         batchJobRunLogVO.setLogTime(DateUtilsEx.getTodayDate());
         batchJobRunLogVO.setLogType(basicInfo.getLogType());
+        
 
         batchJobRunLogUCC.add(batchJobRunLogVO);
         logger.info("任务实例：{},时间：{},添加异常'{}':'{}'成功", basicInfo.getRunId(), DateUtilsEx.getTodayDate(),
                 basicInfo.getLogType(), basicInfo.getLogInfo());
-
+        
         return context;
     }
+
 
     @Override
     public CommandEnum getCommand() {

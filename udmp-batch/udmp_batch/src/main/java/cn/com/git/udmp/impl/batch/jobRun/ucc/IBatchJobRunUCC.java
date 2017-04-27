@@ -19,4 +19,8 @@ public interface IBatchJobRunUCC extends IBaseBatchUCC<BatchJobRunVO, BatchJobRu
     void addWithId(BatchJobRunVO batchAgentVO);
     
     int findLastBatch(String jobChainRunId);
+
+    void failReBootJob(String jobRunId);
+    
+    
 }

@@ -8,7 +8,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import cn.com.git.udmp.common.utils.SpringContextHolder;
 import cn.com.git.udmp.component.batch.common.constants.BatchCommonConst;
+import cn.com.git.udmp.component.batch.common.constants.StatusEnum;
 import cn.com.git.udmp.component.batch.common.utils.BatchMsgPatchUtil;
+import cn.com.git.udmp.component.batch.common.utils.StatusUtil;
 import cn.com.git.udmp.component.batch.communication.protobuf.BatchMessage;
 import cn.com.git.udmp.component.batch.communication.protobuf.BatchMessage.Message;
 import cn.com.git.udmp.component.batch.communication.protobuf.BatchMessage.Message.BasicInfo;
@@ -276,11 +278,13 @@ public class AgentCommunicator implements ILog{
         BatchMessage.Message.Job.Builder jobBuilder = Job.newBuilder();
         BatchMessage.Message.BasicInfo.Builder basicInfoBuilder = BasicInfo.newBuilder();
 
+        basicInfoBuilder.setStatus(StatusUtil.getStringStatus(StatusEnum.FAIL));
+        
         basicInfoBuilder.setRunId(jobRunId);
 
-        basicInfoBuilder.setLogType(e.getErrCode());
-        basicInfoBuilder.setLogLevel(e.getInfoLevel());
-        basicInfoBuilder.setLogInfo(e.getMessage());
+        basicInfoBuilder.setLogType(null==e.getErrCode()||e.getErrCode().length()>10?"0":e.getErrCode());
+        basicInfoBuilder.setLogLevel(null==e.getInfoLevel()?"0":e.getInfoLevel());
+        basicInfoBuilder.setLogInfo(null==e.getMessage()?"0":e.getMessage());
 
         // 应该可以不用设置
         basicInfoBuilder.setTaskClazz(jsContext.getJobClazzName());

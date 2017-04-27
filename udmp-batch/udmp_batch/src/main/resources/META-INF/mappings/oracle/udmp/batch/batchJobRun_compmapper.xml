@@ -191,16 +191,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<![CDATA[ SELECT COUNT(1) FROM T_UDMP_BATCH_JOB_RUN A ,
 		T_UDMP_BATCH_JOB C WHERE 1 = 1 AND A.JOB_ID = C.JOB_ID
 			]]>
-		<if test='job_type == "S"  and resultIds.size() > 0  '>
+		<if test='resultIds!=null and job_type == "S" and resultIds.size() > 0 '>
 			<![CDATA[  and A.JOB_CHAIN_RUN_ID in ]]>
 		</if>
-		<if test='job_type != "S"  and resultIds.size() > 0  '>
+		<if test='resultIds!=null and job_type != "S" and resultIds.size() > 0 '>
 			<![CDATA[  and A.JOB_CHAIN_RUN_ID not in ]]>
 		</if>
+		<if test="resultIds!=null">
 		<foreach item="item" index="index" collection="resultIds"
 			open="(" separator="," close=")">
 			#{item,jdbcType=VARCHAR}
 		</foreach>
+		</if>
 		<include refid="batchJobRunWhereCondition" />
 	</select>
 

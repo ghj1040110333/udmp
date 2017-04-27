@@ -58,6 +58,7 @@ public class StatusHandler implements IServerCommandHandler{
         batchJobRunVO.setTotalCnt(new BigDecimal(basicInfo.getTotalCnt()));
         batchJobRunVO.setSuccessCnt(new BigDecimal(basicInfo.getSuccessCnt()));
         batchJobRunVO.setFailedCnt(new BigDecimal(basicInfo.getFailedCnt()));
+        
         // 执行更新
         batchJobRunUCC.update(batchJobRunVO);
         logger.info("任务实例：{},agentIp:{},agentPort:{},执行进度更新成功,时间：{},当前总记录数：{},当前成功记录数：{},当前失败记录数：{}", basicInfo.getRunId(), fromIp,fromPort,new Date(),

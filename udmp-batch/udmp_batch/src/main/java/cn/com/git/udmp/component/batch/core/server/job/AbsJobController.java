@@ -52,7 +52,7 @@ public abstract class AbsJobController extends ChainExecutor implements IJobCont
         }catch (CancelException e) {
             logger.info("发现终止信号:{}，终止当前{}操作",e.getMessage(),this.getClass().getSimpleName());
         }catch (RuntimeException e) {
-            logger.error("执行controller发生异常：{}", e);
+//            logger.error("执行controller发生异常：{}", e);
             throw e;
         }finally {
             

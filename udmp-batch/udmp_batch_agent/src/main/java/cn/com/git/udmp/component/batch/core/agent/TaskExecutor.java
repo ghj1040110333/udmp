@@ -149,11 +149,11 @@ public class TaskExecutor implements ITaskExecutor {
                         if (cause instanceof BatchBizException) {
                             // 捕捉到批处理应用异常
                             logger.info("thread-id:" + Thread.currentThread()
-                                    + "---------------------------------------------------------BatchBizException" + e);
+                                    + "---------------------------------------------------------BatchBizException:{}" + e);
                             handler.log(false, workId, (BatchBizException) cause);
                         } else if (cause instanceof Exception) {
                             logger.info("thread-id:" + Thread.currentThread()
-                                    + "---------------------------------------------------------Exception" + e);
+                                    + "---------------------------------------------------------Exception:{}" + e);
                             // TODO 将异常抛出给线程池
 //                            e.printStackTrace();
                             handler.log(false, workId, new BatchBizException(e.getMessage()));
