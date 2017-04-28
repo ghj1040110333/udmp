@@ -15,6 +15,7 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.TestRestTemplate;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 import org.springframework.http.HttpStatus;
@@ -48,7 +49,7 @@ public class EurekaApplicationTest {
         if (list != null && list.size() > 0 ) {
             URI uri = list.get(0).getUri();
             if (uri !=null ) {
-                System.out.println(":::::::::::: "+new RestTemplate().getForObject(uri,String.class));
+                System.out.println(":::::::::::: "+new RestTemplate().getForObject(uri+"/hello",String.class));
             }
         }
     }
