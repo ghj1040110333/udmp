@@ -118,7 +118,7 @@
 					<artifactId>spring-boot-maven-plugin</artifactId>
 					<version>${spring-boot-version}</version>
 					<configuration>
-						<mainClass>cn.com.git.udmp.showcase.ShowcaseApplication</mainClass>
+						<mainClass>cn.com.git.udmp.boot.UdmpApplication</mainClass>
 						<layout>JAR</layout>
 						<!-- <addResources>true</addResources> -->
 					</configuration>
