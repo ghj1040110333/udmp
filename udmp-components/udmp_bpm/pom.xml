@@ -18,7 +18,7 @@
 		</dependency>
 		<!-- Activiti -->
 		<dependency>
-			<groupId>cn.com.git.fakepath</groupId>
+			<groupId>org.activiti</groupId>
 			<artifactId>activiti-engine</artifactId>
 		</dependency>
 		<dependency>
