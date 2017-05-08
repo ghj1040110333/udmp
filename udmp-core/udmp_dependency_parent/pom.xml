@@ -76,7 +76,7 @@
 		<repository>
 			<id>nexus-repos</id>
 			<name>Team Nexus Repository</name>
-			<url>http://10.210.33.58:8081/repository/maven-public/</url>
+			<url>http://127.0.0.1:8990/repository/maven-public/</url>
 		</repository>
 		<!-- <repository> -->
 		<!-- <id>oschina-repos</id> -->
@@ -103,7 +103,7 @@
 		<pluginRepository>
 			<id>nexus-repos</id>
 			<name>Team Nexus Repository</name>
-			<url>http://10.210.33.58:8081/repository/maven-public/</url>
+			<url>http://127.0.0.1:8990/repository/maven-public/</url>
 		</pluginRepository>
 		<!-- 如有Nexus私服, 取消注释并指向正确的服务器地址. <pluginRepository> <id>oschina-repos</id> 
 			<name>Oschina Releases</name> <url>http://maven.oschina.net/content/groups/public</url> 
@@ -900,12 +900,12 @@
 		<repository>
 			<id>releases</id>
 			<name>Nexus Release Repository</name>
-			<url>http://10.210.33.58:8081/repository/maven-releases/</url>
+			<url>http://127.0.0.1:8990/repository/maven-releases/</url>
 		</repository>
 		<snapshotRepository>
 			<id>snapshots</id>
 			<name>Nexus Snapshot Repository</name>
-			<url>http://10.210.33.58:8081/repository/maven-snapshots/</url>
+			<url>http://127.0.0.1:8990/repository/maven-snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
 	<build>
