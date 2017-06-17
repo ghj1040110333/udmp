@@ -8,7 +8,6 @@ import java.util.Map;
 
 import org.springframework.core.io.DefaultResourceLoader;
 
-import com.ckfinder.connector.ServletContextFactory;
 import com.google.common.collect.Maps;
 
 import cn.com.git.udmp.common.utils.PropertiesLoader;
@@ -142,7 +141,7 @@ public class Global {
 		String dir = getConfig("userfiles.basedir");
 		if (StringUtils.isBlank(dir)){
 			try {
-				dir = ServletContextFactory.getServletContext().getRealPath("/");
+//				dir = ServletContextFactory.getServletContext().getRealPath("/");
 			} catch (Exception e) {
 				return "";
 			}
@@ -162,7 +161,7 @@ public class Global {
 		String dir = getConfig("userfiles.serverUrl");
 		if (StringUtils.isBlank(dir)){
 			try {
-				dir = ServletContextFactory.getServletContext().getRealPath("/");
+//				dir = ServletContextFactory.getServletContext().getRealPath("/");
 			} catch (Exception e) {
 				return "";
 			}

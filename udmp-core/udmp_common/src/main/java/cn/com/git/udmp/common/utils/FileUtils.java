@@ -9,14 +9,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Enumeration;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipOutputStream;
 
-import org.apache.tools.zip.ZipEntry;
-import org.apache.tools.zip.ZipFile;
-import org.apache.tools.zip.ZipOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import cn.com.git.udmp.common.exception.FrameworkException;
 
 /**
  * 文件操作工具类
@@ -460,55 +458,55 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 	 * @param zipFileName 需要解压的ZIP文件
 	 * @param descFileName 目标文件
 	 */
-	public static boolean unZipFiles(String zipFileName, String descFileName) {
-		String descFileNames = descFileName;
-		if (!descFileNames.endsWith(File.separator)) {
-			descFileNames = descFileNames + File.separator;
-		}		
-        try {
-			// 根据ZIP文件创建ZipFile对象
-			ZipFile zipFile = new ZipFile(zipFileName);
-			ZipEntry entry = null;
-			String entryName = null;
-			String descFileDir = null;
-			byte[] buf = new byte[4096];
-			int readByte = 0;
-			// 获取ZIP文件里所有的entry
-			@SuppressWarnings("rawtypes")
-			Enumeration enums = zipFile.getEntries();
-			// 遍历所有entry
-			while (enums.hasMoreElements()) {
-				entry = (ZipEntry) enums.nextElement();
-				// 获得entry的名字
-				entryName = entry.getName();
-				descFileDir = descFileNames + entryName;
-				if (entry.isDirectory()) {
-					// 如果entry是一个目录，则创建目录
-					new File(descFileDir).mkdirs();
-					continue;
-				} else {
-					// 如果entry是一个文件，则创建父目录
-					new File(descFileDir).getParentFile().mkdirs();
-				}
-				File file = new File(descFileDir);
-				// 打开文件输出流
-				OutputStream os = new FileOutputStream(file);
-				// 从ZipFile对象中打开entry的输入流
-		        InputStream is = zipFile.getInputStream(entry);
-				while ((readByte = is.read(buf)) != -1) {
-					os.write(buf, 0, readByte);
-				}
-				os.close();
-				is.close();
-			}
-			zipFile.close();
-			log.debug("文件解压成功!");
-			return true;
-		} catch (Exception e) {
-			log.debug("文件解压失败：" + e.getMessage());
-			return false;
-		}
-	}
+//	public static boolean unZipFiles(String zipFileName, String descFileName) {
+//		String descFileNames = descFileName;
+//		if (!descFileNames.endsWith(File.separator)) {
+//			descFileNames = descFileNames + File.separator;
+//		}		
+//        try {
+//			// 根据ZIP文件创建ZipFile对象
+//			ZipFile zipFile = new ZipFile(zipFileName);
+//			ZipEntry entry = null;
+//			String entryName = null;
+//			String descFileDir = null;
+//			byte[] buf = new byte[4096];
+//			int readByte = 0;
+//			// 获取ZIP文件里所有的entry
+//			@SuppressWarnings("rawtypes")
+//			Enumeration enums = zipFile.getEntries();
+//			// 遍历所有entry
+//			while (enums.hasMoreElements()) {
+//				entry = (ZipEntry) enums.nextElement();
+//				// 获得entry的名字
+//				entryName = entry.getName();
+//				descFileDir = descFileNames + entryName;
+//				if (entry.isDirectory()) {
+//					// 如果entry是一个目录，则创建目录
+//					new File(descFileDir).mkdirs();
+//					continue;
+//				} else {
+//					// 如果entry是一个文件，则创建父目录
+//					new File(descFileDir).getParentFile().mkdirs();
+//				}
+//				File file = new File(descFileDir);
+//				// 打开文件输出流
+//				OutputStream os = new FileOutputStream(file);
+//				// 从ZipFile对象中打开entry的输入流
+//		        InputStream is = zipFile.getInputStream(entry);
+//				while ((readByte = is.read(buf)) != -1) {
+//					os.write(buf, 0, readByte);
+//				}
+//				os.close();
+//				is.close();
+//			}
+//			zipFile.close();
+//			log.debug("文件解压成功!");
+//			return true;
+//		} catch (Exception e) {
+//			log.debug("文件解压失败：" + e.getMessage());
+//			return false;
+//		}
+//	}
 
 	/**
 	 * 将目录压缩到ZIP输出流
