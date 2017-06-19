@@ -23,11 +23,11 @@
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		<dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc7</artifactId>
-			<scope>test</scope>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>com.oracle</groupId> -->
+<!-- 			<artifactId>ojdbc7</artifactId> -->
+<!-- 			<scope>test</scope> -->
+<!-- 		</dependency> -->
 		<dependency>
 			<groupId>cn.com.git</groupId>
 			<artifactId>udmp_springboot_xml</artifactId>
