@@ -7,8 +7,8 @@
   <parent>
   	<groupId>cn.com.git</groupId>
   	<artifactId>udmp_springboot_parent</artifactId>
-  	<version>0.2.0-SNAPSHOT</version>
-  	<relativePath>../UDMP-Core/udmp_parent</relativePath>
+  	<version>0.3.0-SNAPSHOT</version>
+  	<relativePath>../../udmp-core/udmp_parent</relativePath>
   </parent>
   
   <dependencyManagement>
